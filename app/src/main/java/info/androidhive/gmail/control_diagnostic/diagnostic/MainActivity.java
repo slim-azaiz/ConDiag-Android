@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,9 @@ import static it.sephiroth.android.library.bottomnavigation.MiscUtils.log;
 public class MainActivity extends BaseActivity implements BottomNavigation.OnMenuItemSelectionListener {
 
     static final String TAG = MainActivity.class.getSimpleName();
+
+    private Fragment fragment;
+    private FragmentManager fragmentManager;
 
 
     @Override
@@ -73,6 +77,10 @@ public class MainActivity extends BaseActivity implements BottomNavigation.OnMen
             }
         }
 
+        fragmentManager = getSupportFragmentManager();
+        fragment = new Fragment1();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.main_container, fragment).commit();
         initializeBottomNavigation(savedInstanceState);
         initializeUI(savedInstanceState);
     }
@@ -144,7 +152,6 @@ public class MainActivity extends BaseActivity implements BottomNavigation.OnMen
         }
     }
 
-
     @Override
     public void onMenuItemSelect(final int itemId, final int position, final boolean fromUser) {
         log(TAG, INFO, "onMenuItemSelect(" + itemId + ", " + position + ", " + fromUser + ")");
@@ -154,6 +161,20 @@ public class MainActivity extends BaseActivity implements BottomNavigation.OnMen
                 getViewPager().setCurrentItem(position);
             }
         }
+
+        switch (itemId) {
+            case R.id.bbn_item1:
+                fragment = new Fragment1();
+                break;
+            case R.id.bbn_item2:
+                fragment = new Fragment2();
+                break;
+            case R.id.bbn_item3:
+                fragment = new Fragment3();
+                break;
+        }
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_container, fragment).commit();
     }
 
     @Override
