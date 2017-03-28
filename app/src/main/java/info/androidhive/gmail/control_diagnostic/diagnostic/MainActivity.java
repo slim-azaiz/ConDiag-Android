@@ -172,6 +172,12 @@ public class MainActivity extends BaseActivity implements BottomNavigation.OnMen
             case R.id.bbn_item3:
                 fragment = new Fragment3();
                 break;
+            case R.id.bbn_item4:
+                fragment = new Fragment4();
+                break;
+            case R.id.bbn_item5:
+                fragment = new Fragment5();
+                break;
         }
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, fragment).commit();

@@ -161,7 +161,6 @@ public class MainActivityFragment extends Fragment {
         MiscUtils.log(getClass().getSimpleName(), Log.INFO, "createAdapter(" + height + ")");
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(new Adapter(getContext(), height, hasAppBarLayout, createData()));
     }
 
     public void scrollToTop() {
@@ -188,111 +187,4 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
-    private class Adapter extends RecyclerView.Adapter<TwoLinesViewHolder> {
-        private final Picasso picasso;
-        private final int navigationHeight;
-        private final Book[] data;
-        private final boolean hasAppBarLayout;
-
-        public Adapter(final Context context, final int navigationHeight, final boolean hasAppBarLayout, final Book[] data) {
-            this.navigationHeight = navigationHeight;
-            this.data = data;
-            this.hasAppBarLayout = hasAppBarLayout;
-            this.picasso = Picasso.with(context);
-        }
-
-        @Override
-        public TwoLinesViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-            final View view = LayoutInflater.from(getContext()).inflate(R.layout.simple_card_item, parent, false);
-            final TwoLinesViewHolder holder = new TwoLinesViewHolder(view);
-
-            holder.button1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    Snackbar snackbar =
-                            Snackbar.make(mRoot, "Button 1 of item " + holder.getAdapterPosition(), Snackbar.LENGTH_LONG)
-                                    .setAction(
-                                            "Action",
-                                            null
-                                    );
-                    snackbar.show();
-                }
-            });
-
-            holder.button2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    Snackbar snackbar = Snackbar.make(mRoot, "Button 2 of item " + holder.getAdapterPosition(),
-                            Snackbar.LENGTH_LONG
-                    )
-                            .setAction(
-                                    "Action",
-                                    null
-                            );
-                    snackbar.show();
-                }
-            });
-
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(final TwoLinesViewHolder holder, final int position) {
-            ((ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams()).topMargin = 0;
-            if (position == getItemCount() - 1) {
-                ((ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams()).bottomMargin = holder.marginBottom + navigationHeight;
-            } else if (position == 0 && !hasAppBarLayout) {
-                ((ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams()).topMargin = scrollHelper.getToolbarHeight();
-            } else {
-                ((ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams()).bottomMargin = holder.marginBottom;
-            }
-
-            final Book item = data[position];
-            holder.title.setText(item.title);
-            holder.description.setText("By " + item.author);
-            holder.imageView.setImageBitmap(null);
-
-            picasso.cancelRequest(holder.imageView);
-
-            picasso
-                    .load(item.imageUrl)
-                    .noPlaceholder()
-                    .centerCrop()
-                    .into(holder.imageView);
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.length;
-        }
-    }
-
-    private Book[] createData() {
-        return new Book[]{
-                new Book("The Flight", "Scott Masterson", "http://i.imgur.com/dyyP2iO.jpg"),
-                new Book("Room of Plates", "Ali Conners", "http://i.imgur.com/da6QIlR.jpg"),
-                new Book("The Sleek Boot", "Sandra Adams", "http://i.imgur.com/YHoOJh4.jpg"),
-                new Book("Night Hunting", "Janet Perkins", "http://i.imgur.com/3jxqrKP.jpg"),
-                new Book("Rain and Coffee", "Peter Carlsson", "http://i.imgur.com/AZRynvM.jpg"),
-                new Book("Ocean View", "Trevor Hansen", "http://i.imgur.com/IvhOJcw.jpg"),
-                new Book("Lovers Of The Roof", "Britta Holt", "http://i.imgur.com/pxgI1b4.png"),
-                new Book("Lessons from Delhi", "Mary Johnson", "http://i.imgur.com/oT1WYX9.jpg"),
-                new Book("Mountaineers", "Abbey Christensen", "http://i.imgur.com/CLLDz.jpg"),
-                new Book("Plains In The Night", "David Park", "http://i.imgur.com/7MrSvXE.jpg?1"),
-                new Book("Dear Olivia", "Sylvia Sorensen", "http://i.imgur.com/3mkUuux.jpg"),
-                new Book("Driving Lessons", "Halime Carver", "http://i.imgur.com/LzYAfFL.jpg"),
-        };
-    }
-
-    static class Book {
-        final String title;
-        final String author;
-        final String imageUrl;
-
-        Book(final String title, final String author, final String imageUrl) {
-            this.title = title;
-            this.author = author;
-            this.imageUrl = imageUrl;
-        }
-    }
 }

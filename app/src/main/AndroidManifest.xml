@@ -34,6 +34,10 @@
         <activity android:name=".control_diagnostic.ControlDiagnostic"
             android:label=""
             android:parentActivityName=".activity.MainActivity" />
+        <activity android:name=".control_diagnostic.diagnostic.MainActivity"
+            android:label="Diagnostic"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

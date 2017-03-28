@@ -24,4 +24,8 @@
         android:id="@+id/bbn_item4"
         android:icon="@drawable/ic_format_list_numbered_white_24dp"
         android:title="List" />
+    <item
+        android:id="@+id/bbn_item5"
+        android:icon="@drawable/ic_format_list_numbered_white_24dp"
+        android:title="List" />
 </menu>

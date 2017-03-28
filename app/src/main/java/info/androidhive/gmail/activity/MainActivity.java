@@ -45,16 +45,18 @@ import info.androidhive.gmail.settings.SettingsActivity;
 import info.androidhive.gmail.sqlite.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, MessagesAdapter.MessageAdapterListener {
-    private List<Message> messages = new ArrayList<>();
+    private  List<Message> messages = new ArrayList<>();
     private ArrayList<Integer> deleteClicked = new ArrayList<Integer>();
 
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private MessagesAdapter mAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
     public static DatabaseHelper db;
     private Button buttonSave;
+    private Button buttonTest;
+
 
 
 
@@ -68,12 +70,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public Context getContext() {
         return context;
     }
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new DatabaseHelper(this);
         buttonSave = (Button) findViewById(R.id.buttonSave);
+        buttonTest = (Button) findViewById(R.id.buttonTest);
+
         Log.i("TEST","-1");
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -137,6 +141,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
+        buttonTest.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, info.androidhive.gmail.control_diagnostic.diagnostic.MainActivity.class);
+                startActivity(intent);
+            }
+        });
         actionModeCallback = new ActionModeCallback();
 
         // show loader and fetch messages
@@ -358,13 +368,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
 
-        //noinspection SimplifiableIfStatement
-        case android.R.id.home:
-            drawerLayout.openDrawer(GravityCompat.START);
-            return true;
-        case R.id.search:
-            Toast.makeText(getApplicationContext(), "Search...", Toast.LENGTH_SHORT).show();
-            return true;
+            //noinspection SimplifiableIfStatement
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.search:
+                Toast.makeText(getApplicationContext(), "Search...", Toast.LENGTH_SHORT).show();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
