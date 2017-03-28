@@ -27,7 +27,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".discovery.dial.ServerFinder"
+            android:name=".discovery.dial.MainActivity"
+            android:label="Discovery"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".discovery.dial.ServerFinderV1"
             android:label="Discovery"
         />
 

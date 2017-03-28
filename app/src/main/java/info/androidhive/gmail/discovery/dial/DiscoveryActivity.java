@@ -21,6 +21,7 @@ public class DiscoveryActivity extends Activity {
 
 	protected static final int CODE_SWITCH_SERVER = 1;
 
+
 	public static DialServer target;
 
 	private static LinkedHashMap<InetAddress, DialServer> recentlyConnected = new LinkedHashMap<InetAddress, DialServer>();
