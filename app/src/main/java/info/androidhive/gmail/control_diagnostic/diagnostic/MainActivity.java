@@ -172,6 +172,7 @@ public class MainActivity extends BaseActivity implements BottomNavigation.OnMen
             case R.id.bbn_item3:
                 fragment = new Fragment3();
                 break;
+
             case R.id.bbn_item4:
                 fragment = new Fragment4();
                 break;
