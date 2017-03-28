@@ -40,6 +40,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Diagnostic" />
+            <Button
+                android:id="@+id/buttonDiscovery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Discovery" />
         </android.support.design.widget.AppBarLayout>
 
         <include layout="@layout/content_main" />

@@ -39,6 +39,7 @@ import java.util.List;
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.MessagesAdapter;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
+import info.androidhive.gmail.discovery.dial.DiscoveryActivity;
 import info.androidhive.gmail.helper.DividerItemDecoration;
 import info.androidhive.gmail.model.Message;
 import info.androidhive.gmail.settings.SettingsActivity;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public static DatabaseHelper db;
     private Button buttonSave;
     private Button buttonTest;
+    private Button buttonDiscovery;
+
 
 
 
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         db = new DatabaseHelper(this);
         buttonSave = (Button) findViewById(R.id.buttonSave);
         buttonTest = (Button) findViewById(R.id.buttonTest);
+        buttonDiscovery = (Button) findViewById(R.id.buttonDiscovery);
 
         Log.i("TEST","-1");
 
@@ -144,6 +148,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         buttonTest.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DiagnosticActivity.class);
+                startActivity(intent);
+            }
+        });
+        buttonDiscovery.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DiscoveryActivity.class);
                 startActivity(intent);
             }
         });
