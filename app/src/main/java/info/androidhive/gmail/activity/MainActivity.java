@@ -38,6 +38,7 @@ import java.util.List;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.MessagesAdapter;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.discovery.dial.ServerFinder;
 import info.androidhive.gmail.helper.DividerItemDecoration;
 import info.androidhive.gmail.model.Message;
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         buttonTest.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ServerFinder.class);
+                Intent intent = new Intent(MainActivity.this, DiagnosticActivity.class);
                 startActivity(intent);
             }
         });
