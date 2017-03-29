@@ -39,7 +39,6 @@ import java.util.List;
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.MessagesAdapter;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
-import info.androidhive.gmail.discovery.dial.DiscoveryActivity;
 import info.androidhive.gmail.helper.DividerItemDecoration;
 import info.androidhive.gmail.model.Message;
 import info.androidhive.gmail.settings.SettingsActivity;
@@ -301,10 +300,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
                 // clear the inbox
                 messages.clear();
-
                 // add all the messages
                 // messages.addAll(response.body());
-
                 // TODO - avoid looping
                 // the loop was performed to add colors to each message
                 for (Message message : response.body()) {
@@ -312,11 +309,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     message.setColor(getRandomMaterialColor("400"));
                     messages.add(message);
                 }
-
                 mAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
-
             @Override
             public void onFailure(Call<List<Message>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Unable to fetch json: " + t.getModel(), Toast.LENGTH_LONG).show();

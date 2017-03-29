@@ -83,31 +83,6 @@ public class DiagnosticActivity extends BaseActivity implements BottomNavigation
 
 
     protected void initializeUI(final Bundle savedInstanceState) {
-        final FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        if (null != floatingActionButton) {
-            floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final View root = findViewById(R.id.CoordinatorLayout01);
-                    Snackbar snackbar = Snackbar.make(root, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction(
-                            "Action",
-                            null
-                        );
-                    snackbar.show();
-                }
-            });
-
-            if (hasTranslucentNavigation()) {
-                final ViewGroup.LayoutParams params = floatingActionButton.getLayoutParams();
-                if (CoordinatorLayout.LayoutParams.class.isInstance(params)) {
-                    CoordinatorLayout.LayoutParams params1 = (CoordinatorLayout.LayoutParams) params;
-                    if (FloatingActionButtonBehavior.class.isInstance(params1.getBehavior())) {
-                        ((FloatingActionButtonBehavior) params1.getBehavior()).setNavigationBarHeight(getNavigationBarHeight());
-                    }
-                }
-            }
-        }
 
         final ViewPager viewPager = getViewPager();
         if (null != viewPager) {

@@ -26,19 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".discovery.dial.MainActivity"
-            android:label="Discovery"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity
-            android:name=".discovery.dial.ServerFinderV1"
-            android:label="Discovery"
-        />
-
-
-        <activity
-            android:name=".discovery.dial.DiscoveryActivity"
             android:label="Discovery"
             android:parentActivityName=".activity.MainActivity" />
 

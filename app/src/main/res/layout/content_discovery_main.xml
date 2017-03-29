@@ -6,22 +6,23 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:mContext="info.androidhive.gmail.activity.MainActivity"
-    tools:showIn="@layout/activity_discovery_main">
+    tools:showIn="@layout/activity_discovery">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+        android:id="@+id/swipe_refresh_layoutD"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteY="0dp"
         tools:layout_editor_absoluteX="0dp">
 
 
-        <ListView android:id="@+id/stb_listv1"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:choiceMode="singleChoice"/>
 
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_viewD"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>
