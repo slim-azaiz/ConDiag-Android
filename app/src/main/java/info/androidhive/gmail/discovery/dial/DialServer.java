@@ -2,7 +2,6 @@ package info.androidhive.gmail.discovery.dial;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import java.net.InetAddress;
 
 public class DialServer implements Parcelable {
@@ -137,7 +136,7 @@ public class DialServer implements Parcelable {
 		parcel.writeString(uuid);
 	}
 
-	public static final Parcelable.Creator<DialServer> CREATOR = new Parcelable.Creator<DialServer>() {
+	public static final Creator<DialServer> CREATOR = new Creator<DialServer>() {
 
 		public DialServer createFromParcel(Parcel parcel) {
 			return new DialServer(parcel);

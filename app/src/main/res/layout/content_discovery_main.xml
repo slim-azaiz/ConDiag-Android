@@ -16,10 +16,6 @@
         tools:layout_editor_absoluteX="0dp">
 
 
-        <ListView android:id="@+id/stb_listD"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:choiceMode="singleChoice"/>
 
 
         <android.support.v7.widget.RecyclerView
