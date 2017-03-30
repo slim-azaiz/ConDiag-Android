@@ -160,7 +160,7 @@ public class HttpRequestHelper {
 			Log.e(TAG, "sendGet exception: ", e);
 		}
 
-		// we assume that the response body contains the error message
+		// we assume that the response body contains the error modelName
 		try {
 			if (null == response)
 				return null;
@@ -182,7 +182,7 @@ public class HttpRequestHelper {
 			Log.e(TAG, "sendGet exception: ", e);
 		}
 
-		// we assume that the response body contains the error message
+		// we assume that the response body contains the error modelName
 		try {
 			if (null == response)
 				return false;
@@ -224,7 +224,7 @@ public class HttpRequestHelper {
 			Log.e(TAG, "sendGet exception: ", e);
 		}
 
-		// we assume that the response body contains the error message
+		// we assume that the response body contains the error modelName
 		try {
 			ret = EntityUtils.toString(response.getEntity());
 		} catch (Throwable e) {

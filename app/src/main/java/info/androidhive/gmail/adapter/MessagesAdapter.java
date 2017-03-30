@@ -158,10 +158,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         // change the row state to activated
         holder.itemView.setActivated(selectedItems.get(position, false));
 
-        // change the font style depending on message read status
+        // change the font style depending on modelName read status
         applyReadStatus(holder, message);
 
-        // handle message star
+        // handle modelName star
         applyImportant(holder, message);
 
         // handle icon animation

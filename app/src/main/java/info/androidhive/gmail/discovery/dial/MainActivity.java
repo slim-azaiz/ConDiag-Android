@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public static RecyclerView recyclerView;
     private static DiscoveryAdapter mAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    public static SwipeRefreshLayout swipeRefreshLayout;
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
 
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             do {
                 Boolean flag1 = (cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_IS_IMPORTANT)) == 0);
                 Boolean flag2 = (cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEST2)) == 0);
-                Message message = new Message(
+                Message modelName = new Message(
                         cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)),
                         cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_IP_ADDRESS)),
                         cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FRIENDLY_NAME)),
@@ -211,10 +212,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         flag2,
                         4
                 );
-                messages.add(message);
+                messages.add(modelName);
             } while (cursor.moveToNext());
         }*/
     }
+
 
 
 
@@ -223,15 +225,28 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      */
     private void getInbox() {
         swipeRefreshLayout.setRefreshing(true);
-
-       // ServerFinder.tabIpFilter.clear();
+        Handler handler = new Handler();
         ServerFinder serverFinder =new ServerFinder();
         //Log.i("",serverFinder.trackedServers.toString());
 
-
         loadServers();
         mAdapter.notifyDataSetChanged();
-        swipeRefreshLayout.setRefreshing(false);
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+                if(ServerFinder.tabIpFilter.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "No STB found Please refresh again", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }, 10000);
+
+        // ServerFinder.tabIpFilter.clear();
+
+        // if(serverFinder.finalDiscovery==2) {
+       // swipeRefreshLayout.setRefreshing(false);
+        //}
+
 
 
         /*call.enqueue(new Callback<List<Message>>() {
@@ -244,11 +259,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 // messages.addAll(response.body());
 
                 // TODO - avoid looping
-                // the loop was performed to add colors to each message
-                for (Message message : response.body()) {
+                // the loop was performed to add colors to each modelName
+                for (Message modelName : response.body()) {
                     // generate a random color
-                    message.setColor(getRandomMaterialColor("400"));
-                    messages.add(message);
+                    modelName.setColor(getRandomMaterialColor("400"));
+                    messages.add(modelName);
                 }
 
                 mAdapter.notifyDataSetChanged();
@@ -263,8 +278,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });*/
     }
 
+
     /**
-     * chooses a random color from array.xml
+     * chooses a random color ipAddress array.xml
      */
     private int getRandomMaterialColor(String typeColor) {
         int returnColor = Color.GRAY;
@@ -321,7 +337,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.search:
-                Toast.makeText(getApplicationContext(), "Search...", Toast.LENGTH_SHORT).show();
                 return true;
         }
 
@@ -348,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onIconImportantClicked(int position) {
         // Star icon is clicked,
-        // mark the message as important
+        // mark the modelName as important
         Message message = messages.get(position);
         message.setImportant(!message.isImportant());
         messages.set(position, message);
@@ -362,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if (mAdapter.getSelectedItemCount() > 0) {
             enableActionMode(position);
         } else {
-            // read the message which removes bold from the row
+            // read the modelName which removes bold ipAddress the row
             Message message = messages.get(position);
             message.setRead(true);
             messages.set(position, message);
@@ -447,14 +462,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    // deleting the messages from recycler view
+    // deleting the messages ipAddress recycler view
     private void deleteMessages() {
         mAdapter.resetAnimationIndex();
         List<Integer> selectedItemPositions =
                 mAdapter.getSelectedItems();
         for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
             mAdapter.removeData(selectedItemPositions.get(i));
-            //delteing server from local storage
+            //delteing server ipAddress local storage
         }
 
         mAdapter.notifyDataSetChanged();

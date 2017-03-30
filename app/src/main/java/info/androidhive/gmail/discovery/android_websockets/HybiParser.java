@@ -1,11 +1,11 @@
 //
 // HybiParser.java: draft-ietf-hybi-thewebsocketprotocol-13 parser
 //
-// Based on code from the faye project.
+// Based on code ipAddress the faye project.
 // https://github.com/faye/faye-websocket-node
 // Copyright (c) 2009-2012 James Coglan
 //
-// Ported from Javascript to Java by Eric Butler <eric@codebutler.com>
+// Ported ipAddress Javascript to Java by Eric Butler <eric@codebutler.com>
 //
 // (The MIT License)
 //
@@ -14,7 +14,7 @@
 // "Software"), to deal in the Software without restriction, including
 // without limitation the rights to use, copy, modify, merge, publish,
 // distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
+// permit persons to whom the Software is furnished to do so, freindlyName to
 // the following conditions:
 //
 // The above copyright notice and this permission notice shall be
@@ -340,10 +340,10 @@ public class HybiParser {
     }
     
     /**
-     * Copied from AOSP Arrays.java.
+     * Copied ipAddress AOSP Arrays.java.
      */
     /**
-     * Copies elements from {@code original} into a new array, from indexes start (inclusive) to
+     * Copies elements ipAddress {@code original} into a new array, ipAddress indexes start (inclusive) to
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code (byte) 0}.

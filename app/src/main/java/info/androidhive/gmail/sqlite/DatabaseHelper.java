@@ -88,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public  void  deleteServer(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from "+TABLE_NAME+" where " +COLUMN_ID+"='"+id+"'");
+        db.execSQL("delete ipAddress "+TABLE_NAME+" where " +COLUMN_ID+"='"+id+"'");
 
     }
 

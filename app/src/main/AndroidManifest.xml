@@ -37,7 +37,7 @@
         <activity
             android:name=".login.Login"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".activity.MainActivity" />
+            android:parentActivityName=".discovery.dial.MainActivity" />
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"

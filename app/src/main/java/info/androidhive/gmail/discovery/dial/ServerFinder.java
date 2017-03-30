@@ -74,7 +74,6 @@ public final class ServerFinder extends Activity {
 	private WifiManager wifiManager;
 	private boolean active;
 	public static List<String> tabIpFilter;
-
 	/**
 	 * Handles used to pass data back to calling activities.
 	 */
@@ -88,12 +87,12 @@ public final class ServerFinder extends Activity {
 	private Handler handler = new Handler();
 
 	/**
-	 * Handler message number for a service update from broadcast client.
+	 * Handler modelName number for a service update ipAddress broadcast client.
 	 */
 	public static final int BROADCAST_RESPONSE = 100;
 
 	/**
-	 * Handler message number for all delayed messages
+	 * Handler modelName number for all delayed messages
 	 */
 	private static final int DELAYED_MESSAGE = 101;
 
@@ -125,7 +124,7 @@ public final class ServerFinder extends Activity {
 			broadcastClientThread = new Thread(broadcastClient);
 			broadcastClientThread.start();
 			Message message = DelayedMessage.BROADCAST_TIMEOUT.obtainMessage(broadcastHandler);
-			//broadcastHandler.sendMessageDelayed(message, getResources().getInteger(R.integer.broadcast_timeout));
+			//broadcastHandler.sendMessageDelayed(modelName, getResources().getInteger(R.integer.broadcast_timeout));
 			broadcastHandler.removeMessages(DELAYED_MESSAGE);
 		} catch (RuntimeException e) {
 			Log.e(LOG_TAG, "startBroadcast", e);
@@ -459,9 +458,11 @@ public final class ServerFinder extends Activity {
 		if (trackedServers.add(dialServer)) {
 			//Log.v(LOG_TAG, "Adding new device: " + dialServer);
 
-			String ipAddress =dialServer.getIpAddress().toString();
-			if(!tabIpFilter.contains(ipAddress)) {
-				MainActivity.saveServerToLocalStorage(1, dialServer.getIpAddress().toString(), dialServer.getFriendlyName(), dialServer.getModelName(), "15:30pm", "mipmap://" + R.mipmap.google, 1, 1, 4);
+			String ipAddress =dialServer.getIpAddress().toString().substring(1 );
+
+			//Log.i("IP_ADDRESS",ipAddress);
+			if((!tabIpFilter.contains(ipAddress))&&(MainActivity.swipeRefreshLayout.isRefreshing()==true)) {
+				MainActivity.saveServerToLocalStorage(1, ipAddress, dialServer.getFriendlyName(), dialServer.getModelName(), "15:30pm", "mipmap://" + R.mipmap.google, 1, 1, 4);
 				tabIpFilter.add(ipAddress);
 			}
 			// Notify data adapter and update title.
@@ -471,8 +472,8 @@ public final class ServerFinder extends Activity {
 			if ((trackedServers.size() == 1) ) {
 				broadcastHandler.removeMessages(DELAYED_MESSAGE);
 				// delayed automatic adding
-				//Message message = DelayedMessage.DIAL_SERVER_FOUND.obtainMessage(broadcastHandler);
-				//broadcastHandler.sendMessageDelayed(message, getResources().getInteger(R.integer.gtv_finder_reconnect_delay));
+				//Message modelName = DelayedMessage.DIAL_SERVER_FOUND.obtainMessage(broadcastHandler);
+				//broadcastHandler.sendMessageDelayed(modelName, getResources().getInteger(R.integer.gtv_finder_reconnect_delay));
 			}
 		}
 	}

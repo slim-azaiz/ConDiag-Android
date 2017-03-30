@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.activity.MainActivity;
 import info.androidhive.gmail.helper.CircleTransform;
 import info.androidhive.gmail.helper.FlipAnimator;
 import info.androidhive.gmail.login.Login;
@@ -52,15 +51,15 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
     private static int currentSelectedIndex = -1;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
-        public TextView from, subject, message, iconText, timestamp;
+        public TextView ipAddress, freindlyName, modelName, iconText, timestamp;
         public ImageView iconImp, imgProfile;
         public LinearLayout messageContainer;
         public RelativeLayout iconContainer, iconBack, iconFront;
         public MyViewHolder(View view) {
             super(view);
-            from = (TextView) view.findViewById(R.id.ipAddress);
-            subject = (TextView) view.findViewById(R.id.txt_primary);
-            message = (TextView) view.findViewById(R.id.txt_secondary);
+            ipAddress = (TextView) view.findViewById(R.id.ipAddress);
+            freindlyName = (TextView) view.findViewById(R.id.txt_primary);
+            modelName = (TextView) view.findViewById(R.id.txt_secondary);
             iconText = (TextView) view.findViewById(R.id.icon_text);
             timestamp = (TextView) view.findViewById(R.id.timestamp);
             iconBack = (RelativeLayout) view.findViewById(R.id.icon_back);
@@ -145,9 +144,9 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
         Message message = mFilteredList.get(position);
 
         // displaying text view data
-        holder.from.setText(message.getIpAddress());
-        holder.subject.setText(message.getFriendlyName());
-        holder.message.setText(message.getModel());
+        holder.ipAddress.setText(message.getIpAddress());
+        holder.freindlyName.setText(message.getFriendlyName());
+        holder.modelName.setText(message.getModel());
         holder.timestamp.setText(message.getTimestamp());
 
         // displaying the first letter of From in icon text
@@ -156,10 +155,10 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
         // change the row state to activated
         holder.itemView.setActivated(selectedItems.get(position, false));
 
-        // change the font style depending on message read status
+        // change the font style depending on modelName read status
         applyReadStatus(holder, message);
 
-        // handle message star
+        // handle modelName star
         applyImportant(holder, message);
 
         // handle icon animation
@@ -172,7 +171,7 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
         applyClickEvents(holder, position);
     }
 
-    private void applyClickEvents(MyViewHolder holder, final int position) {
+    private void applyClickEvents(final MyViewHolder holder, final int position) {
         holder.iconContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,6 +191,7 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
             public void onClick(View view) {
                 listener.onMessageRowClicked(position);
                 Intent intent = new Intent(mContext, Login.class);
+                intent.putExtra("IpAddress",holder.ipAddress.getText());
                 mContext.startActivity(intent);
             }
         });
@@ -298,15 +298,15 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
 
     private void applyReadStatus(MyViewHolder holder, Message message) {
         if (message.isRead()) {
-            holder.from.setTypeface(null, Typeface.NORMAL);
-            holder.subject.setTypeface(null, Typeface.NORMAL);
-            holder.from.setTextColor(ContextCompat.getColor(mContext, R.color.friendlyName));
-            holder.subject.setTextColor(ContextCompat.getColor(mContext, R.color.model));
+            holder.ipAddress.setTypeface(null, Typeface.NORMAL);
+            holder.freindlyName.setTypeface(null, Typeface.NORMAL);
+            holder.ipAddress.setTextColor(ContextCompat.getColor(mContext, R.color.friendlyName));
+            holder.freindlyName.setTextColor(ContextCompat.getColor(mContext, R.color.model));
         } else {
-            holder.from.setTypeface(null, Typeface.BOLD);
-            holder.subject.setTypeface(null, Typeface.BOLD);
-            holder.from.setTextColor(ContextCompat.getColor(mContext, R.color.ipAddress));
-            holder.subject.setTextColor(ContextCompat.getColor(mContext, R.color.friendlyName));
+            holder.ipAddress.setTypeface(null, Typeface.BOLD);
+            holder.freindlyName.setTypeface(null, Typeface.BOLD);
+            holder.ipAddress.setTextColor(ContextCompat.getColor(mContext, R.color.ipAddress));
+            holder.freindlyName.setTextColor(ContextCompat.getColor(mContext, R.color.friendlyName));
         }
     }
 

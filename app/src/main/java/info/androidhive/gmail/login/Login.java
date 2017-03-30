@@ -30,12 +30,27 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     private Button buttonLogin;
     private TextView mTextView;
     private String userid;
+    private String ipAddress;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        //retreive ipAddress
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                ipAddress= null;
+            } else {
+                ipAddress= extras.getString("IpAddress");
+            }
+        } else {
+            ipAddress= (String) savedInstanceState.getSerializable("IpAddress");
+        }
+        Toast.makeText(Login.this, ipAddress, Toast.LENGTH_LONG).show();
 
         editTextUserName = (EditText) findViewById(R.id.username);
         editTextPassword = (EditText) findViewById(R.id.password);
@@ -144,7 +159,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                     //data.put("","");
                     data.put("PASSWORD", password);
                     RequestHandler ruc = new RequestHandler();
-                    String result = ruc.sendPostRequest(Config.URL_LOGIN+username+"/"+password,data);
+                    String result = ruc.sendPostRequest("http://"+ipAddress+":8000/authentificate"+username+"/"+password,data);
                     return result;
                 }
             }

@@ -25,7 +25,7 @@ public class RequestHandler {
         //Creating a URL
         URL url;
 
-        //StringBuilder object to store the message retrieved from the server
+        //StringBuilder object to store the modelName retrieved ipAddress the server
         StringBuilder sb = new StringBuilder();
         try {
             //Initializing Url
