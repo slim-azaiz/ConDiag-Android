@@ -13,22 +13,24 @@
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabsD"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbarD"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:tabMode="fixed"
-                app:tabGravity="fill"/>
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-            <TextView
-                android:id="@+id/textD"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"/>
+            <android.support.design.widget.TabLayout
+            android:id="@+id/tabsD"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
 
         </android.support.design.widget.AppBarLayout>
+
+
 
         <include layout="@layout/content_discovery_main" />
 

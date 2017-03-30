@@ -82,9 +82,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
 
-        Log.i("TEST","1");
-
         drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layoutD);
+        toolbar = (Toolbar) findViewById(R.id.toolbarD);
+        setSupportActionBar(toolbar);
+        Log.i("TEST","1");
+        actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         Log.i("TEST","4");
         viewPager = (ViewPager) findViewById(R.id.viewpagerD);
         tabLayout = (TabLayout) findViewById(R.id.tabsD);
@@ -125,20 +130,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             case R.id.item_navigation_drawer_notifications:
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                return true;
-                            case R.id.item_navigation_drawer_send_email:
-                                menuItem.setChecked(true);
-                                drawerLayout.closeDrawer(GravityCompat.START);
-                                Intent i = new Intent(Intent.ACTION_SEND);
-                                i.setType("text/plain");
-                                i.putExtra(Intent.EXTRA_EMAIL, new String[]{"recipient@example.com"});
-                                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                                i.putExtra(Intent.EXTRA_TEXT, "body of email");
-                                try {
-                                    startActivity(Intent.createChooser(i, "Send mail..."));
-                                } catch (android.content.ActivityNotFoundException ex) {
-                                    Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                                }
                                 return true;
                             case R.id.item_navigation_drawer_rendez_vous:
                                 menuItem.setChecked(true);
@@ -240,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         loadServers();
         mAdapter.notifyDataSetChanged();
-        //swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
 
 
         /*call.enqueue(new Callback<List<Message>>() {

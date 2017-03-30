@@ -6,15 +6,11 @@
             android:checked="true"
             android:id="@+id/item_navigation_drawer_accueil"
             android:icon="@drawable/ic_inbox_black_24dp"
-            android:title="Accueil" />
+            android:title="Discovry" />
         <item
             android:id="@+id/item_navigation_drawer_rendez_vous"
             android:icon="@drawable/ic_content_add"
-            android:title="Ajouter un rendez-vous" />
-        <item
-            android:id="@+id/item_navigation_drawer_send_email"
-            android:icon="@drawable/ic_action_content_mail"
-            android:title="Envoyer un email" />
+            android:title="History" />
         <item
             android:id="@+id/item_navigation_drawer_notifications"
             android:icon="@drawable/ic_action_social_notifications_on"
@@ -26,11 +22,11 @@
             <item
                 android:id="@+id/item_navigation_drawer_settings"
                 android:icon="@drawable/ic_action_action_settings"
-                android:title="Paramétres" />
+                android:title="Settings" />
             <item
                 android:id="@+id/item_navigation_drawer_help"
                 android:icon="@drawable/ic_action_action_help"
-                android:title="Aide" />
+                android:title="Help" />
         </menu>
     </item>
 

@@ -11,21 +11,21 @@
     <item
         android:id="@+id/bbn_item1"
         android:icon="@drawable/ic_cloud_off_white_24dp"
-        android:title="Cloud Sync" />
+        android:title="Identification" />
     <item
         android:id="@+id/bbn_item2"
         android:icon="@drawable/ic_cast_connected_white_24dp"
-        android:title="Chromecast" />
+        android:title="Access" />
     <item
         android:id="@+id/bbn_item3"
         android:icon="@drawable/ic_mail_white_24dp"
-        android:title="Mail" />
+        android:title="Network" />
     <item
         android:id="@+id/bbn_item4"
         android:icon="@drawable/ic_format_list_numbered_white_24dp"
-        android:title="List" />
+        android:title="Memory" />
     <item
         android:id="@+id/bbn_item5"
         android:icon="@drawable/ic_format_list_numbered_white_24dp"
-        android:title="List" />
+        android:title="Bootloader" />
 </menu>

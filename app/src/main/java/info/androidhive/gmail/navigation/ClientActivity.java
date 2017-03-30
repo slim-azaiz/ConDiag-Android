@@ -155,20 +155,6 @@ public class ClientActivity extends AppCompatActivity {
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
-                            case R.id.item_navigation_drawer_send_email:
-                                menuItem.setChecked(true);
-                                drawerLayout.closeDrawer(GravityCompat.START);
-                                Intent i = new Intent(Intent.ACTION_SEND);
-                                i.setType("text/plain");
-                                i.putExtra(Intent.EXTRA_EMAIL, new String[]{"recipient@example.com"});
-                                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                                i.putExtra(Intent.EXTRA_TEXT, "body of email");
-                                try {
-                                    startActivity(Intent.createChooser(i, "Send mail..."));
-                                } catch (android.content.ActivityNotFoundException ex) {
-                                    Toast.makeText(ClientActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                                }
-                                return true;
                             case R.id.item_navigation_drawer_rendez_vous:
                                 menuItem.setChecked(true);
                                 Toast.makeText(ClientActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();

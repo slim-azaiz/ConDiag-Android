@@ -45,9 +45,9 @@ public class DiagnosticActivity extends BaseActivity implements BottomNavigation
         final ViewGroup root = (ViewGroup) findViewById(R.id.CoordinatorLayout01);
 
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+ //       final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         final int statusbarHeight = getStatusBarHeight();
         final boolean translucentStatus = hasTranslucentStatusBar();
@@ -59,7 +59,7 @@ public class DiagnosticActivity extends BaseActivity implements BottomNavigation
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) root.getLayoutParams();
             params.topMargin = -statusbarHeight;
 
-            params = (ViewGroup.MarginLayoutParams) toolbar.getLayoutParams();
+         //   params = (ViewGroup.MarginLayoutParams) toolbar.getLayoutParams();
             params.topMargin = statusbarHeight;
         }
 
