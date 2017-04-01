@@ -472,7 +472,7 @@ public final class ServerFinder extends Activity {
 			if ((trackedServers.size() == 1) ) {
 				broadcastHandler.removeMessages(DELAYED_MESSAGE);
 				// delayed automatic adding
-				//Message modelName = DelayedMessage.DIAL_SERVER_FOUND.obtainMessage(broadcastHandler);
+				//Server modelName = DelayedMessage.DIAL_SERVER_FOUND.obtainMessage(broadcastHandler);
 				//broadcastHandler.sendMessageDelayed(modelName, getResources().getInteger(R.integer.gtv_finder_reconnect_delay));
 			}
 		}

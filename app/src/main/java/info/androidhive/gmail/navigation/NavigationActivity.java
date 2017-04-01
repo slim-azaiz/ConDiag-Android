@@ -7,9 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
@@ -18,46 +15,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.settings.SettingsActivity;
 
 
-public class ClientActivity extends AppCompatActivity {
+public class NavigationActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private Toolbar toolbar;
@@ -68,7 +34,7 @@ public class ClientActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client);
+        setContentView(R.layout.navigation);
         drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -122,7 +88,7 @@ public class ClientActivity extends AppCompatActivity {
                         editor.commit();*/
 
                         //Starting login activity
-                       // Intent intent = new Intent(ClientActivity.this, Login.class);
+                       // Intent intent = new Intent(NavigationActivity.this, Login.class);
                        // startActivity(intent);
                     }
                 });
@@ -157,9 +123,9 @@ public class ClientActivity extends AppCompatActivity {
                                 return true;
                             case R.id.item_navigation_drawer_rendez_vous:
                                 menuItem.setChecked(true);
-                                Toast.makeText(ClientActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NavigationActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                //Intent intent1 = new Intent(ClientActivity.this, AddActivity.class);
+                                //Intent intent1 = new Intent(NavigationActivity.this, AddActivity.class);
                                 //intent1.putExtra(Config.KEY_USER_NAME, username);
 
                                 //startActivity(intent1);
@@ -167,9 +133,9 @@ public class ClientActivity extends AppCompatActivity {
                                 return true;
                             case R.id.item_navigation_drawer_settings:
                                 menuItem.setChecked(true);
-                                Toast.makeText(ClientActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NavigationActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                Intent intent = new Intent(ClientActivity.this, SettingsActivity.class);
+                                Intent intent = new Intent(NavigationActivity.this, SettingsActivity.class);
 
 
 
@@ -177,20 +143,20 @@ public class ClientActivity extends AppCompatActivity {
 
                                 // Use TaskStackBuilder to build the back stack and get the PendingIntent
                                 PendingIntent pendingIntent =
-                                        TaskStackBuilder.create(ClientActivity.this)
+                                        TaskStackBuilder.create(NavigationActivity.this)
                                                 // add all of DetailsActivity's parents to the stack,
                                                 // followed by DetailsActivity itself
                                                 .addNextIntentWithParentStack(intent)
                                                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                                NotificationCompat.Builder builder = new NotificationCompat.Builder(ClientActivity.this);
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(NavigationActivity.this);
                                 builder.setContentIntent(pendingIntent);
                                 startActivity(intent);
 
                                 return true;
                             case R.id.item_navigation_drawer_help:
                                 menuItem.setChecked(true);
-                                Toast.makeText(ClientActivity.this, menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NavigationActivity.this, menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                         }
                         return true;

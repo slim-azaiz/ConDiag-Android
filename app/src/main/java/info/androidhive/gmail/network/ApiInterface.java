@@ -2,7 +2,7 @@ package info.androidhive.gmail.network;
 
 import java.util.List;
 
-import info.androidhive.gmail.model.Message;
+import info.androidhive.gmail.model.Server;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
@@ -13,5 +13,5 @@ import retrofit2.http.GET;
 
 public interface ApiInterface {
     @GET("inbox.json")
-    Call<List<Message>> getInbox();
+    Call<List<Server>> getInbox();
 }

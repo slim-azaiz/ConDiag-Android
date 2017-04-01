@@ -17,7 +17,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     //Constants for Database name, table name, and column names
-    public static final String DB_NAME = "Historic";
+    public static final String DB_NAME = "HistoricServers";
     public static final String TABLE_NAME = "Servers";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_IP_ADDRESS = "ipAddress";
@@ -88,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public  void  deleteServer(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete ipAddress "+TABLE_NAME+" where " +COLUMN_ID+"='"+id+"'");
+        db.execSQL("delete from "+TABLE_NAME+" where " +COLUMN_ID+"='"+id+"'");
 
     }
 

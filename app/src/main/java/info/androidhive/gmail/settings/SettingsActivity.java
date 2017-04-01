@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.activity.MainActivity;
-import info.androidhive.gmail.navigation.ClientActivity;
 
 import java.util.List;
 

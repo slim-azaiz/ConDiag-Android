@@ -12,7 +12,7 @@
     android:paddingTop="@dimen/padding_list_row">
 
     <LinearLayout
-        android:id="@+id/message_container"
+        android:id="@+id/server_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"

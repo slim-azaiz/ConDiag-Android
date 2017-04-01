@@ -4,13 +4,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -30,8 +27,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -39,14 +34,12 @@ import java.util.List;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.DiscoveryAdapter;
-import info.androidhive.gmail.adapter.MessagesAdapter;
 import info.androidhive.gmail.helper.DividerItemDecoration;
-import info.androidhive.gmail.model.Message;
+import info.androidhive.gmail.model.Server;
 import info.androidhive.gmail.settings.SettingsActivity;
-import info.androidhive.gmail.sqlite.DatabaseHelper;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, DiscoveryAdapter.MessageAdapterListener {
-    private static List<Message>  messages = new ArrayList<>();
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, DiscoveryAdapter.ServerAdapterListener {
+    private static List<Server>  servers = new ArrayList<>();
     private ArrayList<Integer> deleteClicked = new ArrayList<Integer>();
 
     public static RecyclerView recyclerView;
@@ -76,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layoutD);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        mAdapter = new DiscoveryAdapter(this, messages, this);
+        mAdapter = new DiscoveryAdapter(this, servers, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -107,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         actionModeCallback = new ActionModeCallback();
 
-        // show loader and fetch messages
+        // show loader and fetch servers
         swipeRefreshLayout.post(
                 new Runnable() {
                     @Override
@@ -136,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 menuItem.setChecked(true);
                                 Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                //Intent intent1 = new Intent(ClientActivity.this, AddActivity.class);
+                                //Intent intent1 = new Intent(NavigationActivity.this, AddActivity.class);
                                 //intent1.putExtra(Config.KEY_USER_NAME, username);
 
                                 //startActivity(intent1);
@@ -177,8 +170,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
     public static void saveServerToLocalStorage(int id,String ipAddress , String friendlyName, String model, String isImportant, String name, int test1, int test2, int color) {
-        Message n = new  Message(id,ipAddress, friendlyName, model, isImportant,name,toBool(test1),toBool(test2), color) ;
-        messages.add(n);
+        Server n = new Server(id,ipAddress, friendlyName, model, isImportant,name,toBool(test1),toBool(test2), color) ;
+        servers.add(n);
         refreshList();
     }
 
@@ -195,13 +188,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
     private void loadServers() {
-        messages.clear();
+        servers.clear();
        /* Cursor cursor = db.getServers();
         if (cursor.moveToFirst()) {
             do {
                 Boolean flag1 = (cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_IS_IMPORTANT)) == 0);
                 Boolean flag2 = (cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEST2)) == 0);
-                Message modelName = new Message(
+                Server modelName = new Server(
                         cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)),
                         cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_IP_ADDRESS)),
                         cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FRIENDLY_NAME)),
@@ -212,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         flag2,
                         4
                 );
-                messages.add(modelName);
+                servers.add(modelName);
             } while (cursor.moveToNext());
         }*/
     }
@@ -249,21 +242,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
 
-        /*call.enqueue(new Callback<List<Message>>() {
+        /*call.enqueue(new Callback<List<Server>>() {
             @Override
-            public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
+            public void onResponse(Call<List<Server>> call, Response<List<Server>> response) {
                 // clear the inbox
-                messages.clear();
+                servers.clear();
 
-                // add all the messages
-                // messages.addAll(response.body());
+                // add all the servers
+                // servers.addAll(response.body());
 
                 // TODO - avoid looping
                 // the loop was performed to add colors to each modelName
-                for (Message modelName : response.body()) {
+                for (Server modelName : response.body()) {
                     // generate a random color
                     modelName.setColor(getRandomMaterialColor("400"));
-                    messages.add(modelName);
+                    servers.add(modelName);
                 }
 
                 mAdapter.notifyDataSetChanged();
@@ -271,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             @Override
-            public void onFailure(Call<List<Message>> call, Throwable t) {
+            public void onFailure(Call<List<Server>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Unable to fetch json: " + t.getModel(), Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -345,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        // swipe refresh is performed, fetch the messages again
+        // swipe refresh is performed, fetch the servers again
         getInbox();
     }
 
@@ -354,8 +347,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if (actionMode == null) {
             actionMode = startSupportActionMode(actionModeCallback);
         }
-        Message message = messages.get(position);
-        deleteClicked.add(message.getId());
+        Server server = servers.get(position);
+        deleteClicked.add(server.getId());
 
         toggleSelection(position);
     }
@@ -364,26 +357,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void onIconImportantClicked(int position) {
         // Star icon is clicked,
         // mark the modelName as important
-        Message message = messages.get(position);
-        message.setImportant(!message.isImportant());
-        messages.set(position, message);
+        Server server = servers.get(position);
+        server.setImportant(!server.isImportant());
+        servers.set(position, server);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onMessageRowClicked(int position) {
+    public void onServerRowClicked(int position) {
         // verify whether action mode is enabled or not
         // if enabled, change the row state to activated
         if (mAdapter.getSelectedItemCount() > 0) {
             enableActionMode(position);
         } else {
             // read the modelName which removes bold ipAddress the row
-            Message message = messages.get(position);
-            message.setRead(true);
-            messages.set(position, message);
+            Server server = servers.get(position);
+            server.setRead(true);
+            servers.set(position, server);
             mAdapter.notifyDataSetChanged();
 
-            Toast.makeText(getApplicationContext(), "Read: " + message.getModel(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Read: " + server.getModel(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -391,8 +384,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void onRowLongClicked(int position) {
         // long press is performed, enable action mode
         enableActionMode(position);
-        Message message = messages.get(position);
-        deleteClicked.add(message.getId());
+        Server server = servers.get(position);
+        deleteClicked.add(server.getId());
 
 
     }
@@ -436,8 +429,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_delete:
-                    // delete all the selected messages
-                    deleteMessages();
+                    // delete all the selected servers
+                    deleteServers();
                     mode.finish();
                     return true;
 
@@ -462,8 +455,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    // deleting the messages ipAddress recycler view
-    private void deleteMessages() {
+    // deleting the servers ipAddress recycler view
+    private void deleteServers() {
         mAdapter.resetAnimationIndex();
         List<Integer> selectedItemPositions =
                 mAdapter.getSelectedItems();

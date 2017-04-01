@@ -8,7 +8,7 @@ import info.androidhive.gmail.R;
  * www.androidhive.info
  */
 
-public class Message {
+public class Server {
     private int id;
     private String ipAddress;
     private String friendlyName;
@@ -19,9 +19,9 @@ public class Message {
     private boolean isRead;
     private int color = -1;
 
-    public Message() {
+    public Server() {
     }
-    public Message(int id, String ipAddress, String friendlyName, String model, String timestamp, String picture, boolean isImportant, boolean isRead, int color ) {
+    public Server(int id, String ipAddress, String friendlyName, String model, String timestamp, String picture, boolean isImportant, boolean isRead, int color ) {
         this.id =id;
         this.ipAddress = ipAddress;
         this.friendlyName = friendlyName;

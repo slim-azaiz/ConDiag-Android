@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -33,15 +32,14 @@ import info.androidhive.gmail.activity.MainActivity;
 import info.androidhive.gmail.helper.CircleTransform;
 import info.androidhive.gmail.helper.FlipAnimator;
 import info.androidhive.gmail.login.Login;
-import info.androidhive.gmail.model.Message;
-import info.androidhive.gmail.settings.SettingsActivity;
+import info.androidhive.gmail.model.Server;
 
-public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyViewHolder> implements Filterable {
+public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHolder> implements Filterable {
     private Context mContext;
-    private List<Message> messages;
-    private List<Message> mFilteredList;
+    private List<Server> mServers;
+    private List<Server> mFilteredServerList;
 
-    private MessageAdapterListener listener;
+    private ServerAdapterListener listener;
     private SparseBooleanArray selectedItems;
 
 
@@ -54,22 +52,22 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
     private static int currentSelectedIndex = -1;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
-        public TextView from, subject, message, iconText, timestamp;
-        public ImageView iconImp, imgProfile;
-        public LinearLayout messageContainer;
+        public TextView ipAddress, friendlyName, modelName, iconText, timestamp;
+        public ImageView iconImp, imgServer;
+        public LinearLayout ServerContainer;
         public RelativeLayout iconContainer, iconBack, iconFront;
         public MyViewHolder(View view) {
             super(view);
-            from = (TextView) view.findViewById(R.id.ipAddress);
-            subject = (TextView) view.findViewById(R.id.txt_primary);
-            message = (TextView) view.findViewById(R.id.txt_secondary);
+            ipAddress = (TextView) view.findViewById(R.id.ipAddress);
+            friendlyName = (TextView) view.findViewById(R.id.txt_primary);
+            modelName = (TextView) view.findViewById(R.id.txt_secondary);
             iconText = (TextView) view.findViewById(R.id.icon_text);
             timestamp = (TextView) view.findViewById(R.id.timestamp);
             iconBack = (RelativeLayout) view.findViewById(R.id.icon_back);
             iconFront = (RelativeLayout) view.findViewById(R.id.icon_front);
             iconImp = (ImageView) view.findViewById(R.id.icon_star);
-            imgProfile = (ImageView) view.findViewById(R.id.icon_profile);
-            messageContainer = (LinearLayout) view.findViewById(R.id.message_container);
+            imgServer = (ImageView) view.findViewById(R.id.icon_profile);
+            ServerContainer = (LinearLayout) view.findViewById(R.id.server_container);
             iconContainer = (RelativeLayout) view.findViewById(R.id.icon_container);
             view.setOnLongClickListener(this);
         }
@@ -94,39 +92,39 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 
                 if (charString.isEmpty()) {
 
-                    mFilteredList = messages;
+                    mFilteredServerList = mServers;
                 } else {
-                    List<Message> filteredList = new ArrayList<>();
+                    List<Server> filteredList = new ArrayList<>();
 
-                    for (Message message : messages) {
+                    for (Server server : mServers) {
 
-                        if (message.getFriendlyName().toLowerCase().contains(charString) || message.getIpAddress().toLowerCase().contains(charString) || message.getModel().toLowerCase().contains(charString)) {
+                        if (server.getFriendlyName().toLowerCase().contains(charString) || server.getIpAddress().toLowerCase().contains(charString) || server.getModel().toLowerCase().contains(charString)) {
 
-                            filteredList.add(message);
+                            filteredList.add(server);
                         }
                     }
 
-                    mFilteredList = filteredList;
+                    mFilteredServerList = filteredList;
 
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = mFilteredList;
+                filterResults.values = mFilteredServerList;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mFilteredList = (ArrayList<Message>) filterResults.values;
+                mFilteredServerList = (ArrayList<Server>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
     }
 
-    public MessagesAdapter(Context mContext, List<Message> messages, MessageAdapterListener listener) {
+    public ServerAdapter(Context mContext, List<Server> servers, ServerAdapterListener listener) {
         this.mContext = mContext;
-        this.messages = messages;
-        this.mFilteredList = messages;
+        this.mServers = servers;
+        this.mFilteredServerList = servers;
         this.listener = listener;
         selectedItems = new SparseBooleanArray();
         animationItemsIndex = new SparseBooleanArray();
@@ -135,7 +133,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.message_list_row, parent, false);
+                .inflate(R.layout.server_list_row, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -144,31 +142,31 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Message message = mFilteredList.get(position);
+        Server server = mFilteredServerList.get(position);
 
         // displaying text view data
-        holder.from.setText(message.getIpAddress());
-        holder.subject.setText(message.getFriendlyName());
-        holder.message.setText(message.getModel());
-        holder.timestamp.setText(message.getTimestamp());
+        holder.ipAddress.setText(server.getIpAddress());
+        holder.friendlyName.setText(server.getFriendlyName());
+        holder.modelName.setText(server.getModel());
+        holder.timestamp.setText(server.getTimestamp());
 
         // displaying the first letter of From in icon text
-        holder.iconText.setText(message.getIpAddress().substring(0, 1));
+        holder.iconText.setText(server.getIpAddress().substring(0, 1));
 
         // change the row state to activated
         holder.itemView.setActivated(selectedItems.get(position, false));
 
         // change the font style depending on modelName read status
-        applyReadStatus(holder, message);
+        applyReadStatus(holder, server);
 
         // handle modelName star
-        applyImportant(holder, message);
+        applyImportant(holder, server);
 
         // handle icon animation
         applyIconAnimation(holder, position);
 
         // display profile image
-        applyProfilePicture(holder, message);
+        applyProfilePicture(holder, server);
 
         // apply click events
         applyClickEvents(holder, position);
@@ -189,16 +187,16 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
             }
         });
 
-        holder.messageContainer.setOnClickListener(new View.OnClickListener() {
+        holder.ServerContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onMessageRowClicked(position);
+                listener.onServerRowClicked(position);
                 Intent intent = new Intent(mContext, Login.class);
                 mContext.startActivity(intent);
             }
         });
 
-        holder.messageContainer.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.ServerContainer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 listener.onRowLongClicked(position);
@@ -226,8 +224,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 
     }
 
-    private void applyProfilePicture(MyViewHolder holder, Message message) {
-        if (!TextUtils.isEmpty(message.getPicture())) {
+    private void applyProfilePicture(MyViewHolder holder, Server server) {
+        if (!TextUtils.isEmpty(server.getPicture())) {
 
             Glide.with(mContext).load(R.mipmap.fourk)
                     .thumbnail(0.5f)
@@ -235,13 +233,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
                     .override(600,600)
                     .transform(new CircleTransform(mContext))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.imgProfile);
-            //holder.imgProfile.setImageResource(R.mipmap.stb);
-            holder.imgProfile.setColorFilter(null);
+                    .into(holder.imgServer);
+            //holder.imgServer.setImageResource(R.mipmap.stb);
+            holder.imgServer.setColorFilter(null);
             holder.iconText.setVisibility(View.GONE);
         } else {
-            holder.imgProfile.setImageResource(R.drawable.bg_circle);
-            holder.imgProfile.setColorFilter(message.getColor());
+            holder.imgServer.setImageResource(R.drawable.bg_circle);
+            holder.imgServer.setColorFilter(server.getColor());
             holder.iconText.setVisibility(View.VISIBLE);
         }
     }
@@ -284,39 +282,39 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 
     @Override
     public long getItemId(int position) {
-        return mFilteredList.get(position).getId();
+        return mFilteredServerList.get(position).getId();
     }
 
-    private void applyImportant(MyViewHolder holder, Message message) {
-        if (message.isImportant()) {
+    private void applyImportant(MyViewHolder holder, Server server) {
+        if (server.isImportant()) {
             holder.iconImp.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star_black_24dp));
             holder.iconImp.setColorFilter(ContextCompat.getColor(mContext, R.color.icon_tint_selected));
-            MainActivity.db.updateIsImportant(message.getId(), 0);
+            MainActivity.db.updateIsImportant(server.getId(), 0);
 
         } else {
             holder.iconImp.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star_border_black_24dp));
             holder.iconImp.setColorFilter(ContextCompat.getColor(mContext, R.color.icon_tint_normal));
-            MainActivity.db.updateIsImportant(message.getId(), 1);
+            MainActivity.db.updateIsImportant(server.getId(), 1);
         }
     }
 
-    private void applyReadStatus(MyViewHolder holder, Message message) {
-        if (message.isRead()) {
-            holder.from.setTypeface(null, Typeface.NORMAL);
-            holder.subject.setTypeface(null, Typeface.NORMAL);
-            holder.from.setTextColor(ContextCompat.getColor(mContext, R.color.friendlyName));
-            holder.subject.setTextColor(ContextCompat.getColor(mContext, R.color.model));
+    private void applyReadStatus(MyViewHolder holder, Server server) {
+        if (server.isRead()) {
+            holder.ipAddress.setTypeface(null, Typeface.NORMAL);
+            holder.friendlyName.setTypeface(null, Typeface.NORMAL);
+            holder.ipAddress.setTextColor(ContextCompat.getColor(mContext, R.color.friendlyName));
+            holder.friendlyName.setTextColor(ContextCompat.getColor(mContext, R.color.model));
         } else {
-            holder.from.setTypeface(null, Typeface.BOLD);
-            holder.subject.setTypeface(null, Typeface.BOLD);
-            holder.from.setTextColor(ContextCompat.getColor(mContext, R.color.ipAddress));
-            holder.subject.setTextColor(ContextCompat.getColor(mContext, R.color.friendlyName));
+            holder.ipAddress.setTypeface(null, Typeface.BOLD);
+            holder.friendlyName.setTypeface(null, Typeface.BOLD);
+            holder.ipAddress.setTextColor(ContextCompat.getColor(mContext, R.color.ipAddress));
+            holder.friendlyName.setTextColor(ContextCompat.getColor(mContext, R.color.friendlyName));
         }
     }
 
     @Override
     public int getItemCount() {
-        return mFilteredList.size();
+        return mFilteredServerList.size();
     }
 
     public void toggleSelection(int pos) {
@@ -351,7 +349,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
     }
 
     public void removeData(int position) {
-        messages.remove(position);
+        mServers.remove(position);
         resetCurrentIndex();
     }
 
@@ -359,12 +357,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         currentSelectedIndex = -1;
     }
 
-    public interface MessageAdapterListener {
+    public interface ServerAdapterListener {
         void onIconClicked(int position);
 
         void onIconImportantClicked(int position);
 
-        void onMessageRowClicked(int position);
+        void onServerRowClicked(int position);
 
         void onRowLongClicked(int position);
     }
