@@ -27,11 +27,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.DiscoveryAdapter;
 import info.androidhive.gmail.helper.DividerItemDecoration;
@@ -56,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private Toolbar toolbar;
     public  Context context=this;
 
+    //swipe
+    private PtrClassicFrameLayout mPtrFrame;
+
+
     public Context getContext() {
         return context;
     }
@@ -75,6 +84,38 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
+
+
+        //swipe
+        mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_list_view_frame);
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                getInbox();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        // the following are default settings
+        mPtrFrame.setResistance(1.7f);
+        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
+        mPtrFrame.setDurationToClose(200);
+        mPtrFrame.setDurationToCloseHeader(1000);
+        // default is false
+        mPtrFrame.setPullToRefresh(false);
+        // default is true
+        mPtrFrame.setKeepHeaderWhenRefresh(true);
+        mPtrFrame.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPtrFrame.autoRefresh();
+            }
+        }, 100);
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layoutD);
         toolbar = (Toolbar) findViewById(R.id.toolbarD);
@@ -109,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
         );
+
+
     }
 
     private void setupNavigationDrawerContent(NavigationView navigationView) {
@@ -226,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mAdapter.notifyDataSetChanged();
         handler.postDelayed(new Runnable() {
             public void run() {
+                mPtrFrame.refreshComplete();
                 swipeRefreshLayout.setRefreshing(false);
                 if(ServerFinder.tabIpFilter.isEmpty()){
                     Toast.makeText(getApplicationContext(), "No STB found Please refresh again", Toast.LENGTH_SHORT).show();
