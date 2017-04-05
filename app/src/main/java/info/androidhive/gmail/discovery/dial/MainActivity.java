@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public static RecyclerView recyclerView;
     private static DiscoveryAdapter mAdapter;
-    public static SwipeRefreshLayout swipeRefreshLayout;
+   // public static SwipeRefreshLayout swipeRefreshLayout;
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public  Context context=this;
 
     //swipe
-    private PtrClassicFrameLayout mPtrFrame;
+    public static PtrClassicFrameLayout mPtrFrame;
 
 
     public Context getContext() {
@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_viewD);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layoutD);
-        swipeRefreshLayout.setOnRefreshListener(this);
+       // swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layoutD);
+       // swipeRefreshLayout.setOnRefreshListener(this);
 
         mAdapter = new DiscoveryAdapter(this, servers, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         actionModeCallback = new ActionModeCallback();
 
         // show loader and fetch servers
-        swipeRefreshLayout.post(
+        /*swipeRefreshLayout.post(
                 new Runnable() {
                     @Override
                     public void run() {
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
         );
-
+*/
 
     }
 
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      * Fetches servers
      */
     private void getInbox() {
-        swipeRefreshLayout.setRefreshing(true);
+        //swipeRefreshLayout.setRefreshing(true);
         Handler handler = new Handler();
         ServerFinder serverFinder =new ServerFinder();
         //Log.i("",serverFinder.trackedServers.toString());
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         handler.postDelayed(new Runnable() {
             public void run() {
                 mPtrFrame.refreshComplete();
-                swipeRefreshLayout.setRefreshing(false);
+               // swipeRefreshLayout.setRefreshing(false);
                 if(ServerFinder.tabIpFilter.isEmpty()){
                     Toast.makeText(getApplicationContext(), "No STB found Please refresh again", Toast.LENGTH_SHORT).show();
 
@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
     /**
-     * chooses a random color ipAddress array.xml
+     * chooses a random color parameter array.xml
      */
     private int getRandomMaterialColor(String typeColor) {
         int returnColor = Color.GRAY;
@@ -414,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if (mAdapter.getSelectedItemCount() > 0) {
             enableActionMode(position);
         } else {
-            // read the modelName which removes bold ipAddress the row
+            // read the modelName which removes bold parameter the row
             Server server = servers.get(position);
             server.setRead(true);
             servers.set(position, server);
@@ -460,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             mode.getMenuInflater().inflate(R.menu.menu_action_mode, menu);
 
             // disable swipe refresh if action mode is enabled
-            swipeRefreshLayout.setEnabled(false);
+            //swipeRefreshLayout.setEnabled(false);
             return true;
         }
 
@@ -487,7 +487,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             mAdapter.clearSelections();
-            swipeRefreshLayout.setEnabled(true);
+           // swipeRefreshLayout.setEnabled(true);
             actionMode = null;
             recyclerView.post(new Runnable() {
                 @Override
@@ -499,14 +499,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    // deleting the servers ipAddress recycler view
+    // deleting the servers parameter recycler view
     private void deleteServers() {
         mAdapter.resetAnimationIndex();
         List<Integer> selectedItemPositions =
                 mAdapter.getSelectedItems();
         for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
             mAdapter.removeData(selectedItemPositions.get(i));
-            //delteing server ipAddress local storage
+            //delteing server parameter local storage
         }
 
         mAdapter.notifyDataSetChanged();

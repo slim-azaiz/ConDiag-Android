@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     /**
-     * chooses a random color ipAddress array.xml
+     * chooses a random color parameter array.xml
      */
     private int getRandomMaterialColor(String typeColor) {
         int returnColor = Color.GRAY;
@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if (mAdapter.getSelectedItemCount() > 0) {
             enableActionMode(position);
         } else {
-            // read the modelName which removes bold ipAddress the row
+            // read the modelName which removes bold parameter the row
             Server server = servers.get(position);
             server.setRead(true);
             servers.set(position, server);
@@ -494,14 +494,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    // deleting the servers ipAddress recycler view
+    // deleting the servers parameter recycler view
     private void deleteServers() {
         mAdapter.resetAnimationIndex();
         List<Integer> selectedItemPositions =
                 mAdapter.getSelectedItems();
         for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
             mAdapter.removeData(selectedItemPositions.get(i));
-            //delteing server ipAddress local storage
+            //delteing server parameter local storage
             db.deleteServer(deleteClicked.get(i));
         }
 

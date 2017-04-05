@@ -87,7 +87,7 @@ public final class ServerFinder extends Activity {
 	private Handler handler = new Handler();
 
 	/**
-	 * Handler modelName number for a service update ipAddress broadcast client.
+	 * Handler modelName number for a service update parameter broadcast client.
 	 */
 	public static final int BROADCAST_RESPONSE = 100;
 
@@ -416,7 +416,7 @@ public final class ServerFinder extends Activity {
 											break;
 										case XmlPullParser.TEXT:
 											if (lastTagName != null) {
-												if ("friendlyName".equals(lastTagName)) {
+												if ("value".equals(lastTagName)) {
 													friendlyName = parser.getText();
 												} else if ("UDN".equals(lastTagName)) {
 													uuid = parser.getText();
@@ -438,7 +438,7 @@ public final class ServerFinder extends Activity {
 								} catch (Exception e) {
 									Log.e(LOG_TAG, "parse device description", e);
 								}
-								Log.d(LOG_TAG, "friendlyName="+friendlyName);
+								Log.d(LOG_TAG, "value="+friendlyName);
 								final DialServer dialServer = new DialServer(advert.getLocation(), advert.getIpAddress(), advert.getPort(), appsUrl, friendlyName, uuid, manufacturer, modelName);
 								handler.post(new Runnable() {
 									public void run() {
@@ -460,8 +460,8 @@ public final class ServerFinder extends Activity {
 
 			String ipAddress =dialServer.getIpAddress().toString().substring(1 );
 
-			//Log.i("IP_ADDRESS",ipAddress);
-			if((!tabIpFilter.contains(ipAddress))&&(MainActivity.swipeRefreshLayout.isRefreshing()==true)) {
+			//Log.i("IP_ADDRESS",parameter);
+			if((!tabIpFilter.contains(ipAddress))&&(MainActivity.mPtrFrame.isRefreshing()==true)) {
 				MainActivity.saveServerToLocalStorage(1, ipAddress, dialServer.getFriendlyName(), dialServer.getModelName(), "15:30pm", "mipmap://" + R.mipmap.google, 1, 1, 4);
 				tabIpFilter.add(ipAddress);
 			}

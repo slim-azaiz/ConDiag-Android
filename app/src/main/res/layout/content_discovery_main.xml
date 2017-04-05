@@ -11,29 +11,18 @@
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
         android:id="@+id/rotate_header_list_view_frame"
         xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="#f1f1f1"
         cube_ptr:ptr_duration_to_close="200"
         cube_ptr:ptr_duration_to_close_header="1000"
         cube_ptr:ptr_keep_header_when_refresh="true"
         cube_ptr:ptr_pull_to_fresh="false"
         cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-        cube_ptr:ptr_resistance="1.7">
+        cube_ptr:ptr_resistance="1.7"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layoutD"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp">
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/LinearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteY="-150dp"
-            android:orientation="vertical" >
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_viewD"
@@ -42,8 +31,6 @@
             tools:layout_editor_absoluteY="-150dp"
             android:scrollbars="vertical" />
 
-        </RelativeLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
 
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 

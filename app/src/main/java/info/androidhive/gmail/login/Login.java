@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.utils.Config;
 
 
@@ -39,7 +40,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_login);
 
 
-        //retreive ipAddress
+        //retreive parameter
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -145,7 +146,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                     super.onPostExecute(s);
                     loading.dismiss();
                     if(s.equalsIgnoreCase("success")){
-                        Intent intent = new Intent(Login.this,ControlDiagnostic.class);
+                        Intent intent = new Intent(Login.this,DiagnosticActivity.class);
                         intent.putExtra(Config.KEY_USER_NAME,username);
                         startActivity(intent);
                     }
@@ -159,7 +160,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                     //data.put("","");
                     data.put("PASSWORD", password);
                     RequestHandler ruc = new RequestHandler();
-                    String result = ruc.sendPostRequest("http://"+ipAddress+":8000/authentificate"+username+"/"+password,data);
+                    //String result = ruc.sendPostRequest("http://"+parameter+":8000/authentificate"+username+"/"+password,data);
+                    String result = ruc.sendPostRequest("http://10.206.208.109:8000/authentificate/"+username+"/"+password,data);
                     return result;
                 }
             }

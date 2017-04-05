@@ -20,8 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "HistoricServers";
     public static final String TABLE_NAME = "Servers";
     public static final String COLUMN_ID = "id";
-    public static final String COLUMN_IP_ADDRESS = "ipAddress";
-    public static final String COLUMN_FRIENDLY_NAME = "friendlyName";
+    public static final String COLUMN_IP_ADDRESS = "parameter";
+    public static final String COLUMN_FRIENDLY_NAME = "value";
     public static final String COLUMN_MODEL = "Model";
     public static final String COLUMN_TEST = "test";
     public static final String COLUMN_IS_IMPORTANT = "isImportant";
