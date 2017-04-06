@@ -51,7 +51,9 @@ dependencies {
     compile 'in.srain.cube:ultra-ptr:1.0.11'
 
     compile 'com.android.support:cardview-v7:23.2.0'
+    //retrofit
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-
+    //okhttp
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
 }
