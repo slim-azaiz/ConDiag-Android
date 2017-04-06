@@ -8,58 +8,47 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.model.Diagnostic;
 
-public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.DiagnosticHolder> {
-    private Context mContext;
-    private List<Diagnostic> mDiagnostics;
 
+public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.ViewHolder> {
+    private ArrayList<Diagnostic> diagnostics;
 
-
-    public class DiagnosticHolder extends RecyclerView.ViewHolder  {
-        public TextView parameter, value;
-        public LinearLayout diagnosticContainer;
-        public DiagnosticHolder(View view) {
-            super(view);
-            parameter = (TextView) view.findViewById(R.id.parameter);
-            value = (TextView) view.findViewById(R.id.value);
-            diagnosticContainer = (LinearLayout) view.findViewById(R.id.diagnostic_container);
-        }
-    }
-
-
-    public DiagnosticAdapter(Context mContext, List<Diagnostic> diagnostics) {
-        this.mContext = mContext;
-        this.mDiagnostics = diagnostics;
-
+    public DiagnosticAdapter(ArrayList<Diagnostic> diagnostics) {
+        this.diagnostics = diagnostics;
     }
 
     @Override
-    public DiagnosticHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.diagnostic_list_row, parent, false);
-
-        return new DiagnosticHolder(itemView);
+    public DiagnosticAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_row, viewGroup, false);
+        return new ViewHolder(view);
     }
 
-
-
     @Override
-    public void onBindViewHolder(final DiagnosticHolder holder, final int position) {
-        Diagnostic diagnostic = mDiagnostics.get(position);
+    public void onBindViewHolder(DiagnosticAdapter.ViewHolder viewHolder, int i) {
 
-        // displaying text view data
-        holder.parameter.setText(diagnostic.getParameter());
-        holder.value.setText(diagnostic.getValue());
-
-
+        viewHolder.parameter.setText(diagnostics.get(i).getParameter());
+        viewHolder.value.setText(diagnostics.get(i).getValue());
     }
 
     @Override
     public int getItemCount() {
-        return mDiagnostics.size();
+        return diagnostics.size();
     }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        private TextView parameter, value;
+        public ViewHolder(View view) {
+            super(view);
+
+            parameter = (TextView)view.findViewById(R.id.parameter);
+            value = (TextView)view.findViewById(R.id.value);
+
+        }
+    }
+
 }

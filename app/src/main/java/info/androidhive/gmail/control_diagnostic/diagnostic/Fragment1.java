@@ -7,8 +7,6 @@ package info.androidhive.gmail.control_diagnostic.diagnostic;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import info.androidhive.gmail.R;
@@ -26,22 +25,24 @@ import info.androidhive.gmail.helper.DividerItemDecoration;
 import info.androidhive.gmail.model.Diagnostic;
 import info.androidhive.gmail.network.ApiClient;
 import info.androidhive.gmail.network.ApiInterface;
+import info.androidhive.gmail.network.JSONResponse;
+import info.androidhive.gmail.network.RequestInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class Fragment1 extends Fragment implements SwipeRefreshLayout.OnRefreshListener   {
+public class Fragment1 extends Fragment   {
     //public static PtrClassicFrameLayout mPtrFrame;
-    private List<Diagnostic> diagnostics = new ArrayList<>();
     private RecyclerView recyclerView;
-    private DiagnosticAdapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private ArrayList<Diagnostic> data;
+    private DiagnosticAdapter adapter;
 
 
     public Fragment1() {
-        getDiagnosticInformation();
+
     }
 
     @Override
@@ -49,81 +50,38 @@ public class Fragment1 extends Fragment implements SwipeRefreshLayout.OnRefreshL
         View view= inflater.inflate(R.layout.fragment_1, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_viewDiag);
       //  mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frameDiag);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layoutDiag);
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        mAdapter = new DiagnosticAdapter(getContext(), diagnostics);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(mAdapter);
-        swipeRefreshLayout.post(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        getDiagnosticInformation();
-                    }
-                }
-        );
-
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        loadJSON();
         return  view;
     }
 
-    @Override
-    public void onRefresh() {
-        // swipe refresh is performed, fetch the servers again
-        //getDiagnosticInformation();
-    }
 
 
-    public void getDiagnosticInformation(){
 
-
-       // swipeRefreshLayout.setRefreshing(true);
-        Log.i("DIAG","1");
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<Diagnostic>> call = apiService.getInbox();
-        Log.i("DIAG","2");
-
-        call.enqueue(new Callback<List<Diagnostic>>() {
+    private void loadJSON(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.206.208.98:8000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RequestInterface request = retrofit.create(RequestInterface.class);
+        Call<JSONResponse> call = request.getJSON();
+        call.enqueue(new Callback<JSONResponse>() {
             @Override
-            public void onResponse(Call<List<Diagnostic>> call, Response<List<Diagnostic>> response) {
-                // clear the inbox
-                Log.i("DIAG","3");
+            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
 
-                diagnostics.clear();
-
-                // add all the diagnostics
-                // diagnostics.addAll(response.body());
-                Log.i("DIAG","4");
-
-                // TODO - avoid looping
-                // the loop was performed to add colors to each diagnostic
-                for (Diagnostic diagnostic : response.body()) {
-                    // generate a random color
-                    Log.i("DIAG","5");
-
-                    // diagnostic.setColor(getRandomMaterialColor("400"));
-                    diagnostics.add(diagnostic);
-                }
-                Log.i("DIAG","6");
-
-                mAdapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-                Log.i("DIAG","7");
-
+                JSONResponse jsonResponse = response.body();
+                data = new ArrayList<>(Arrays.asList(jsonResponse.getDiagnostics()));
+                adapter = new DiagnosticAdapter(data);
+                recyclerView.setAdapter(adapter);
             }
-
             @Override
-            public void onFailure(Call<List<Diagnostic>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
-              //  mPtrFrame.setRefreshing(false);
+            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                Log.d("Error",t.getMessage());
             }
         });
 
-
-
-
     }
+
 }
