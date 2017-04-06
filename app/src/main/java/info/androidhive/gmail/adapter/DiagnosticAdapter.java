@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,24 +13,20 @@ import java.util.List;
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.model.Diagnostic;
 
-public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.MyViewHolder> {
+public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.DiagnosticHolder> {
     private Context mContext;
     private List<Diagnostic> mDiagnostics;
 
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder  {
+    public class DiagnosticHolder extends RecyclerView.ViewHolder  {
         public TextView parameter, value;
-        public LinearLayout ServerContainer;
-        public RelativeLayout iconContainer, iconBack, iconFront;
-        public MyViewHolder(View view) {
+        public LinearLayout diagnosticContainer;
+        public DiagnosticHolder(View view) {
             super(view);
-            parameter = (TextView) view.findViewById(R.id.ipAddress);
-            value = (TextView) view.findViewById(R.id.txt_primary);
-            iconBack = (RelativeLayout) view.findViewById(R.id.icon_back);
-            iconFront = (RelativeLayout) view.findViewById(R.id.icon_front);
-            ServerContainer = (LinearLayout) view.findViewById(R.id.server_container);
-            iconContainer = (RelativeLayout) view.findViewById(R.id.icon_container);
+            parameter = (TextView) view.findViewById(R.id.parameter);
+            value = (TextView) view.findViewById(R.id.value);
+            diagnosticContainer = (LinearLayout) view.findViewById(R.id.diagnostic_container);
         }
     }
 
@@ -43,17 +38,17 @@ public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.My
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DiagnosticHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.server_list_row, parent, false);
+                .inflate(R.layout.diagnostic_list_row, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new DiagnosticHolder(itemView);
     }
 
 
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final DiagnosticHolder holder, final int position) {
         Diagnostic diagnostic = mDiagnostics.get(position);
 
         // displaying text view data

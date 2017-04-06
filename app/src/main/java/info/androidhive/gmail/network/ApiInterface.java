@@ -13,6 +13,6 @@ import retrofit2.http.GET;
  */
 
 public interface ApiInterface {
-    @GET("diag")
+    @GET("diag.json")
     Call<List<Diagnostic>> getInbox();
 }

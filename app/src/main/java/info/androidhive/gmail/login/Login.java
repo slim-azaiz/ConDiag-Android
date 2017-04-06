@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +31,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
     private Button buttonLogin;
     private TextView mTextView;
-    private String userid;
+    private String userid="";
     private String ipAddress;
 
 
@@ -69,10 +70,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
         String password = editTextPassword.getText().toString().trim();
         if ((editTextUserName.getText().toString().isEmpty()) || (editTextPassword.getText().toString().isEmpty())) {
-            Toast.makeText(Login.this, "Please fill in the balanks", Toast.LENGTH_LONG).show();
+            Toast.makeText(Login.this, "Please fill in the blanks", Toast.LENGTH_LONG).show();
         } else {
-             postInformation(username, password);
-            // mTextView.setText("response "+ getInformation());
+            // postInformation(username, password);
+             mTextView.setText("response "+ getInformation());
         }
     }
 
@@ -99,12 +100,19 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             protected String doInBackground(Void... params) {
 
                 RequestHandler rh = new RequestHandler();
-                 userid = rh.sendGetRequest(url);
+                mTextView.setText("response0 ");
+
+                userid = rh.sendGetRequest(url);
+                mTextView.setText(userid);
+
+                // Toast.makeText(Login.this,url, Toast.LENGTH_LONG).show();
+                Log.i("RESPONSE",userid);
                 try {
                     JSONObject jsonObject = new JSONObject(userid);
+
                     JSONArray jsonArray = jsonObject.getJSONArray("result");
 
-                    JSONObject jo = jsonArray.getJSONObject(0);
+                    JSONObject jo = jsonArray.getJSONObject(1);
                     userid = jo.getString("username");
 
                 } catch (JSONException e) {
@@ -112,7 +120,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 }
 
 
-                //s = jo.getString("id"));
+                //s = jo.getString("id");
                 return userid;
             }
         }
