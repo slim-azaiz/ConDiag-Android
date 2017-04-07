@@ -6,7 +6,6 @@ import retrofit2.http.Streaming;
 
 public interface RequestInterface {
 
-    @GET("/diag")
-    @Streaming
+    @GET("/diagnostic")
     Call<JSONResponse> getJSON();
 }

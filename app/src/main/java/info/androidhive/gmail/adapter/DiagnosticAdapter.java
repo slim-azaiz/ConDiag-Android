@@ -1,11 +1,11 @@
 package info.androidhive.gmail.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,10 +13,13 @@ import java.util.List;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.model.Diagnostic;
+import info.androidhive.gmail.model.Server;
 
 
-public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.ViewHolder> {
-    private ArrayList<Diagnostic> diagnostics;
+public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.ViewHolder> implements Filterable {
+    public static ArrayList<Diagnostic> diagnostics;
+    private ArrayList<Diagnostic> mFilteredDiagnosticArray;
+
 
     public DiagnosticAdapter(ArrayList<Diagnostic> diagnostics) {
         this.diagnostics = diagnostics;
@@ -36,6 +39,45 @@ public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.Vi
     }
 
     @Override
+    public Filter getFilter() {
+
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String charString = charSequence.toString();
+
+                if (charString.isEmpty()) {
+
+                    mFilteredDiagnosticArray = diagnostics;
+                } else {
+                    ArrayList<Diagnostic> filteredList = new ArrayList<>();
+
+                    for (Diagnostic diagnostic : diagnostics) {
+
+                        if (diagnostic.getParameter().toLowerCase().contains(charString) || diagnostic.getValue().toLowerCase().contains(charString)) {
+
+                            filteredList.add(diagnostic);
+                        }
+                    }
+
+                    mFilteredDiagnosticArray = filteredList;
+
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mFilteredDiagnosticArray;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mFilteredDiagnosticArray = (ArrayList<Diagnostic>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+    @Override
     public int getItemCount() {
         return diagnostics.size();
     }
@@ -48,6 +90,24 @@ public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.Vi
             parameter = (TextView)view.findViewById(R.id.parameter);
             value = (TextView)view.findViewById(R.id.value);
 
+        }
+    }
+
+
+    OnDataChangeListener mOnDataChangeListener;
+    public void setOnDataChangeListener(OnDataChangeListener onDataChangeListener){
+        mOnDataChangeListener = onDataChangeListener;
+    }
+
+
+    public interface OnDataChangeListener{
+        public void onDataChanged(int size);
+    }
+
+
+    private void doButtonOneClickActions(TextView txtQuantity, int rowNumber) {
+        if(mOnDataChangeListener != null){
+            mOnDataChangeListener.onDataChanged(diagnostics.size());
         }
     }
 

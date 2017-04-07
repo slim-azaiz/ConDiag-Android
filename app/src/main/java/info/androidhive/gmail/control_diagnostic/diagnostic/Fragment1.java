@@ -16,11 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -31,13 +36,17 @@ import info.androidhive.gmail.adapter.DiagnosticAdapter;
 import info.androidhive.gmail.adapter.ServerAdapter;
 import info.androidhive.gmail.discovery.dial.ServerFinder;
 import info.androidhive.gmail.helper.DividerItemDecoration;
+import info.androidhive.gmail.login.RequestHandler;
 import info.androidhive.gmail.model.Diagnostic;
 import info.androidhive.gmail.network.ApiClient;
 import info.androidhive.gmail.network.ApiInterface;
 import info.androidhive.gmail.network.JSONResponse;
+import info.androidhive.gmail.network.LoggingInterceptor;
 import info.androidhive.gmail.network.RequestInterface;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,21 +84,7 @@ public class Fragment1 extends Fragment   {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                     loadJSON();
-
-
-
-               // adapter.notifyDataSetChanged();
-                handler = new Handler();
-
-                handler.postDelayed(new Runnable(){
-                    public void run(){
-                        loadJSON();
-                        handler.postDelayed(this, 2000);
-                    }
-                }, 2000);
-
-
-
+                    notifyData();
             }
 
             @Override
@@ -130,25 +125,56 @@ public class Fragment1 extends Fragment   {
 
     private void loadJSON(){
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.206.208.98:8000")
-                .addConverterFactory(GsonConverterFactory.create())
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(
+                        new Interceptor() {
+                            @Override
+                            public okhttp3.Response intercept(Interceptor.Chain chain) throws IOException {
+                                Request request = chain.request().newBuilder()
+                                        .addHeader("Accept", "Application/JSON").build();
+                                return chain.proceed(request);
+                            }
+                        }).build();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        OkHttpClient log = new OkHttpClient.Builder()
+                .addInterceptor(logging)
                 .build();
+
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.206.208.120:8000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(log)
+                .build();
+
         RequestInterface request = retrofit.create(RequestInterface.class);
         Call<JSONResponse> call = request.getJSON();
         call.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-
                 JSONResponse jsonResponse = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonResponse.getDiagnostics()));
+                //Toast.makeText(getContext(), data.size(), Toast.LENGTH_LONG).show();
+                Log.i("DATA_SIZE",jsonResponse.toString());
                 adapter = new DiagnosticAdapter(data);
                 recyclerView.setAdapter(adapter);
+
+
+///
                 mPtrFrame.refreshComplete();
+
             }
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 mPtrFrame.refreshComplete();
+                try {
+                    adapter.diagnostics.clear();
+                    adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    Log.e("ERROR", "showProgressDialog", e);
+            }
                 Toast.makeText(getContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.d("Error",t.getMessage());
 
@@ -158,5 +184,40 @@ public class Fragment1 extends Fragment   {
 
 
     }
+    private void notifyData(){
+
+        handler = new Handler();
+         final Runnable myRunnable ;
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                handler.postDelayed(this, 2000);
+
+                Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.206.208.120:8000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+                final RequestInterface request = retrofit.create(RequestInterface.class);
+                Call<JSONResponse> call = request.getJSON();
+                call.enqueue(new Callback<JSONResponse>() {
+                    @Override
+                    public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                        JSONResponse jsonResponse = response.body();
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getDiagnostics()));
+                        //get value of temperature in real time
+                        adapter.diagnostics.get(28).setValue(data.get(28).getValue());
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onFailure(Call<JSONResponse> call, Throwable t) {
+                        handler.removeCallbacksAndMessages(null);
+                        mPtrFrame.refreshComplete();
+                        Log.d("Error",t.getMessage());
+                    }
+                });
+            }
+        }, 2000);
+    }
+
 
 }

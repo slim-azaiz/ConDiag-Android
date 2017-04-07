@@ -102,7 +102,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 RequestHandler rh = new RequestHandler();
                 mTextView.setText("response0 ");
 
-                userid = rh.sendGetRequest(url);
+                userid = rh.sendGetRequest("http://10.206.208.120:8000/diag");
                 mTextView.setText(userid);
 
                 // Toast.makeText(Login.this,url, Toast.LENGTH_LONG).show();
@@ -110,10 +110,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 try {
                     JSONObject jsonObject = new JSONObject(userid);
 
-                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+                    JSONArray jsonArray = jsonObject.getJSONArray("diagnostics");
+
 
                     JSONObject jo = jsonArray.getJSONObject(1);
-                    userid = jo.getString("username");
+                    userid = jo.getString("value");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
