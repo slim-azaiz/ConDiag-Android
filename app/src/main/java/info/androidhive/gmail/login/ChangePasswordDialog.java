@@ -1,10 +1,9 @@
 package info.androidhive.gmail.login;
 
 import android.app.DialogFragment;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.apache.http.HttpException;
-
-import java.io.IOException;
-
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.activity.MainActivity;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -50,9 +41,7 @@ public class ChangePasswordDialog extends DialogFragment {
 
     private CompositeSubscription mSubscriptions;
 
-    private String mEmail;
 
-    private Listener mListener;
 
     @Nullable
     @Override
@@ -131,10 +120,24 @@ public class ChangePasswordDialog extends DialogFragment {
     }
 
     private void changePasswordProgress(User user) {
+        mProgressBar.setVisibility(View.GONE);
+        dismiss();
 
 
+
+        Snackbar.make(getActivity().getCurrentFocus(), "Password changed successfully !", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+        Snackbar.make(getActivity().getCurrentFocus(), "Wrong old password !", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+        handleError();
     }
 
+
+    private void handleError() {
+            showMessage("Network Error !");
+    }
 
 
 

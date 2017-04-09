@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,16 +25,21 @@ import info.androidhive.gmail.utils.Config;
 
 import java.util.HashMap;
 
+import static info.androidhive.gmail.login.Validation.validateEmail;
+import static info.androidhive.gmail.login.Validation.validateFields;
+
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextUserName;
     private EditText editTextPassword;
 
     private Button buttonLogin;
-    private TextView mTextView;
     private String userid="";
     private String ipAddress;
 
+    private TextInputLayout mTiEmail;
+    private TextInputLayout mTiPassword;
+    private TextView mTvForgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,23 +62,62 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         editTextUserName = (EditText) findViewById(R.id.username);
         editTextPassword = (EditText) findViewById(R.id.password);
+        mTiEmail = (TextInputLayout) findViewById(R.id.ti_email);
+        mTiPassword = (TextInputLayout) findViewById(R.id.ti_password);
+        mTvForgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
 
 
         buttonLogin = (Button) findViewById(R.id.buttonUserLogin);
 
         buttonLogin.setOnClickListener(this);
+        mTvForgotPassword.setOnClickListener(this);
+
     }
 
 
+
+    private void setError() {
+
+        mTiEmail.setError(null);
+        mTiPassword.setError(null);
+    }
+
     private void login() {
+        setError();
+
         String username = editTextUserName.getText().toString().trim();
 
         String password = editTextPassword.getText().toString().trim();
-        if ((editTextUserName.getText().toString().isEmpty()) || (editTextPassword.getText().toString().isEmpty())) {
-            Toast.makeText(Login.this, "Please fill in the blanks", Toast.LENGTH_LONG).show();
-        } else {
-            // postInformation(username, password);
-             mTextView.setText("response "+ getInformation());
+
+
+
+
+
+        int err = 0;
+
+        if (!validateFields(username)) {
+
+            err++;
+            mTiEmail.setError("username should not be empty !");
+        }
+
+        if (!validateFields(password)) {
+
+            err++;
+            mTiPassword.setError("Password should not be empty !");
+        }
+
+        if (err == 0) {
+
+
+
+
+
+
+       // if ((editTextUserName.getText().toString().isEmpty()) || (editTextPassword.getText().toString().isEmpty())) {
+         //   Toast.makeText(Login.this, "Please fill in the blanks", Toast.LENGTH_LONG).show();
+       // } else {
+             postInformation(username, password);
         }
     }
 
@@ -99,10 +144,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             protected String doInBackground(Void... params) {
 
                 RequestHandler rh = new RequestHandler();
-                mTextView.setText("response0 ");
 
                 userid = rh.sendGetRequest("http://10.206.208.120:8000/diag");
-                mTextView.setText(userid);
 
                 // Toast.makeText(Login.this,url, Toast.LENGTH_LONG).show();
                 Log.i("RESPONSE",userid);
@@ -176,11 +219,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             Authentificate ulc = new Authentificate();
             ulc.execute(username, password);
         }
+    private void showDialog(){
+
+        ChangePasswordDialog fragment = new ChangePasswordDialog();
+
+        fragment.show(getFragmentManager(), ChangePasswordDialog.TAG);
+    }
 
         @Override
     public void onClick(View v) {
         if(v == buttonLogin){
             login();
         }
+            if (v==mTvForgotPassword){
+                showDialog();
+            }
     }
 }

@@ -58,7 +58,7 @@ public class Fragment1 extends Fragment   {
     private  PtrClassicFrameLayout mPtrFrame;
     private RecyclerView recyclerView;
     private ArrayList<Diagnostic> data;
-    private DiagnosticAdapter adapter;
+    public static DiagnosticAdapter adapter;
     private  OkHttpClient client;
     private  Handler handler;
     public Fragment1() {
