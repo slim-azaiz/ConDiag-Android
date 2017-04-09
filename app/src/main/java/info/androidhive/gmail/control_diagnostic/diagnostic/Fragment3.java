@@ -21,6 +21,14 @@ public class Fragment3 extends Fragment {
 
     public Fragment3() {
     }
+    public static Fragment3 newInstance() {
+
+        Bundle args = new Bundle();
+
+        Fragment3 fragment = new Fragment3();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

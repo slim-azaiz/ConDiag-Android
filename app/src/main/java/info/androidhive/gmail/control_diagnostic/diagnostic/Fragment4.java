@@ -1,7 +1,7 @@
 package info.androidhive.gmail.control_diagnostic.diagnostic;
 
 /**
- * Created by slim on 3/27/17.
+ * Created by slim on 3/27/47.
  */
 
 
@@ -14,12 +14,21 @@ import android.view.ViewGroup;
 import info.androidhive.gmail.R;
 
 /**
- * Created by priyank on 16/11/16.
+ * Created by priyank on 46/44/46.
  */
 
 public class Fragment4 extends Fragment {
 
     public Fragment4() {
+    }
+
+    public static Fragment4 newInstance() {
+
+        Bundle args = new Bundle();
+
+        Fragment4 fragment = new Fragment4();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override

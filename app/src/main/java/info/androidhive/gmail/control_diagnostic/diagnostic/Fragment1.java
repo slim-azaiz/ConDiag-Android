@@ -65,6 +65,16 @@ public class Fragment1 extends Fragment   {
 
     }
 
+    public static Fragment1 newInstance() {
+
+        Bundle args = new Bundle();
+
+        Fragment1 fragment = new Fragment1();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_1, container, false);
@@ -84,7 +94,7 @@ public class Fragment1 extends Fragment   {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                     loadJSON();
-                    notifyData();
+                    //notifyData();
             }
 
             @Override
@@ -144,7 +154,7 @@ public class Fragment1 extends Fragment   {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.206.208.120:8000")
+                .baseUrl("http://192.168.1.6:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(log)
                 .build();
@@ -194,7 +204,7 @@ public class Fragment1 extends Fragment   {
                 handler.postDelayed(this, 2000);
 
                 Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.206.208.120:8000")
+                .baseUrl("http://192.168.1.6:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
                 final RequestInterface request = retrofit.create(RequestInterface.class);

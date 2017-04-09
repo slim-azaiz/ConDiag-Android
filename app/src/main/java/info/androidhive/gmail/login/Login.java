@@ -24,7 +24,7 @@ import info.androidhive.gmail.utils.Config;
 
 import java.util.HashMap;
 
-public class Login extends AppCompatActivity implements View.OnClickListener{
+public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextUserName;
     private EditText editTextPassword;
@@ -56,7 +56,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
         editTextUserName = (EditText) findViewById(R.id.username);
         editTextPassword = (EditText) findViewById(R.id.password);
-        mTextView = (TextView) findViewById(R.id.textView);
 
 
         buttonLogin = (Button) findViewById(R.id.buttonUserLogin);
