@@ -50,7 +50,7 @@
             android:label="Diagnostic"
             android:parentActivityName=".activity.MainActivity"
             />
-        <activity android:name=".control_diagnostic.diagnostic.DiagnosticActivityTab"
+        <activity android:name=".control_diagnostic.diagnostic.DemoActivity"
             android:label="Diagnostic"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"

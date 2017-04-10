@@ -38,8 +38,8 @@ import java.util.List;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.ServerAdapter;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DemoActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
-import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivityTab;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivityTest;
 import info.androidhive.gmail.helper.DividerItemDecoration;
 import info.androidhive.gmail.model.Server;
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         buttonDiagnostic.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DiagnosticActivityTab.class);
+                Intent intent = new Intent(MainActivity.this, DemoActivity.class);
                 startActivity(intent);
             }
         });

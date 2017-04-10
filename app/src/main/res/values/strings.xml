@@ -115,16 +115,16 @@
     <string name="manual_ip_connect">Connect</string>
     <string name="manual_ip_cancel">Cancel</string>
 
-    <!--//smart tab-->
-    <string name="demo_tab_1">Stb identification</string>
-    <string name="demo_tab_2">Memory</string>
-    <string name="demo_tab_3">System info</string>
-    <string name="demo_tab_4">Conditional access</string>
-    <string name="demo_tab_5">Memory</string>
-    <string name="demo_tab_6">Software data</string>
-    <string name="demo_tab_7">Loader</string>
-    <string name="demo_tab_8">tab 8</string>
-    <string name="demo_tab_9">tab 9</string>
-    <string name="demo_tab_10">tab 10</string>
+    <string name="demo_tab_1">Cupcake</string>
+    <string name="demo_tab_2">Donut</string>
+    <string name="demo_tab_3">Eclair</string>
+    <string name="demo_tab_4">Froyo</string>
+    <string name="demo_tab_5">Gingerbread</string>
+    <string name="demo_tab_6">Honeycomb</string>
+    <string name="demo_tab_7">Ice Cream Sandwich</string>
+    <string name="demo_tab_8">Jelly Bean</string>
+    <string name="demo_tab_9">KitKat</string>
+    <string name="demo_tab_10">Lollipop</string>
+
 
 </resources>
