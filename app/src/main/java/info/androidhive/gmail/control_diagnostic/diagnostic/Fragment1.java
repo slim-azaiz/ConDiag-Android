@@ -134,29 +134,9 @@ public class Fragment1 extends Fragment   {
 
 
     private void loadJSON(){
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(
-                        new Interceptor() {
-                            @Override
-                            public okhttp3.Response intercept(Interceptor.Chain chain) throws IOException {
-                                Request request = chain.request().newBuilder()
-                                        .addHeader("Accept", "Application/JSON").build();
-                                return chain.proceed(request);
-                            }
-                        }).build();
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        OkHttpClient log = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
-
-
-
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.6:8000")
+                .baseUrl("http://10.206.208.65:8000")
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(log)
                 .build();
 
         RequestInterface request = retrofit.create(RequestInterface.class);
@@ -170,9 +150,6 @@ public class Fragment1 extends Fragment   {
                 Log.i("DATA_SIZE",jsonResponse.toString());
                 adapter = new DiagnosticAdapter(data);
                 recyclerView.setAdapter(adapter);
-
-
-///
                 mPtrFrame.refreshComplete();
 
             }
