@@ -53,10 +53,19 @@ public class DemoActivity extends AppCompatActivity {
     SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
 
     FragmentPagerItems pages = new FragmentPagerItems(this);
-    pages.add(FragmentPagerItem.of("STB IDENTIFICAION", Fragment1.class));
+
+    Bundle bundle = new Bundle();
+    bundle.putInt("pos",8);
+    pages.add(FragmentPagerItem.of("STB IDENTIFICAION", Fragment1.newInstance(bundle).getClass()));
+    pages.add(FragmentPagerItem.of("memory", Fragment1.newInstance(bundle).getClass()));
+    pages.add(FragmentPagerItem.of("STB sysInfo", Fragment1.newInstance(bundle).getClass()));
+    pages.add(FragmentPagerItem.of("conditionalAccess", Fragment1.newInstance(bundle).getClass()));
+    pages.add(FragmentPagerItem.of("network", Fragment1.newInstance(bundle).getClass()));
+    pages.add(FragmentPagerItem.of("software", Fragment1.newInstance(bundle).getClass()));
+    pages.add(FragmentPagerItem.of("loader", Fragment1.newInstance(bundle).getClass()));
 
     for (int titleResId : tabs()) {
-      pages.add(FragmentPagerItem.of(getString(titleResId), DemoFragment.class));
+      //pages.add(FragmentPagerItem.of(getString(titleResId), DemoFragment.class));
     }
 
     FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(

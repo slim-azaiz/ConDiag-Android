@@ -81,11 +81,11 @@ public abstract class AbstractLoopBarFragment extends Fragment
 
     protected List<Fragment> getMockFragments() {
         List<Fragment> fragments = new ArrayList<>(8);
-        fragments.add(Fragment1.newInstance());
+        /*fragments.add(Fragment1.newInstance());
         fragments.add(Fragment2.newInstance());
         fragments.add(Fragment3.newInstance());
         fragments.add(Fragment4.newInstance());
-        fragments.add(Fragment5.newInstance());
+        fragments.add(Fragment5.newInstance());*/
         return fragments;
     }
 

@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,29 +63,69 @@ public class Fragment1 extends Fragment   {
     public static DiagnosticAdapter adapter;
     private  OkHttpClient client;
     private  Handler handler;
+    private String method;
     public Fragment1() {
 
     }
 
-    public static Fragment1 newInstance() {
+    private String mCategoryId;
+    private String mCategorySlug;
 
-        Bundle args = new Bundle();
-
+    public static Fragment1 newInstance(Bundle b) {
         Fragment1 fragment = new Fragment1();
-        fragment.setArguments(args);
+        fragment.setArguments(b);
+
         return fragment;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        if (getArguments() != null) {
+            Log.i("MENU GET", String.valueOf(getArguments().toString()));
+        } else {
+            Log.i("MENU", "getArgument is null");
+        }
+
+        int numFragment =FragmentPagerItem.getPosition(getArguments());
+        Log.i("numFragment", String.valueOf(numFragment));
+
+        switch (numFragment){
+            case 0:
+                method ="identification";
+                break;
+            case 1:
+                method ="memory";
+                break;
+            case 2:
+                method ="sysInfo";
+                break;
+            case 3:
+                method ="conditionalAccess";
+                break;
+            case 4:
+                method ="network";
+                break;
+            case 5:
+                method ="software";
+                break;
+            case 6:
+                method ="loader";
+                break;
+            default:
+                method ="loader";
+                break;
+        }
         View view= inflater.inflate(R.layout.fragment_1, container, false);
         mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frameDiag);
 
 
+        Log.i("MENU",String.valueOf(getArguments().getInt("someInt",0)));
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_viewDiag);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+
         recyclerView.setLayoutManager(layoutManager);
 
 
@@ -135,17 +177,75 @@ public class Fragment1 extends Fragment   {
 
     private void loadJSON(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.206.208.65:8000")
+                .baseUrl("http://10.206.208.67:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        Log.i("MENU",String.valueOf(getArguments().getInt("someInt",0)));
+
+        Log.i("MENU",method);
 
         RequestInterface request = retrofit.create(RequestInterface.class);
         Call<JSONResponse> call = request.getJSON();
+        switch (method){
+            case "identification":
+               call = request.getIdentification();
+
+                break;
+            case "memory":
+                call = request.getMemory();
+                break;
+            case "sysInfo":
+                call = request.getSysInfo();
+                break;
+            case "conditionalAccess":
+                call = request.getConditionalAccess();
+                break;
+            case "network":
+                call = request.getNetwork();
+                break;
+            case "software":
+                call = request.getSoftware();
+                break;
+            case "loader":
+                call = request.getLoader();
+                break;
+            default:
+                call = request.getJSON();
+                break;
+        }
+
         call.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                 JSONResponse jsonResponse = response.body();
-                data = new ArrayList<>(Arrays.asList(jsonResponse.getDiagnostics()));
+                switch (method){
+                    case "identification":
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getIdentification()));
+                        break;
+                    case "memory":
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getMemory()));
+                        break;
+                    case "sysInfo":
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getSysInfo()));
+                        break;
+                    case "conditionalAccess":
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getConditionalAccess()));
+                        break;
+                    case "network":
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getNetwork()));
+                        break;
+                    case "software":
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getSoftware()));
+                        break;
+                    case "loader":
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getLoader()));
+                        break;
+                    default:
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getDiagnostics()));
+                        break;
+
+                }
+                //data = new ArrayList<>(Arrays.asList(jsonResponse.getDiagnostics()));
                 //Toast.makeText(getContext(), data.size(), Toast.LENGTH_LONG).show();
                 Log.i("DATA_SIZE",jsonResponse.toString());
                 adapter = new DiagnosticAdapter(data);
