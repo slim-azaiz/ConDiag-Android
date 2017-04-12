@@ -378,7 +378,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.search:
-                Toast.makeText(getApplicationContext(), "Search...", Toast.LENGTH_SHORT).show();
                 return true;
         }
 

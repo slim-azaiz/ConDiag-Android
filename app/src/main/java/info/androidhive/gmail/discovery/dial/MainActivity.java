@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -272,8 +273,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 mPtrFrame.refreshComplete();
                // swipeRefreshLayout.setRefreshing(false);
                 if(ServerFinder.tabIpFilter.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "No STB found Please refresh again", Toast.LENGTH_SHORT).show();
-
+                    Snackbar.make(getCurrentFocus(), "No STB found Please refresh again", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         }, 10000);

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +58,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         } else {
             ipAddress= (String) savedInstanceState.getSerializable("IpAddress");
         }
-        Toast.makeText(Login.this, ipAddress, Toast.LENGTH_LONG).show();
+//        Snackbar.make(getCurrentFocus(), ipAddress, Snackbar.LENGTH_LONG)
+  //              .setAction("Action", null).show();
 
         editTextUserName = (EditText) findViewById(R.id.username);
         editTextPassword = (EditText) findViewById(R.id.password);
@@ -202,7 +203,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         startActivity(intent);
                     }
                     else{
-                        Toast.makeText(Login.this,s,Toast.LENGTH_LONG).show();
+                        Snackbar.make(getCurrentFocus(), s, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     }
                 }
                 @Override

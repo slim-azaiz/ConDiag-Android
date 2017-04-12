@@ -7,6 +7,7 @@ package info.androidhive.gmail.control_diagnostic.diagnostic;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 
@@ -135,7 +135,7 @@ public class Fragment1 extends Fragment   {
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                    loadJSON();
+                loadJSON();
                     //notifyData();
             }
 
@@ -160,15 +160,6 @@ public class Fragment1 extends Fragment   {
             }
         }, 100);
 
-        /*client = new OkHttpClient();
-        client.interceptors().add(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                okhttp3.Response response = chain.proceed(chain.request());
-                // Log.i("RESPONSE",response.toString());
-                return response;
-            }
-        });*/
         return  view;
     }
 
@@ -177,7 +168,7 @@ public class Fragment1 extends Fragment   {
 
     private void loadJSON(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.206.208.67:8000")
+                .baseUrl("http://10.206.208.82:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Log.i("MENU",String.valueOf(getArguments().getInt("someInt",0)));
@@ -185,11 +176,10 @@ public class Fragment1 extends Fragment   {
         Log.i("MENU",method);
 
         RequestInterface request = retrofit.create(RequestInterface.class);
-        Call<JSONResponse> call = request.getJSON();
+        Call<JSONResponse> call ;
         switch (method){
             case "identification":
-               call = request.getIdentification();
-
+                call = request.getIdentification();
                 break;
             case "memory":
                 call = request.getMemory();
@@ -262,8 +252,9 @@ public class Fragment1 extends Fragment   {
                 } catch (Exception e) {
                     Log.e("ERROR", "showProgressDialog", e);
             }
-                Toast.makeText(getContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("Error",t.getMessage());
+                Snackbar.make(getView(), "Unable to fetch json: " + t.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+//                Log.d("Error",t.getMessage());
 
             }
         });

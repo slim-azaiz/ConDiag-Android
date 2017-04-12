@@ -54,15 +54,13 @@ public class DemoActivity extends AppCompatActivity {
 
     FragmentPagerItems pages = new FragmentPagerItems(this);
 
-    Bundle bundle = new Bundle();
-    bundle.putInt("pos",8);
-    pages.add(FragmentPagerItem.of("STB IDENTIFICAION", Fragment1.newInstance(bundle).getClass()));
-    pages.add(FragmentPagerItem.of("memory", Fragment1.newInstance(bundle).getClass()));
-    pages.add(FragmentPagerItem.of("STB sysInfo", Fragment1.newInstance(bundle).getClass()));
-    pages.add(FragmentPagerItem.of("conditionalAccess", Fragment1.newInstance(bundle).getClass()));
-    pages.add(FragmentPagerItem.of("network", Fragment1.newInstance(bundle).getClass()));
-    pages.add(FragmentPagerItem.of("software", Fragment1.newInstance(bundle).getClass()));
-    pages.add(FragmentPagerItem.of("loader", Fragment1.newInstance(bundle).getClass()));
+    pages.add(FragmentPagerItem.of("STB IDENTIFICATION", Fragment1.class));
+    pages.add(FragmentPagerItem.of("memory", Fragment1.class));
+    pages.add(FragmentPagerItem.of("STB sysInfo", Fragment1.class));
+    pages.add(FragmentPagerItem.of("conditionalAccess", Fragment1.class));
+    pages.add(FragmentPagerItem.of("network", Fragment1.class));
+    pages.add(FragmentPagerItem.of("software", Fragment1.class));
+    pages.add(FragmentPagerItem.of("loader", Fragment1.class));
 
     for (int titleResId : tabs()) {
       //pages.add(FragmentPagerItem.of(getString(titleResId), DemoFragment.class));
