@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonUserLogin"
         android:layout_marginTop="@dimen/button_margin"
-        android:text="Forgot Password ?"
+        android:text="Reset Password ?"
         android:textAlignment="center" />
 
 </LinearLayout>
