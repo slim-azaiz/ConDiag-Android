@@ -233,25 +233,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private void loadServers() {
         servers.clear();
-       /* Cursor cursor = db.getServers();
-        if (cursor.moveToFirst()) {
-            do {
-                Boolean flag1 = (cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_IS_IMPORTANT)) == 0);
-                Boolean flag2 = (cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEST2)) == 0);
-                Server modelName = new Server(
-                        cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_IP_ADDRESS)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FRIENDLY_NAME)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_MODEL)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEST)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME)),
-                        flag1,
-                        flag2,
-                        4
-                );
-                servers.add(modelName);
-            } while (cursor.moveToNext());
-        }*/
     }
 
 
@@ -336,8 +317,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem search = menu.findItem(R.id.search);
+        getMenuInflater().inflate(R.menu.menu_discovery, menu);
+        MenuItem search = menu.findItem(R.id.search_discovery);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
         search(searchView);
         return true;
@@ -374,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
-            case R.id.search:
+            case R.id.search_discovery:
                 return true;
         }
 

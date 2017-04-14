@@ -1,6 +1,8 @@
 package info.androidhive.gmail.login;
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -13,9 +15,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import info.androidhive.gmail.R;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static info.androidhive.gmail.login.Validation.validateFields;
@@ -105,7 +107,7 @@ public class ChangePasswordDialog extends DialogFragment {
         if (err == 0) {
 
             User user = new User();
-            user.setPassword(oldPassword);
+            user.setOldPassword(oldPassword);
             user.setNewPassword(newPassword);
             changePasswordProgress(user);
             mProgressBar.setVisibility(View.VISIBLE);
@@ -119,19 +121,67 @@ public class ChangePasswordDialog extends DialogFragment {
         mTiNewPassword.setError(null);
     }
 
-    private void changePasswordProgress(User user) {
-        mProgressBar.setVisibility(View.GONE);
-        dismiss();
+    private void changePasswordProgress(final User user) {
+
+        class ResetPassword extends AsyncTask<String,Void,String> {
+            ProgressDialog loading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                //loading = ProgressDialog.show(Login.this, "Please Wait", null, true, true);
+                loading = new ProgressDialog(getActivity());
+                loading.setTitle("Attendez s'il vous plaît ..");
+                loading.setMessage("La liste est en train de charger");
+                loading.setIndeterminate(true);
+                loading.setCancelable(false);
+                loading.show();
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                if(s.equalsIgnoreCase("success")){
+
+                   // showMessage("Password changed successfully !");
+                    mProgressBar.setVisibility(View.GONE);
+                    dismiss();
 
 
 
-        Snackbar.make(getActivity().getCurrentFocus(), "Password changed successfully !", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+                    Snackbar.make(getActivity().getCurrentFocus(), "Password changed successfully !", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
 
-        Snackbar.make(getActivity().getCurrentFocus(), "Wrong old password !", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
 
-        handleError();
+                   // handleError();
+
+                }
+                else{
+                   // showMessage("Wrong old password !");
+                    mProgressBar.setVisibility(View.GONE);
+                    dismiss();
+
+                    Snackbar.make(getActivity().getCurrentFocus(), "Wrong old password !", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+            }
+            @Override
+            protected String doInBackground(String... params) {
+                HashMap<String,String> data = new HashMap<>();
+                //data.put("","");
+                data.put("PASSWORD", user.getNewPassword());
+                RequestHandler ruc = new RequestHandler();
+                //String result = ruc.sendPostRequest("http://"+parameter+":8000/authentificate"+username+"/"+password,data);
+                String result = ruc.sendPostRequest("http://10.206.208.123:8000/resetPassword/"+user.getOldPassword()+"/"+user.getNewPassword(),data);
+                return result;
+            }
+        }
+        ResetPassword ulc = new ResetPassword();
+        ulc.execute(user.getOldPassword(), user.getNewPassword());
+
+
+       // handleError();
     }
 
 

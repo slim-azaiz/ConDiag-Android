@@ -20,6 +20,7 @@ import info.androidhive.gmail.R;
 public class DemoActivity extends AppCompatActivity {
 
   private static final String KEY_DEMO = "demo";
+
   public static int[] tab10() {
     return new int[] {
             R.string.demo_tab_1,
@@ -41,7 +42,19 @@ public class DemoActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_demo);
 
+    //retreive parameter
+   /* if (savedInstanceState == null) {
+      Bundle extras = getIntent().getExtras();
+      if(extras == null) {
+        ipAddress= null;
+      } else {
+        ipAddress= extras.getString("IpAddress");
+      }
+    } else {
+      ipAddress= (String) savedInstanceState.getSerializable("IpAddress");
+    }
 
+*/
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);

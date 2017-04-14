@@ -2,6 +2,7 @@ package info.androidhive.gmail.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DemoActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.utils.Config;
 
@@ -40,6 +42,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
     private TextView mTvForgotPassword;
+    public  static SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         } else {
             ipAddress= (String) savedInstanceState.getSerializable("IpAddress");
         }
-//        Snackbar.make(getCurrentFocus(), ipAddress, Snackbar.LENGTH_LONG)
+
+
+        pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("ipAddress", ipAddress);  // Saving string//        Snackbar.make(getCurrentFocus(), ipAddress, Snackbar.LENGTH_LONG)
   //              .setAction("Action", null).show();
 
         editTextUserName = (EditText) findViewById(R.id.username);
@@ -146,7 +153,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                 RequestHandler rh = new RequestHandler();
 
-                userid = rh.sendGetRequest("http://10.206.208.120:8000/diag");
+                userid = rh.sendGetRequest("http://10.206.208.12:8000/diag");
 
                 // Toast.makeText(Login.this,url, Toast.LENGTH_LONG).show();
                 Log.i("RESPONSE",userid);
@@ -186,8 +193,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     super.onPreExecute();
                     //loading = ProgressDialog.show(Login.this, "Please Wait", null, true, true);
                     loading = new ProgressDialog(Login.this);
-                    loading.setTitle("Attendez s'il vous plaît ..");
-                    loading.setMessage("La liste est en train de charger");
+                    loading.setTitle("Please wait ..");
                     loading.setIndeterminate(true);
                     loading.setCancelable(false);
                     loading.show();
@@ -198,23 +204,28 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     super.onPostExecute(s);
                     loading.dismiss();
                     if(s.equalsIgnoreCase("success")){
-                        Intent intent = new Intent(Login.this,DiagnosticActivity.class);
+                        Intent intent = new Intent(Login.this,DemoActivity.class);
                         intent.putExtra(Config.KEY_USER_NAME,username);
                         startActivity(intent);
                     }
                     else{
+                        if (s.isEmpty()){
+                            Snackbar.make(getCurrentFocus(),"ERROR", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }else {
                         Snackbar.make(getCurrentFocus(), s, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
+                        }
                     }
                 }
                 @Override
                 protected String doInBackground(String... params) {
                     HashMap<String,String> data = new HashMap<>();
                     //data.put("","");
-                    data.put("PASSWORD", password);
+                    //data.put("PASSWORD", password);
                     RequestHandler ruc = new RequestHandler();
-                    //String result = ruc.sendPostRequest("http://"+parameter+":8000/authentificate"+username+"/"+password,data);
-                    String result = ruc.sendPostRequest("http://10.206.208.109:8000/authentificate/"+username+"/"+password,data);
+                    String result = ruc.sendPostRequest("http://"+ipAddress+":8000/authentificate/"+username+"/"+password,data);
+                    //String result = ruc.sendPostRequest("http://10.206.208.123:8000/authentificate/"+username+"/"+password,data);
                     return result;
                 }
             }

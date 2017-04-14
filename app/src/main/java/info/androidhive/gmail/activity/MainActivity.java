@@ -40,7 +40,6 @@ import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.ServerAdapter;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DemoActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
-import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivityTest;
 import info.androidhive.gmail.helper.DividerItemDecoration;
 import info.androidhive.gmail.model.Server;
 import info.androidhive.gmail.settings.SettingsActivity;

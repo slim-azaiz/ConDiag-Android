@@ -4,7 +4,7 @@ package info.androidhive.gmail.login;
 public class User {
 
     private String username;
-    private String password;
+    private String oldPassword;
     private String newPassword;
 
 
@@ -14,15 +14,15 @@ public class User {
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
-    public void setPassword(String password) {
-        this.password = password;
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
 
-    public String getPassword(String password) {
-        return password;
+    public String getOldPassword() {
+        return oldPassword;
     }
-    public String getNewPassword(String password) {
+    public String getNewPassword() {
         return newPassword;
     }
     public String getUsername() {

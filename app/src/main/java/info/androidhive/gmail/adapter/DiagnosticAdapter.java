@@ -86,29 +86,8 @@ public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.Vi
         private TextView parameter, value;
         public ViewHolder(View view) {
             super(view);
-
             parameter = (TextView)view.findViewById(R.id.parameter);
             value = (TextView)view.findViewById(R.id.value);
-
         }
     }
-
-
-    OnDataChangeListener mOnDataChangeListener;
-    public void setOnDataChangeListener(OnDataChangeListener onDataChangeListener){
-        mOnDataChangeListener = onDataChangeListener;
-    }
-
-
-    public interface OnDataChangeListener{
-        public void onDataChanged(int size);
-    }
-
-
-    private void doButtonOneClickActions(TextView txtQuantity, int rowNumber) {
-        if(mOnDataChangeListener != null){
-            mOnDataChangeListener.onDataChanged(diagnostics.size());
-        }
-    }
-
 }

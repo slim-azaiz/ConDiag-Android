@@ -37,7 +37,7 @@ public class TrackedDialServers implements Iterable<DialServer> {
 		InetAddress address = DialServer.getIpAddress();
 		if (!serversByAddress.containsKey(address)) {
 			serversByAddress.put(address, DialServer);
-			servers.add(DialServer);
+//			servers.add(DialServer);
 
 			serverArray = null;
 			return true;

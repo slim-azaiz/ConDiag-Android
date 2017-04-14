@@ -38,6 +38,7 @@ import info.androidhive.gmail.adapter.DiagnosticAdapter;
 import info.androidhive.gmail.adapter.ServerAdapter;
 import info.androidhive.gmail.discovery.dial.ServerFinder;
 import info.androidhive.gmail.helper.DividerItemDecoration;
+import info.androidhive.gmail.login.Login;
 import info.androidhive.gmail.login.RequestHandler;
 import info.androidhive.gmail.model.Diagnostic;
 import info.androidhive.gmail.network.ApiClient;
@@ -67,25 +68,15 @@ public class Fragment1 extends Fragment   {
     public Fragment1() {
 
     }
-
-    private String mCategoryId;
-    private String mCategorySlug;
-
-    public static Fragment1 newInstance(Bundle b) {
-        Fragment1 fragment = new Fragment1();
-        fragment.setArguments(b);
-
-        return fragment;
-    }
-
+    private String ipAddress;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        if (getArguments() != null) {
-            Log.i("MENU GET", String.valueOf(getArguments().toString()));
-        } else {
-            Log.i("MENU", "getArgument is null");
-        }
+        //retreive parameter
+        //retreive parameter
+
+         ipAddress= Login.pref.getString("ipAddress", null);         // getting String
+
 
         int numFragment =FragmentPagerItem.getPosition(getArguments());
         Log.i("numFragment", String.valueOf(numFragment));
@@ -112,15 +103,11 @@ public class Fragment1 extends Fragment   {
             case 6:
                 method ="loader";
                 break;
-            default:
-                method ="loader";
-                break;
         }
         View view= inflater.inflate(R.layout.fragment_1, container, false);
         mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frameDiag);
 
 
-        Log.i("MENU",String.valueOf(getArguments().getInt("someInt",0)));
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_viewDiag);
         recyclerView.setHasFixedSize(true);
@@ -129,12 +116,16 @@ public class Fragment1 extends Fragment   {
         recyclerView.setLayoutManager(layoutManager);
 
 
+       // adapter = new DiagnosticAdapter(data);
+       // recyclerView.setAdapter(adapter);
+
         //loadJSON();
         mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frameDiag);
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
+                Log.i("REFRESH_METHOD",method);
                 loadJSON();
                     //notifyData();
             }
@@ -167,11 +158,12 @@ public class Fragment1 extends Fragment   {
 
 
     private void loadJSON(){
+       // Log.i("Fragment1",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.206.208.82:8000")
+                //.baseUrl("http://"+ipAddress+":8000")
+               .baseUrl("http://10.206.208.123"+":8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        Log.i("MENU",String.valueOf(getArguments().getInt("someInt",0)));
 
         Log.i("MENU",method);
 
@@ -237,7 +229,6 @@ public class Fragment1 extends Fragment   {
                 }
                 //data = new ArrayList<>(Arrays.asList(jsonResponse.getDiagnostics()));
                 //Toast.makeText(getContext(), data.size(), Toast.LENGTH_LONG).show();
-                Log.i("DATA_SIZE",jsonResponse.toString());
                 adapter = new DiagnosticAdapter(data);
                 recyclerView.setAdapter(adapter);
                 mPtrFrame.refreshComplete();

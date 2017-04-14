@@ -2,6 +2,7 @@ package info.androidhive.gmail.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -28,19 +30,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.androidhive.gmail.R;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DemoActivity;
+import info.androidhive.gmail.control_diagnostic.diagnostic.Fragment1;
 import info.androidhive.gmail.helper.CircleTransform;
 import info.androidhive.gmail.helper.FlipAnimator;
 import info.androidhive.gmail.login.Login;
 import info.androidhive.gmail.model.Server;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyViewHolder> implements Filterable {
     private Context mContext;
     private List<Server> servers;
-    private List<Server> mFilteredServerList;
+    private List<Server> mFilteredDiscoveryList;
 
     private ServerAdapterListener listener;
     private SparseBooleanArray selectedItems;
-
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
 
     // array used to perform multiple animation at once
     private SparseBooleanArray animationItemsIndex;
@@ -91,30 +97,32 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
 
                 if (charString.isEmpty()) {
 
-                    mFilteredServerList = servers;
+                    mFilteredDiscoveryList = servers;
                 } else {
                     List<Server> filteredList = new ArrayList<>();
 
                     for (Server server : servers) {
+                        Log.i("filteredList",String.valueOf(servers.size()));
 
-                        if (server.getFriendlyName().toLowerCase().contains(charString) || server.getIpAddress().toLowerCase().contains(charString) || server.getModel().toLowerCase().contains(charString)) {
+                        if (server.getIpAddress().toLowerCase().contains(charString) ) {
 
                             filteredList.add(server);
+                            Log.i("filteredList",String.valueOf(filteredList.size()));
                         }
                     }
 
-                    mFilteredServerList = filteredList;
+                    mFilteredDiscoveryList = filteredList;
 
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = mFilteredServerList;
+                filterResults.values = mFilteredDiscoveryList;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mFilteredServerList = (ArrayList<Server>) filterResults.values;
+                mFilteredDiscoveryList = (ArrayList<Server>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -123,7 +131,7 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
     public DiscoveryAdapter(Context mContext, List<Server> servers, ServerAdapterListener listener) {
         this.mContext = mContext;
         this.servers = servers;
-        this.mFilteredServerList = servers;
+        this.mFilteredDiscoveryList = servers;
         this.listener = listener;
         selectedItems = new SparseBooleanArray();
         animationItemsIndex = new SparseBooleanArray();
@@ -141,7 +149,7 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Server server = mFilteredServerList.get(position);
+        Server server = mFilteredDiscoveryList.get(position);
 
         // displaying text view data
         holder.ipAddress.setText(server.getIpAddress());
@@ -191,10 +199,17 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
             public void onClick(View view) {
                 listener.onServerRowClicked(position);
                 Intent intent = new Intent(mContext, Login.class);
+                Intent intent2 = new Intent(mContext, DemoActivity.class);
+
                 intent.putExtra("IpAddress",holder.ipAddress.getText());
+                intent2.putExtra("IpAddress",holder.ipAddress.getText());
                 mContext.startActivity(intent);
             }
         });
+
+
+
+
 
         holder.serverContainer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -282,7 +297,7 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
 
     @Override
     public long getItemId(int position) {
-        return mFilteredServerList.get(position).getId();
+        return mFilteredDiscoveryList.get(position).getId();
     }
 
     private void applyImportant(MyViewHolder holder, Server server) {
@@ -312,7 +327,8 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return mFilteredServerList.size();
+        mFilteredDiscoveryList = servers;
+        return mFilteredDiscoveryList.size();
     }
 
     public void toggleSelection(int pos) {
