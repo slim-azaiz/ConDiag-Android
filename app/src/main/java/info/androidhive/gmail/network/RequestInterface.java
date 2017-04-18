@@ -1,8 +1,11 @@
 package info.androidhive.gmail.network;
 
 import info.androidhive.gmail.model.Diagnostic;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Streaming;
 
 public interface RequestInterface {
@@ -30,5 +33,12 @@ public interface RequestInterface {
 
     @GET("/sysInfo")
     Call<JSONResponse> getSysInfo();
+
+    @GET("/command")
+    Call<JSONResponse> getCommand();
+
+    @POST("control/{code}")
+    Call<JSONResponse> encoded(@Path("code") String code);
+
 
 }

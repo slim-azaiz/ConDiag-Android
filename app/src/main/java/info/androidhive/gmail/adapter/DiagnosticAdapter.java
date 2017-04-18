@@ -17,12 +17,22 @@ import info.androidhive.gmail.model.Server;
 
 
 public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.ViewHolder> implements Filterable {
-    public static ArrayList<Diagnostic> diagnostics;
+    public static ArrayList<Diagnostic> diagnostics = new ArrayList<>();
     private ArrayList<Diagnostic> mFilteredDiagnosticArray;
 
 
     public DiagnosticAdapter(ArrayList<Diagnostic> diagnostics) {
-        this.diagnostics = diagnostics;
+        this.diagnostics.addAll(diagnostics);
+    }
+
+    public void clearData() {
+        this.diagnostics.clear();
+        notifyDataSetChanged();
+    }
+    public void setData(List<Diagnostic> data) {
+        clearData();
+        this.diagnostics.addAll(data);
+        notifyDataSetChanged();
     }
 
     @Override

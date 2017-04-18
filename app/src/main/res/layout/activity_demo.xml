@@ -27,7 +27,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
+        android:id="@+id/tabsDemo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:tabMode="fixed"
@@ -37,7 +37,7 @@
           android:id="@+id/viewpagertab"
           android:layout_width="match_parent"
           android:layout_height="48dp"
-          app:stl_indicatorAlwaysInCenter="false"
+          app:stl_indicatorAlwaysInCenter="true"
           app:stl_indicatorWithoutPadding="false"
           app:stl_indicatorInFront="false"
           app:stl_indicatorInterpolation="smart"
@@ -66,7 +66,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
-      android:id="@id/tab"
+        android:id="@+id/tab"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       />
@@ -74,7 +74,7 @@
   </LinearLayout>
 
   <android.support.v4.view.ViewPager
-    android:id="@id/viewpager"
+      android:id="@+id/viewpagerDemo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@id/header"

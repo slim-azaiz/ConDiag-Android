@@ -46,8 +46,8 @@
             android:label="Diagnostic"
             android:parentActivityName=".activity.MainActivity"
             />
-        <activity android:name=".control_diagnostic.diagnostic.sample.MainActivity"
-            android:label="Diagnostic"
+        <activity android:name=".control_diagnostic.control.ControlActivity"
+            android:label="Control"
             android:parentActivityName=".activity.MainActivity"
             />
         <activity android:name=".control_diagnostic.diagnostic.DemoActivity"

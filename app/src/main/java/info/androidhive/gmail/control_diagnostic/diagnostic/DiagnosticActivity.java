@@ -76,7 +76,10 @@ public class DiagnosticActivity extends BaseActivity implements BottomNavigation
         }
 
         fragmentManager = getSupportFragmentManager();
+        Bundle bundle = new Bundle();
+        bundle.putString("method", "memory");
         fragment = new Fragment1();
+        fragment.setArguments(bundle);
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.main_container, fragment).commit();
         initializeUI(savedInstanceState);
@@ -105,7 +108,7 @@ public class DiagnosticActivity extends BaseActivity implements BottomNavigation
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                Fragment1.adapter.getFilter().filter(newText);
+               // Fragment1.adapter.getFilter().filter(newText);
                 return true;
             }
         });
@@ -150,22 +153,41 @@ public class DiagnosticActivity extends BaseActivity implements BottomNavigation
                 getViewPager().setCurrentItem(position);
             }
         }
+        Bundle bundle = new Bundle();
 
         switch (itemId) {
             case R.id.bbn_item1:
+                bundle.putString("method", "memory");
+                fragment.setArguments(bundle);
                 fragment = new Fragment1();
                 break;
             case R.id.bbn_item2:
-                fragment = new Fragment2();
+                fragment = new Fragment1();
+
+                bundle.putString("method", "softwware");
+                fragment.setArguments(bundle);
+                //fragment = new Fragment1();
                 break;
             case R.id.bbn_item3:
-                fragment = new Fragment3();
+                fragment = new Fragment1();
+
+                bundle.putString("method", "identification");
+                fragment.setArguments(bundle);
+                //fragment = new Fragment1();
                 break;
             case R.id.bbn_item4:
-                fragment = new Fragment4();
+                fragment = new Fragment1();
+
+                bundle.putString("method", "network");
+                fragment.setArguments(bundle);
+                //fragment = new Fragment1();
                 break;
             case R.id.bbn_item5:
-                fragment = new Fragment5();
+                fragment = new Fragment1();
+
+                bundle.putString("method", "loader");
+                fragment.setArguments(bundle);
+               // fragment = new Fragment1();
                 break;
         }
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
