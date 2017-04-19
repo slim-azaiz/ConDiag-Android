@@ -8,9 +8,9 @@ public class Command {
     private int frequency;
     private int irCode;
 
-    public Command(int frequency, int irCommand) {
+    public Command(int frequency, int irCode) {
         this.frequency = frequency;
-        this.irCode = irCommand;
+        this.irCode = irCode;
     }
 
     public int getFrequency() {

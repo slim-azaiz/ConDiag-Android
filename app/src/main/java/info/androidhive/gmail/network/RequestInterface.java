@@ -13,6 +13,8 @@ public interface RequestInterface {
     @GET("/diagnostic")
     Call<JSONResponse> getJSON();
 
+    @GET("/realTime")
+    Call<JSONResponse> getRealTime();
     @GET("/memory")
     Call<JSONResponse> getMemory();
 

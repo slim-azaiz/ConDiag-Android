@@ -19,15 +19,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DemoActivity;
-import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.utils.Config;
 
 
 import java.util.HashMap;
 
-import static info.androidhive.gmail.login.Validation.validateEmail;
 import static info.androidhive.gmail.login.Validation.validateFields;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {

@@ -11,6 +11,7 @@ public class JSONResponse {
     private Diagnostic[] loader;
     private Diagnostic[] identification;
     private Diagnostic[] sysInfo;
+    private Diagnostic[] realTime;
 
 
 
@@ -22,5 +23,6 @@ public class JSONResponse {
     public Diagnostic[] getLoader() {return loader;}
     public Diagnostic[] getIdentification() {return identification;}
     public Diagnostic[] getSysInfo() {return sysInfo;}
+    public Diagnostic[] getRealTime() {return realTime;}
 }
 

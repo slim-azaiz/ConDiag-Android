@@ -83,4 +83,14 @@ public class DemoActivity extends AppCompatActivity {
     }
   }
 
+  @Override
+  public void onDestroy() {
+    Fragment1.handler.removeCallbacksAndMessages(null);
+    Fragment1.handler=null;
+    super.onDestroy();
+  }
+  @Override
+  public void onResume() {
+    super.onResume();
+  }
 }

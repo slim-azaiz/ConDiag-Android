@@ -5,9 +5,12 @@ package info.androidhive.gmail.control_diagnostic.diagnostic;
  */
 
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -20,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +44,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.R.attr.data;
+
 
 public class Fragment1 extends Fragment   {
     private PtrClassicFrameLayout mPtrFrame;
@@ -47,13 +53,13 @@ public class Fragment1 extends Fragment   {
     private ArrayList<Diagnostic> data;
     public static DiagnosticAdapter adapter;
     private  OkHttpClient client;
-    private  Handler handler;
+    public static   Handler handler;
     public static String constVar;
     private String method;
+    private Runnable runnable;
     public Fragment1() {
 
     }
-    private Boolean mIsRefreshing = false;
     private String ipAddress;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,22 +72,9 @@ public class Fragment1 extends Fragment   {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_viewDiag);
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        Log.i("mIsRefreshing",mIsRefreshing.toString());
-        /*recyclerView.setOnTouchListener(
-                new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (mIsRefreshing) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-        );
-*/
+
+
     }
 
     @Override
@@ -90,10 +83,17 @@ public class Fragment1 extends Fragment   {
         if (isVisibleToUser) {
             method = getArguments().getString("method");
             Log.i("METHOD",method);
-
             loadJSON();
+            if(handler!=null) {
+              //  handler.removeCallbacks(null);
+                Log.i("HANDLER", "STOPPED");
+            }else {
+                Log.i("HANDLER", "NULL");
+                notifyData(method);
+            }
 
         }else{
+
             // fragment is no longer visible
         }
     }
@@ -103,10 +103,9 @@ public class Fragment1 extends Fragment   {
        // Log.i("Fragment1",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-               .baseUrl("http://10.206.208.112"+":8000")
+               .baseUrl("http://10.206.208.98"+":8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
 
         RequestInterface request = retrofit.create(RequestInterface.class);
         Call<JSONResponse> call ;
@@ -178,8 +177,7 @@ public class Fragment1 extends Fragment   {
                 adapter = new DiagnosticAdapter(data);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                mIsRefreshing = true;
-                Log.i("mIsRefreshing",mIsRefreshing.toString());
+
 
 
                 //  mPtrFrame.refreshComplete();
@@ -203,39 +201,85 @@ public class Fragment1 extends Fragment   {
 
 
     }
-    private void notifyData(){
-
-        handler = new Handler();
-         final Runnable myRunnable ;
-
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                handler.postDelayed(this, 2000);
-
+    private void notifyData(final String meth){
+        handler =new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 1000);
                 Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.6:8000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                        .baseUrl("http://10.206.208.98:8000")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
                 final RequestInterface request = retrofit.create(RequestInterface.class);
-                Call<JSONResponse> call = request.getJSON();
+                Call<JSONResponse> call = request.getRealTime();
                 call.enqueue(new Callback<JSONResponse>() {
                     @Override
                     public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                         JSONResponse jsonResponse = response.body();
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getDiagnostics()));
-                        //get value of temperature in real time
-                        adapter.diagnostics.get(28).setValue(data.get(28).getValue());
+                        data = new ArrayList<>(Arrays.asList(jsonResponse.getRealTime()));
+                        Log.i("METHOD_THREAD",meth);
+                        switch (adapter.diagnostics.get(1).getParameter()){
+                            case "used_memory":
+                                //get value of used_memory in real time
+                                adapter.diagnostics.get(1).setValue(data.get(0).getValue());
+                                break;
+                            case "Internal_Temperature":
+                                //get value of Internal_Temperature in real time
+                                adapter.diagnostics.get(1).setValue(data.get(1).getValue());
+                                break;
+                        };
+                        if (adapter.diagnostics.size()>=3) {
+
+                            switch (adapter.diagnostics.get(2).getParameter()) {
+                                case "stb_ip_address":
+                                    //get value of stb_ip_address in real time
+                                    adapter.diagnostics.get(2).setValue(data.get(5).getValue());
+                                    break;
+                                case "total_software_updates":
+                                    //get value of total_software_updates in real time
+                                    adapter.diagnostics.get(2).setValue(data.get(6).getValue());
+                                    break;
+                                case "CPU_Utilisation":
+                                    //get value of CPU_Utilisation in real time
+                                    adapter.diagnostics.get(2).setValue(data.get(2).getValue());
+                                    break;
+                            }
+                            ;
+                        }
+                        if (adapter.diagnostics.size()>=4) {
+                            switch (adapter.diagnostics.get(3).getParameter()) {
+                                case "HDMI_Port_Status":
+                                    //get value of HDMI_Port_Status in real time
+                                    adapter.diagnostics.get(3).setValue(data.get(3).getValue());
+                                    break;
+                            }
+                            ;
+                        }
+                        if (adapter.diagnostics.size()>=5) {
+
+                            switch (adapter.diagnostics.get(4).getParameter()) {
+                                case "stb_ethernet_port_status":
+                                    //get value of stb_ethernet_port_status in real time
+                                    adapter.diagnostics.get(4).setValue(data.get(4).getValue());
+                                    break;
+                            }
+                            ;
+                        }
                         adapter.notifyDataSetChanged();
                     }
+
                     @Override
                     public void onFailure(Call<JSONResponse> call, Throwable t) {
                         handler.removeCallbacksAndMessages(null);
-                      //  mPtrFrame.refreshComplete();
-                        Log.d("Error",t.getMessage());
+                        //  mPtrFrame.refreshComplete();
+                        Log.d("Error", t.getMessage());
                     }
                 });
+
             }
-        }, 2000);
+        }, 1000);
+
     }
 
     public class WrapContentLinearLayoutManager extends LinearLayoutManager {
@@ -256,12 +300,75 @@ public class Fragment1 extends Fragment   {
                 Log.e("probe", "meet a IOOBE in RecyclerView");
             }
         }
-        @Override
-        public boolean canScrollVertically() {
-            if (mIsRefreshing) {
-                return true;
-            } else {
-                return false;
-            }        }
     }
+
+   /* public class RealTime extends Service {
+
+        @Override
+        public IBinder onBind(Intent intent) {
+            return null;
+        }
+
+        @Override
+        public void onCreate() {
+            Toast.makeText(this, "Service created!", Toast.LENGTH_LONG).show();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://10.206.208.98:8000")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            final RequestInterface request = retrofit.create(RequestInterface.class);
+            Call<JSONResponse> call = request.getRealTime();
+            call.enqueue(new Callback<JSONResponse>() {
+                @Override
+                public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                    JSONResponse jsonResponse = response.body();
+                    data = new ArrayList<>(Arrays.asList(jsonResponse.getRealTime()));
+                    String meth="";
+                    switch (meth){
+                        case "memory":
+                            //get value of used_memory in real time
+                            adapter.diagnostics.get(1).setValue(data.get(0).getValue());
+                            break;
+                        case "sysInfo":
+                            //get value of Internal_Temperature in real time
+                            adapter.diagnostics.get(1).setValue(data.get(1).getValue());
+                            //get value of CPU_Utilisation in real time
+                            adapter.diagnostics.get(2).setValue(data.get(2).getValue());
+                            //get value of HDMI_Port_Status in real time
+                            adapter.diagnostics.get(3).setValue(data.get(3).getValue());
+                            break;
+                        case "network":
+                            //get value of stb_ip_address in real time
+                            adapter.diagnostics.get(2).setValue(data.get(5).getValue());
+                            //get value of stb_ethernet_port_status in real time
+                            adapter.diagnostics.get(4).setValue(data.get(4).getValue());
+                            break;
+                        case "software":
+                            //get value of total_software_updates in real time
+                            adapter.diagnostics.get(2).setValue(data.get(6).getValue());
+                            break;
+                        default:
+                            break;
+                    };
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onFailure(Call<JSONResponse> call, Throwable t) {
+                    //  mPtrFrame.refreshComplete();
+                    Log.d("Error", t.getMessage());
+                }
+            });
+        }
+
+        @Override
+        public void onDestroy() {
+            Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show();
+        }
+        @Override
+        public void onStart(Intent intent, int startid) {
+            Toast.makeText(this, "Service started by user.", Toast.LENGTH_LONG).show();
+        }
+    }*/
 }
