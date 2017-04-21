@@ -6,9 +6,9 @@ package info.androidhive.gmail.control_diagnostic.control;
 public class Command {
 
     private int frequency;
-    private int irCode;
+    private String irCode;
 
-    public Command(int frequency, int irCode) {
+    public Command(int frequency, String irCode) {
         this.frequency = frequency;
         this.irCode = irCode;
     }
@@ -21,11 +21,11 @@ public class Command {
         this.frequency = frequency;
     }
 
-    public int getIrCode() {
+    public String getIrCode() {
         return irCode;
     }
 
-    public void setIrCode(int irCode) {
+    public void setIrCode(String irCode) {
         this.irCode = irCode;
     }
 }

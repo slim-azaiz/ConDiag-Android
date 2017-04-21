@@ -42,6 +42,8 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   private ImageButton bChannelDown;
   private ImageButton bDigits;
   private Context context;
+  private String ipAddress;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -58,50 +60,78 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     bChannelDown = (ImageButton) findViewById(R.id.bChannelDown);
     bChannelDown.setOnClickListener(this);
     //deviceSpinner.setOnItemSelectedListener(this);
+
+    if (savedInstanceState == null) {
+      Bundle extras = getIntent().getExtras();
+      if(extras == null) {
+        ipAddress= null;
+      } else {
+        ipAddress= extras.getString("IpAddress");
+      }
+    } else {
+      ipAddress= (String) savedInstanceState.getSerializable("IpAddress");
+    }
   }
 
   @Override
-  public void onClick(View v) {
+  public void onClick(View view) {
     Command command = null;
-    switch (v.getId()) {
+    switch (view.getId()) {
+      //up 0xe0143085
+      //down 0xe0163085
+      //left 0xe0173085
+      //right 0xe0153085
+      //select 0xe0193085
       case R.id.bPower:
-        postCommand();
+        postCommand(view,"0xe0193085");
+        //postCommand(view,"0x708b3085");
         break;
       case R.id.bVolUp:
+        postCommand(view,"0xe0153085");
+        //postCommand(view,"0xe01c3085");
         break;
       case R.id.bVolDown:
+        postCommand(view,"0xe0173085");
+        //postCommand(view,"0xe01d3085");
         break;
       case R.id.bChannelUp:
+        postCommand(view,"0xe0143085");
+        //postCommand(view,"0xe01e3085");
         break;
       case R.id.bChannelDown:
+        postCommand(view,"0xe0163085");
+        // /postCommand(view,"0xe01f3085");
         break;
       default:
         break;
     }
   }
-  private void postCommand(){
+  private void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()
             //.baseUrl("http://"+ipAddress+":8000")
-            .baseUrl("http://10.206.208.170:8000")
+            .baseUrl("http://10.206.208.78:8000")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
     RequestInterface request = retrofit.create(RequestInterface.class);
     Call<JSONResponse> call ;
-    call = request.encoded("hi");
+    call = request.encoded(key);
     call.enqueue(new Callback<JSONResponse>() {
       @Override
       public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-        Log.i("POWER","1");
 
       }
       @Override
       public void onFailure(Call<JSONResponse> call, Throwable t) {
         //  mPtrFrame.refreshComplete();
-        //Snackbar.make(getCurrentFocus(), "Unable to fetch json: " + t.getMessage(), Snackbar.LENGTH_LONG)
-        //        .setAction("Action", null).show();
-        Log.i("ERROR","1");
+        Log.i("MESSAGE",t.getMessage());
+        if(!t.getMessage().contains("JsonReader")) {
 
+
+          Snackbar.make(view, "Unable to fetch json: " + t.getMessage(), Snackbar.LENGTH_LONG)
+                  .setAction("Action", null).show();
+
+        }
       }
     });
 

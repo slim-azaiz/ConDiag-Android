@@ -10,25 +10,32 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/plus_selector"
+        android:src="@drawable/down_selector"
         android:background="@null"
-        android:id="@+id/bVolUp"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/bChannelDown"
-        android:layout_toStartOf="@+id/bChannelDown"
-        android:layout_marginRight="36dp"
-        android:layout_marginEnd="36dp" />
+        android:id="@+id/bChannelDown"
+        android:layout_below="@+id/bChannelUp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/power_selector"
+        android:background="@null"
+        android:id="@+id/bPower"
+        android:layout_above="@+id/bChannelUp"
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/up_selector"
+        android:src="@drawable/plus_selector"
         android:background="@null"
-        android:id="@+id/bChannelUp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/bVolUp"
+        android:layout_above="@+id/bVolDown"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageButton
         style="?android:attr/buttonStyleSmall"
@@ -37,28 +44,21 @@
         android:src="@drawable/minus_selector"
         android:background="@null"
         android:id="@+id/bVolDown"
-        android:layout_above="@+id/bVolUp"
+        android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/bVolUp"
         android:layout_alignEnd="@+id/bVolUp" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/power_selector"
-        android:background="@null"
-        android:id="@+id/bPower"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/bChannelDown" />
 
     <ImageButton
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/down_selector"
+        android:src="@drawable/up_selector"
         android:background="@null"
-        android:id="@+id/bChannelDown"
-        android:layout_above="@+id/bVolUp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/bChannelUp"
+        android:layout_alignTop="@+id/bVolUp"
+        android:layout_alignLeft="@+id/bChannelDown"
+        android:layout_alignStart="@+id/bChannelDown"
+        android:layout_marginTop="15dp" />
+
 
 </RelativeLayout>

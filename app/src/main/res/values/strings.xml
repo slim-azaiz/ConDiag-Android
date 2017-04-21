@@ -1,4 +1,8 @@
 <resources>
+
+    <string name="powerKey">"0x708b3084"</string>
+
+
     <string name="app_name">conDiag</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
