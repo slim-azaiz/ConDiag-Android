@@ -38,6 +38,7 @@ import java.util.List;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.ServerAdapter;
+import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
 import info.androidhive.gmail.control_diagnostic.control.ControlActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.helper.DividerItemDecoration;
@@ -59,9 +60,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private Button buttonDiagnostic;
     private Button buttonControl;
     private Button buttonDiscovery;
-
-
-
 
 
     private TabLayout tabLayout;
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         Log.i("TEST","2");
 
         actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        actionBar.setHomeAsUpIndicator(R.drawable.home_toolbar);
 
         Log.i("TEST","3");
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -155,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
         buttonControl.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ControlActivity.class);
+                Intent intent = new Intent(MainActivity.this, ControlDiagnostic.class);
                 startActivity(intent);
             }
         });
@@ -184,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
-                            case R.id.item_navigation_drawer_accueil:
+                            case R.id.item_navigation_drawer_discovery:
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
@@ -192,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
-                            case R.id.item_navigation_drawer_rendez_vous:
+                            case R.id.item_navigation_drawer_history:
                                 menuItem.setChecked(true);
                                 Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);

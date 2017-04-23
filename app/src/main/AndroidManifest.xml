@@ -41,14 +41,15 @@
             />
         <activity android:name=".control_diagnostic.ControlDiagnostic"
             android:label=""
-            android:parentActivityName=".activity.MainActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity android:name=".control_diagnostic.control.ControlActivity"
             android:label="Control"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".control_diagnostic.ControlDiagnostic"
             />
         <activity android:name=".control_diagnostic.diagnostic.DiagnosticActivity"
             android:label="Diagnostic"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".control_diagnostic.ControlDiagnostic"
             android:theme="@style/AppTheme.NoActionBar"
             />
     </application>

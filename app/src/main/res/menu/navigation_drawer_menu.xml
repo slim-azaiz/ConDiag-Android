@@ -4,11 +4,11 @@
     <group android:checkableBehavior="single">
         <item
             android:checked="true"
-            android:id="@+id/item_navigation_drawer_accueil"
+            android:id="@+id/item_navigation_drawer_discovery"
             android:icon="@drawable/ic_inbox_black_24dp"
-            android:title="Discovry" />
+            android:title="Discovery" />
         <item
-            android:id="@+id/item_navigation_drawer_rendez_vous"
+            android:id="@+id/item_navigation_drawer_history"
             android:icon="@drawable/ic_content_add"
             android:title="History" />
         <item
@@ -24,9 +24,9 @@
                 android:icon="@drawable/ic_action_action_settings"
                 android:title="Settings" />
             <item
-                android:id="@+id/item_navigation_drawer_help"
-                android:icon="@drawable/ic_action_action_help"
-                android:title="Help" />
+                android:id="@+id/item_navigation_drawer_logOut"
+                android:icon="@drawable/logout"
+                android:title="Log out" />
         </menu>
     </item>
 

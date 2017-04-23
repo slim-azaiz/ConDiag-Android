@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ public class NavigationActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private Toolbar toolbar;
     private ActionBar actionBar;
-    private DrawerLayout drawerLayout;
+    private static DrawerLayout drawerLayout;
     private String username;
     private ViewPager viewPager;
     @Override
@@ -66,9 +67,10 @@ public class NavigationActivity extends AppCompatActivity {
 
     private void logout(){
         //Creating an alert dialog to confirm logout
+        Log.i("HHH","disconnect");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("Êtes-vous sûr de vouloir se déconnecter?");
-        alertDialogBuilder.setPositiveButton("Oui",
+        alertDialogBuilder.setMessage("Are you sure you want to log out ?");
+        alertDialogBuilder.setPositiveButton("YES",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -93,7 +95,7 @@ public class NavigationActivity extends AppCompatActivity {
                     }
                 });
 
-        alertDialogBuilder.setNegativeButton("Non",
+        alertDialogBuilder.setNegativeButton("NO",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -107,13 +109,15 @@ public class NavigationActivity extends AppCompatActivity {
 
     }
 
+
+
     private void setupNavigationDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
-                            case R.id.item_navigation_drawer_accueil:
+                            case R.id.item_navigation_drawer_discovery:
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
@@ -121,7 +125,7 @@ public class NavigationActivity extends AppCompatActivity {
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
-                            case R.id.item_navigation_drawer_rendez_vous:
+                            case R.id.item_navigation_drawer_history:
                                 menuItem.setChecked(true);
                                 Toast.makeText(NavigationActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -158,6 +162,11 @@ public class NavigationActivity extends AppCompatActivity {
                                 menuItem.setChecked(true);
                                 Toast.makeText(NavigationActivity.this, menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
+                            case R.id.item_navigation_drawer_logOut:
+                                menuItem.setChecked(true);
+                                logout();
+                                drawerLayout.closeDrawer(GravityCompat.START);
+
                         }
                         return true;
                     }

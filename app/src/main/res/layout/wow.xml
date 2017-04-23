@@ -1,0 +1,233 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp" >
+
+
+    <ImageButton
+        android:background="@drawable/three_d_selector"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:id="@+id/bSelect"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/bUp" />
+
+    <TextView
+        android:id="@+id/okText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/bSelect"
+        android:layout_alignTop="@+id/bSelect"
+        android:layout_alignRight="@+id/bSelect"
+        android:layout_alignBottom="@+id/bSelect"
+        android:layout_margin="1dp"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:text="OK"
+        android:textColor="@color/colorPrimary" />
+
+
+    <ImageButton
+        android:background="@drawable/power_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bPower"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp" />
+
+
+    <ImageButton
+        android:background="@drawable/p_plus_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bChannelUp"
+        android:layout_below="@+id/bRight"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="44dp" />
+
+    <ImageButton
+        android:background="@drawable/v_plus_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bVolUp"
+        android:layout_alignTop="@+id/bChannelUp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:background="@drawable/v_minus_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bVolDown"
+        android:layout_below="@+id/bVolUp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:background="@drawable/empty_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bExit"
+        android:layout_alignTop="@+id/bBack"
+        android:layout_toLeftOf="@+id/bMute"
+        android:layout_toStartOf="@+id/bMute" />
+    <TextView
+        android:id="@+id/exitText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/bExit"
+        android:layout_alignRight="@+id/bExit"
+        android:layout_alignBottom="@+id/bExit"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:text="EXIT"
+        android:textColor="@color/md_white_1000"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="1dp"
+        android:layout_alignTop="@+id/bExit" />
+
+    <ImageButton
+        android:background="@drawable/p_minus_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bChannelDown"
+        android:layout_below="@+id/bChannelUp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:background="@drawable/green_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/bGreen"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/bBack"
+        android:layout_alignStart="@+id/bBack" />
+
+    <ImageButton
+        android:background="@drawable/yellow_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/bYellow"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/bExit"
+        android:layout_alignStart="@+id/bExit" />
+
+    <ImageButton
+        android:background="@drawable/empty_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bMenu"
+        android:layout_above="@+id/bExit"
+        android:layout_alignLeft="@+id/okText"
+        android:layout_alignStart="@+id/okText" />
+
+    <TextView
+        android:id="@+id/menuText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/bMenu"
+        android:layout_alignTop="@+id/bMenu"
+        android:layout_alignRight="@+id/bMenu"
+        android:layout_alignBottom="@+id/bMenu"
+        android:layout_margin="1dp"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:text="MENU"
+        android:textColor="@color/md_white_1000" />
+
+    <ImageButton
+        android:background="@drawable/blue_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/bBlue"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/bExit"
+        android:layout_toEndOf="@+id/bExit" />
+
+    <ImageButton
+        android:background="@drawable/red_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/bRed"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/bGreen"
+        android:layout_toStartOf="@+id/bGreen"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp" />
+
+    <ImageButton
+        android:background="@drawable/back_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bBack"
+        android:layout_above="@+id/bGreen"
+        android:layout_toRightOf="@+id/bPower"
+        android:layout_toEndOf="@+id/bPower"
+        android:layout_marginBottom="16dp" />
+
+    <ImageButton
+        android:background="@drawable/mute_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bMute"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:background="@drawable/left_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bLeft"
+        android:layout_alignTop="@+id/okText"
+        android:layout_toLeftOf="@+id/bSelect"
+        android:layout_toStartOf="@+id/bSelect" />
+
+    <ImageButton
+        android:background="@drawable/right_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bRight"
+        android:layout_alignTop="@+id/okText"
+        android:layout_toRightOf="@+id/bSelect"
+        android:layout_toEndOf="@+id/bSelect" />
+
+    <ImageButton
+        android:background="@drawable/down_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bDown"
+        android:layout_above="@+id/bMenu"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:background="@drawable/info_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bInfo"
+        android:layout_alignTop="@+id/bSelect"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:background="@drawable/up_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bUp"
+        android:layout_marginTop="23dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/bDown"
+        android:layout_alignStart="@+id/bDown" />
+
+
+</RelativeLayout>

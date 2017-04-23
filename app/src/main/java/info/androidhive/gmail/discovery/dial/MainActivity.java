@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setSupportActionBar(toolbar);
         Log.i("TEST","1");
         actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        actionBar.setHomeAsUpIndicator(R.drawable.home_toolbar);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         Log.i("TEST","4");
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
-                            case R.id.item_navigation_drawer_accueil:
+                            case R.id.item_navigation_drawer_discovery:
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
-                            case R.id.item_navigation_drawer_rendez_vous:
+                            case R.id.item_navigation_drawer_history:
                                 menuItem.setChecked(true);
                                 Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:checked="true"
+            android:id="@+id/item_navigation_drawer_discovery"
+            android:icon="@drawable/ic_inbox_black_24dp"
+            android:title="Discovery" />
+        <item
+            android:id="@+id/item_navigation_drawer_history"
+            android:icon="@drawable/ic_content_add"
+            android:title="History" />
+        <item
+            android:id="@+id/item_navigation_drawer_notifications"
+            android:icon="@drawable/ic_action_social_notifications_on"
+            android:title="Notifications" />
+    </group>
+
+    <item android:title="Subheader">
+        <menu>
+            <item
+                android:id="@+id/item_navigation_drawer_settings"
+                android:icon="@drawable/ic_action_action_settings"
+                android:title="Settings" />
+            <item
+                android:id="@+id/item_navigation_drawer_help"
+                android:icon="@drawable/ic_action_action_help"
+                android:title="Help" />
+
+        </menu>
+    </item>
+
+</menu>

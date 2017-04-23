@@ -39,7 +39,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHold
     private List<Server> mServers;
     private List<Server> mFilteredServerList;
 
-    private ServerAdapterListener listener;
+    public static ServerAdapterListener listener;
     private SparseBooleanArray selectedItems;
 
 

@@ -5,14 +5,17 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
@@ -43,11 +46,11 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   private ImageButton bDigits;
   private Context context;
   private String ipAddress;
-
+  private View myView;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_control);
+    setContentView(R.layout.wow);
 
     bPower = (ImageButton) findViewById(R.id.bPower);
     bPower.setOnClickListener(this);
@@ -71,6 +74,38 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     } else {
       ipAddress= (String) savedInstanceState.getSerializable("IpAddress");
     }
+
+    final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) this
+            .findViewById(android.R.id.content)).getChildAt(0);
+    viewGroup.setOnTouchListener(new OnSwipeTouchListener(this) {
+      @Override
+      public void onSwipeDown() {
+        Log.d("TOUCH","Action was DOWN");
+        postCommand(viewGroup,"0xe0193085");
+
+      }
+
+      @Override
+      public void onSwipeLeft() {
+        Log.d("TOUCH","Action was LEFT");
+        postCommand(viewGroup,"0xe0193085");
+
+      }
+
+      @Override
+      public void onSwipeUp() {
+        Log.d("TOUCH","Action was UP");
+        postCommand(viewGroup,"0xe0193085");
+
+      }
+
+      @Override
+      public void onSwipeRight() {
+        Log.d("TOUCH","Action was RIGHT");
+        postCommand(viewGroup,"0xe0193085");
+
+      }
+    });
   }
 
   @Override
@@ -136,4 +171,5 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     });
 
   }
+
 }
