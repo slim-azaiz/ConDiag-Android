@@ -103,7 +103,7 @@ public class Fragment1 extends Fragment   {
        // Log.i("Fragment1",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-               .baseUrl("http://10.206.208.116"+":8000")
+               .baseUrl("http://10.206.208.70"+":8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -191,8 +191,18 @@ public class Fragment1 extends Fragment   {
                 } catch (Exception e) {
                     Log.e("ERROR", "showProgressDialog", e);
             }
-                Snackbar.make(getView(), "Unable to fetch json: " + t.getMessage(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                Snackbar.make(getView(), "Unable to fetch json", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                handler=null;
+                                setUserVisibleHint(true);
+
+                            }
+                        })
+                        .show();
+
 //                Log.d("Error",t.getMessage());
 
             }
@@ -208,7 +218,7 @@ public class Fragment1 extends Fragment   {
             public void run() {
                 handler.postDelayed(this, 1000);
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://10.206.208.116:8000")
+                        .baseUrl("http://10.206.208.70:8000")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 final RequestInterface request = retrofit.create(RequestInterface.class);
@@ -220,11 +230,11 @@ public class Fragment1 extends Fragment   {
                         data = new ArrayList<>(Arrays.asList(jsonResponse.getRealTime()));
                         Log.i("METHOD_THREAD",meth);
                         switch (adapter.diagnostics.get(1).getParameter()){
-                            case "used_memory":
+                            case "Used memory":
                                 //get value of used_memory in real time
                                 adapter.diagnostics.get(1).setValue(data.get(0).getValue());
                                 break;
-                            case "Internal_Temperature":
+                            case "Internal temperature":
                                 //get value of Internal_Temperature in real time
                                 adapter.diagnostics.get(1).setValue(data.get(1).getValue());
                                 break;
@@ -232,15 +242,15 @@ public class Fragment1 extends Fragment   {
                         if (adapter.diagnostics.size()>=3) {
 
                             switch (adapter.diagnostics.get(2).getParameter()) {
-                                case "stb_ip_address":
+                                case "STB IP Address":
                                     //get value of stb_ip_address in real time
                                     adapter.diagnostics.get(2).setValue(data.get(5).getValue());
                                     break;
-                                case "total_software_updates":
+                                case "Total software updates":
                                     //get value of total_software_updates in real time
                                     adapter.diagnostics.get(2).setValue(data.get(6).getValue());
                                     break;
-                                case "CPU_Utilisation":
+                                case "CPU utilisation":
                                     //get value of CPU_Utilisation in real time
                                     adapter.diagnostics.get(2).setValue(data.get(2).getValue());
                                     break;
@@ -249,7 +259,7 @@ public class Fragment1 extends Fragment   {
                         }
                         if (adapter.diagnostics.size()>=4) {
                             switch (adapter.diagnostics.get(3).getParameter()) {
-                                case "HDMI_Port_Status":
+                                case "HDMI port status":
                                     //get value of HDMI_Port_Status in real time
                                     adapter.diagnostics.get(3).setValue(data.get(3).getValue());
                                     break;
@@ -259,7 +269,7 @@ public class Fragment1 extends Fragment   {
                         if (adapter.diagnostics.size()>=5) {
 
                             switch (adapter.diagnostics.get(4).getParameter()) {
-                                case "stb_ethernet_port_status":
+                                case "STB ethernet port status":
                                     //get value of stb_ethernet_port_status in real time
                                     adapter.diagnostics.get(4).setValue(data.get(4).getValue());
                                     break;

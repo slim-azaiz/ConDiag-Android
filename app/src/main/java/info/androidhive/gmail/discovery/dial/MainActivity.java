@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private ViewPager viewPager;
     private Toolbar toolbar;
     public  Context context=this;
+    private Snackbar mSnackbar;;
 
     //swipe
     public static PtrClassicFrameLayout mPtrFrame;
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mPtrFrame.postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 mPtrFrame.autoRefresh();
             }
         }, 100);
@@ -254,8 +256,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 mPtrFrame.refreshComplete();
                // swipeRefreshLayout.setRefreshing(false);
                 if(ServerFinder.tabIpFilter.isEmpty()){
-                    Snackbar.make(getCurrentFocus(), "No STB found Please refresh again", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    mSnackbar.make(getCurrentFocus(), "No STB found", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Please refresh again", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mPtrFrame.autoRefresh();
+                                }
+                            })
+                            .show();
                 }
             }
         }, 10000);
@@ -365,6 +373,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         // swipe refresh is performed, fetch the servers again
+
         getInbox();
     }
 

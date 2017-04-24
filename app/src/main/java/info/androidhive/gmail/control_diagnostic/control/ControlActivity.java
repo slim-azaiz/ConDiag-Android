@@ -39,14 +39,27 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
   private Map<CommandType, Command> commandMap;
   private ImageButton bPower;
-  private ImageButton bVolumeUp;
-  private ImageButton bVolumeDown;
+  private ImageButton bVolUp;
+  private ImageButton bVolDown;
   private ImageButton bChannelUp;
   private ImageButton bChannelDown;
-  private ImageButton bDigits;
+  private ImageButton bUp;
+  private ImageButton bDown;
+  private ImageButton bLeft;
+  private ImageButton bRight;
+  private ImageButton bExit;
+  private ImageButton bMenu;
+  private ImageButton bRed;
+  private ImageButton bGreen;
+  private ImageButton bBlue;
+  private ImageButton bYellow;
+  private ImageButton bInfo;
+  private ImageButton bSelect;
+  private ImageButton bBack;
+  private ImageButton bMute;
+
   private Context context;
   private String ipAddress;
-  private View myView;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -54,15 +67,43 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
     bPower = (ImageButton) findViewById(R.id.bPower);
     bPower.setOnClickListener(this);
-    bVolumeUp = (ImageButton) findViewById(R.id.bVolUp);
-    bVolumeUp.setOnClickListener(this);
-    bVolumeDown = (ImageButton) findViewById(R.id.bVolDown);
-    bVolumeDown.setOnClickListener(this);
+    bVolUp = (ImageButton) findViewById(R.id.bVolUp);
+    bVolUp.setOnClickListener(this);
+    bVolDown = (ImageButton) findViewById(R.id.bVolDown);
+    bVolDown.setOnClickListener(this);
     bChannelUp = (ImageButton) findViewById(R.id.bChannelUp);
     bChannelUp.setOnClickListener(this);
     bChannelDown = (ImageButton) findViewById(R.id.bChannelDown);
     bChannelDown.setOnClickListener(this);
-    //deviceSpinner.setOnItemSelectedListener(this);
+    bUp = (ImageButton) findViewById(R.id.bUp);
+    bUp.setOnClickListener(this);
+
+    bDown = (ImageButton) findViewById(R.id.bDown);
+    bDown.setOnClickListener(this);
+    bLeft = (ImageButton) findViewById(R.id.bLeft);
+    bLeft.setOnClickListener(this);
+    bRight = (ImageButton) findViewById(R.id.bRight);
+    bRight.setOnClickListener(this);
+    bExit = (ImageButton) findViewById(R.id.bExit);
+    bExit.setOnClickListener(this);
+    bMenu = (ImageButton) findViewById(R.id.bMenu);
+    bMenu.setOnClickListener(this);
+    bRed = (ImageButton) findViewById(R.id.bRed);
+    bRed.setOnClickListener(this);
+    bGreen = (ImageButton) findViewById(R.id.bGreen);
+    bGreen.setOnClickListener(this);
+    bBlue = (ImageButton) findViewById(R.id.bBlue);
+    bBlue.setOnClickListener(this);
+    bInfo = (ImageButton) findViewById(R.id.bInfo);
+    bInfo.setOnClickListener(this);
+    bSelect = (ImageButton) findViewById(R.id.bSelect);
+    bSelect.setOnClickListener(this);
+    bBack = (ImageButton) findViewById(R.id.bBack);
+    bBack.setOnClickListener(this);
+    bMute = (ImageButton) findViewById(R.id.bMute);
+    bMute.setOnClickListener(this);
+    bYellow = (ImageButton) findViewById(R.id.bYellow);
+    bYellow.setOnClickListener(this);
 
     if (savedInstanceState == null) {
       Bundle extras = getIntent().getExtras();
@@ -81,28 +122,28 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
       @Override
       public void onSwipeDown() {
         Log.d("TOUCH","Action was DOWN");
-        postCommand(viewGroup,"0xe0193085");
+        postCommand(viewGroup,"0xe0163085");
 
       }
 
       @Override
       public void onSwipeLeft() {
         Log.d("TOUCH","Action was LEFT");
-        postCommand(viewGroup,"0xe0193085");
+        postCommand(viewGroup,"0xe0173085");
 
       }
 
       @Override
       public void onSwipeUp() {
         Log.d("TOUCH","Action was UP");
-        postCommand(viewGroup,"0xe0193085");
+        postCommand(viewGroup,"0xe0143085");
 
       }
 
       @Override
       public void onSwipeRight() {
         Log.d("TOUCH","Action was RIGHT");
-        postCommand(viewGroup,"0xe0193085");
+        postCommand(viewGroup,"0xe0153085");
 
       }
     });
@@ -112,30 +153,64 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   public void onClick(View view) {
     Command command = null;
     switch (view.getId()) {
-      //up 0xe0143085
-      //down 0xe0163085
-      //left 0xe0173085
-      //right 0xe0153085
-      //select 0xe0193085
       case R.id.bPower:
-        postCommand(view,"0xe0193085");
-        //postCommand(view,"0x708b3085");
+        Log.i("bPower","Success");
+        postCommand(view,"0x708b3085");
         break;
       case R.id.bVolUp:
-        postCommand(view,"0xe0153085");
-        //postCommand(view,"0xe01c3085");
+        postCommand(view,"0xe01c3085");
         break;
       case R.id.bVolDown:
-        postCommand(view,"0xe0173085");
-        //postCommand(view,"0xe01d3085");
+        postCommand(view,"0xe01d3085");
         break;
       case R.id.bChannelUp:
-        postCommand(view,"0xe0143085");
-        //postCommand(view,"0xe01e3085");
+        postCommand(view,"0xe01e3085");
         break;
       case R.id.bChannelDown:
+        postCommand(view,"0xe01f3085");
+        break;
+      case R.id.bUp:
+        Log.i("bUp","Success");
+        postCommand(view,"0xe0143085");
+        break;
+      case R.id.bDown:
         postCommand(view,"0xe0163085");
-        // /postCommand(view,"0xe01f3085");
+        break;
+      case R.id.bLeft:
+        postCommand(view,"0xe0173085");
+        break;
+      case R.id.bRight:
+        postCommand(view,"0xe0153085");
+        break;
+      case R.id.bSelect:
+        postCommand(view,"0xe0193085");
+        break;
+      case R.id.bInfo:
+        postCommand(view,"0xe0133085");
+        break;
+      case R.id.bMenu:
+        postCommand(view,"0xe0163085");
+        break;
+      case R.id.bExit:
+       // postCommand(view,"0xe0163085");
+        break;
+      case R.id.bMute:
+        postCommand(view,"0xe01b3085");
+        break;
+      case R.id.bBack:
+        postCommand(view,"0xd0263085");
+        break;
+      case R.id.bRed:
+        postCommand(view,"0x90603085");
+        break;
+      case R.id.bBlue:
+        postCommand(view,"0x90633085");
+        break;
+      case R.id.bYellow:
+        postCommand(view,"0x90623085");
+        break;
+      case R.id.bGreen:
+        postCommand(view,"0x90613085");
         break;
       default:
         break;
@@ -144,7 +219,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   private void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()
             //.baseUrl("http://"+ipAddress+":8000")
-            .baseUrl("http://10.206.208.78:8000")
+            .baseUrl("http://10.206.208.70:8000")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -163,8 +238,14 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         if(!t.getMessage().contains("JsonReader")) {
 
 
-          Snackbar.make(view, "Unable to fetch json: " + t.getMessage(), Snackbar.LENGTH_LONG)
-                  .setAction("Action", null).show();
+          Snackbar.make(view, "Unable to fetch json", Snackbar.LENGTH_INDEFINITE)
+                  .setAction("Retry", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                  })
+                  .show();
 
         }
       }
