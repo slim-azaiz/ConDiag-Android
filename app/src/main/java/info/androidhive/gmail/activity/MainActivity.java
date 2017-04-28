@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -26,6 +27,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.text.format.DateFormat;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,18 +37,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.ServerAdapter;
 import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
-import info.androidhive.gmail.control_diagnostic.control.ControlActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.helper.DividerItemDecoration;
 import info.androidhive.gmail.model.Server;
 import info.androidhive.gmail.settings.SettingsActivity;
 import info.androidhive.gmail.sqlite.DatabaseHelper;
+import info.androidhive.gmail.wol.ARPInfo;
+import info.androidhive.gmail.wol.WakeOnLan;
+
+import static info.androidhive.gmail.utils.Config.HISTORY_LOG;
+import static info.androidhive.gmail.utils.Config.WAKE_ON_LAN_LOG;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, ServerAdapter.ServerAdapterListener {
     private  List<Server> servers = new ArrayList<>();
@@ -57,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private ActionMode actionMode;
     public static DatabaseHelper db;
     private Button buttonSave;
-    private Button buttonDiagnostic;
+    private Button buttonWOL;
     private Button buttonControl;
     private Button buttonDiscovery;
 
@@ -78,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.activity_main);
         db = new DatabaseHelper(this);
         buttonSave = (Button) findViewById(R.id.buttonSave);
-        buttonDiagnostic = (Button) findViewById(R.id.buttonTest);
+        buttonWOL = (Button) findViewById(R.id.buttonWOL);
         buttonControl = (Button) findViewById(R.id.buttonTest2);
         buttonDiscovery = (Button) findViewById(R.id.buttonDiscovery);
 
@@ -140,15 +151,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         buttonSave.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Log.i("MAX_ID",String.valueOf(db.maxID()));
-                saveServerToLocalStorage(db.maxID()+1,String.valueOf(db.maxID()+1), "Friendly name", "Model 1", "15:30pm", "mipmap://" + R.mipmap.google, 1, 1, 4);;
+                Log.i(HISTORY_LOG,"MAX_ID = "+String.valueOf(db.maxID()));;
+                saveServerToLocalStorage(db.maxID()+1,String.valueOf(db.maxID()+1), "Friendly name", "Model 1",getCurrentTime() , "mipmap://" + R.mipmap.google, 1, 1, 4);;
             }
         });
 
-        buttonDiagnostic.setOnClickListener(new View.OnClickListener(){
+
+
+        buttonWOL.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DiagnosticActivity.class);
-                startActivity(intent);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            doWakeOnLan();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
         buttonControl.setOnClickListener(new View.OnClickListener(){
@@ -176,6 +198,44 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         );
     }
 
+
+
+    private String getCurrentTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy  HH:mm a  ");
+        return  sdf.format(new Date());
+
+    }
+
+    private void doWakeOnLan() throws IllegalArgumentException {
+       // String ipAddress = editIpAddress.getText().toString();
+        String ipAddress = "10.206.208.123";
+
+        if (TextUtils.isEmpty(ipAddress)) {
+            Log.d(WAKE_ON_LAN_LOG,"Invalid Ip Address");
+            return;
+        }
+
+        Log.d(WAKE_ON_LAN_LOG,"IP address: " + ipAddress);
+
+        // Get mac address from IP (using arp cache)
+        String macAddress = ARPInfo.getMACFromIPAddress(ipAddress);
+
+        if (macAddress == null) {
+            Log.d(WAKE_ON_LAN_LOG,"Could not find MAC address, cannot send WOL packet without it.");
+            return;
+        }
+
+        Log.d(WAKE_ON_LAN_LOG,"MAC address: " + macAddress);
+        Log.d(WAKE_ON_LAN_LOG,"IP address2: " + ARPInfo.getIPAddressFromMAC(macAddress));
+
+        // Send Wake on lan packed to ip/mac
+        try {
+            WakeOnLan.sendWakeOnLan(ipAddress, macAddress);
+            Log.d(WAKE_ON_LAN_LOG,"WOL Packet sent");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void setupNavigationDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {

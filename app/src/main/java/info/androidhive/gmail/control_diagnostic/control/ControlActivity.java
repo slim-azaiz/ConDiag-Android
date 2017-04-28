@@ -219,7 +219,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   private void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()
             //.baseUrl("http://"+ipAddress+":8000")
-            .baseUrl("http://10.206.208.70:8000")
+            .baseUrl("http://10.206.208.98:8000")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

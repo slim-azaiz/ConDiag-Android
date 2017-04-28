@@ -103,7 +103,7 @@ public class Fragment1 extends Fragment   {
        // Log.i("Fragment1",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-               .baseUrl("http://10.206.208.70"+":8000")
+               .baseUrl("http://10.206.208.98"+":8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -218,7 +218,7 @@ public class Fragment1 extends Fragment   {
             public void run() {
                 handler.postDelayed(this, 1000);
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://10.206.208.70:8000")
+                        .baseUrl("http://10.206.208.98:8000")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 final RequestInterface request = retrofit.create(RequestInterface.class);
