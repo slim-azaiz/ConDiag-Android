@@ -47,6 +47,10 @@
             android:label="Control"
             android:parentActivityName=".control_diagnostic.ControlDiagnostic"
             />
+        <activity android:name=".control_diagnostic.control.basicmultitouch.TouchActivity"
+            android:label="Control"
+            android:parentActivityName=".control_diagnostic.control.ControlActivity"
+            />
         <activity android:name=".control_diagnostic.diagnostic.DiagnosticActivity"
             android:label="Diagnostic"
             android:parentActivityName=".control_diagnostic.ControlDiagnostic"
