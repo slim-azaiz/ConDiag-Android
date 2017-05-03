@@ -17,21 +17,30 @@
 package info.androidhive.gmail.control_diagnostic.control.basicmultitouch;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.ViewGroup;
 
 import info.androidhive.gmail.R;
+import info.androidhive.gmail.control_diagnostic.control.OnSwipeTouchListener;
+
+import static info.androidhive.gmail.control_diagnostic.control.ControlActivity.postCommand;
 
 
 public class TouchActivity extends AppCompatActivity {
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TouchDisplayView mView;
+        TouchDisplayView mView = new TouchDisplayView(this );
 
         setContentView(R.layout.touch_layout);
+        Log.d("TOUCH","fffff");
 
     }
+
 
 }

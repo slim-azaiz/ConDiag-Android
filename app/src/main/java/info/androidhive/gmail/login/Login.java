@@ -63,6 +63,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
+
         editor.putString("ipAddress", ipAddress);  // Saving string//        Snackbar.make(getCurrentFocus(), ipAddress, Snackbar.LENGTH_LONG)
   //              .setAction("Action", null).show();
 
@@ -222,8 +223,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     //data.put("","");
                     //data.put("PASSWORD", password);
                     RequestHandler ruc = new RequestHandler();
-                   // String result = ruc.sendPostRequest("http://"+ipAddress+":8000/authentificate/"+username+"/"+password,data);
-                    String result = ruc.sendPostRequest("http://10.206.208.78:8000/authentificate/"+username+"/"+password,data);
+                   //String result = ruc.sendPostRequest("http://"+ipAddress+":8000/authentificate/"+username+"/"+password,data);
+                    String result = ruc.sendPostRequest("http://10.206.208.162:8000/authentificate/"+username+"/"+password,data);
                     return result;
                 }
             }

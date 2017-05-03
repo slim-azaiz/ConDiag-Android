@@ -1,15 +1,21 @@
 package info.androidhive.gmail.control_diagnostic.control;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 import info.androidhive.gmail.R;
+import info.androidhive.gmail.activity.MainActivity;
+import info.androidhive.gmail.control_diagnostic.control.basicmultitouch.TouchActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.Fragment1;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
@@ -115,38 +123,6 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     } else {
       ipAddress= (String) savedInstanceState.getSerializable("IpAddress");
     }
-
-    final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) this
-            .findViewById(android.R.id.content)).getChildAt(0);
-    viewGroup.setOnTouchListener(new OnSwipeTouchListener(this) {
-      @Override
-      public void onSwipeDown() {
-        Log.d("TOUCH","Action was DOWN");
-        postCommand(viewGroup,"0xe0163085");
-
-      }
-
-      @Override
-      public void onSwipeLeft() {
-        Log.d("TOUCH","Action was LEFT");
-        postCommand(viewGroup,"0xe0173085");
-
-      }
-
-      @Override
-      public void onSwipeUp() {
-        Log.d("TOUCH","Action was UP");
-        postCommand(viewGroup,"0xe0143085");
-
-      }
-
-      @Override
-      public void onSwipeRight() {
-        Log.d("TOUCH","Action was RIGHT");
-        postCommand(viewGroup,"0xe0153085");
-
-      }
-    });
   }
 
   @Override
@@ -216,10 +192,10 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         break;
     }
   }
-  private void postCommand(final View view,String key){
+  public static void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()
             //.baseUrl("http://"+ipAddress+":8000")
-            .baseUrl("http://10.206.208.98:8000")
+            .baseUrl("http://10.206.208.73:8000")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -234,7 +210,8 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
       @Override
       public void onFailure(Call<JSONResponse> call, Throwable t) {
         //  mPtrFrame.refreshComplete();
-        Log.i("MESSAGE",t.getMessage());
+        Log.i("MESSAGE",t.
+                getMessage());
         if(!t.getMessage().contains("JsonReader")) {
 
 
@@ -252,5 +229,56 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     });
 
   }
+
+  public static void postCommand(String key){
+    Retrofit retrofit = new Retrofit.Builder()
+            //.baseUrl("http://"+ipAddress+":8000")
+            .baseUrl("http://10.206.208.73:8000")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    RequestInterface request = retrofit.create(RequestInterface.class);
+    Call<JSONResponse> call ;
+    call = request.encoded(key);
+    call.enqueue(new Callback<JSONResponse>() {
+      @Override
+      public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+
+      }
+      @Override
+      public void onFailure(Call<JSONResponse> call, Throwable t) {
+        //  mPtrFrame.refreshComplete();
+        Log.i("MESSAGE",t.
+                getMessage());
+
+      }
+    });
+
+  }
+
+
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.menu_control, menu);
+    MenuItem direction = menu.findItem(R.id.direction);
+    return true;
+  }
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle action bar item clicks here. The action bar will
+    // automatically handle clicks on the Home/Up button, so long
+    // as you specify a parent activity in AndroidManifest.xml.
+    switch (item.getItemId()) {
+      case R.id.direction:
+        Intent intent = new Intent(ControlActivity.this, TouchActivity.class);
+        startActivity(intent);
+        return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
 
 }

@@ -1,9 +1,11 @@
 package info.androidhive.gmail.control_diagnostic.control;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import static info.androidhive.gmail.control_diagnostic.control.ControlActivity.postCommand;
 
 /**
  * Created by slim on 4/23/17.
@@ -62,15 +64,31 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
         }
     }
 
-    public void onSwipeRight() {
+
+
+    public void onSwipeDown() {
+        Log.d("TOUCH","Action was DOWN");
+        postCommand("0xe0163085");
+
     }
 
     public void onSwipeLeft() {
+        Log.d("TOUCH","Action was LEFT");
+        postCommand("0xe0173085");
+
     }
 
     public void onSwipeUp() {
+        Log.d("TOUCH","Action was UP");
+        postCommand("0xe0143085");
+
     }
 
-    public void onSwipeDown() {
+
+
+    public void onSwipeRight() {
+        Log.d("TOUCH","Action was RIGHT");
+        postCommand("0xe0153085");
+
     }
 }

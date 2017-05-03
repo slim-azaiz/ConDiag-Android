@@ -89,7 +89,7 @@ public class Fragment1 extends Fragment   {
                 Log.i("HANDLER", "STOPPED");
             }else {
                 Log.i("HANDLER", "NULL");
-                notifyData(method);
+              //  notifyData(method);
             }
 
         }else{
@@ -103,7 +103,7 @@ public class Fragment1 extends Fragment   {
        // Log.i("Fragment1",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-               .baseUrl("http://10.206.208.98"+":8000")
+                .baseUrl("http://10.206.208.73"+":8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -218,7 +218,8 @@ public class Fragment1 extends Fragment   {
             public void run() {
                 handler.postDelayed(this, 1000);
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://10.206.208.98:8000")
+                        //.baseUrl("http://"+ipAddress+":8000")
+                        .baseUrl("http://10.206.208.162:8000")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 final RequestInterface request = retrofit.create(RequestInterface.class);
@@ -229,12 +230,12 @@ public class Fragment1 extends Fragment   {
                         JSONResponse jsonResponse = response.body();
                         data = new ArrayList<>(Arrays.asList(jsonResponse.getRealTime()));
                         Log.i("METHOD_THREAD",meth);
-                        switch (adapter.diagnostics.get(1).getParameter()){
+                        switch (adapter.diagnostics.get(2).getParameter()){
                             case "Used memory":
                                 //get value of used_memory in real time
-                                adapter.diagnostics.get(1).setValue(data.get(0).getValue());
+                                adapter.diagnostics.get(2).setValue(data.get(0).getValue());
                                 break;
-                            case "Internal temperature":
+                            case "Internal Temperature":
                                 //get value of Internal_Temperature in real time
                                 adapter.diagnostics.get(1).setValue(data.get(1).getValue());
                                 break;
@@ -242,7 +243,7 @@ public class Fragment1 extends Fragment   {
                         if (adapter.diagnostics.size()>=3) {
 
                             switch (adapter.diagnostics.get(2).getParameter()) {
-                                case "STB IP Address":
+                                case "STB ip address":
                                     //get value of stb_ip_address in real time
                                     adapter.diagnostics.get(2).setValue(data.get(5).getValue());
                                     break;
@@ -250,7 +251,7 @@ public class Fragment1 extends Fragment   {
                                     //get value of total_software_updates in real time
                                     adapter.diagnostics.get(2).setValue(data.get(6).getValue());
                                     break;
-                                case "CPU utilisation":
+                                case "CPU Utilisation":
                                     //get value of CPU_Utilisation in real time
                                     adapter.diagnostics.get(2).setValue(data.get(2).getValue());
                                     break;
@@ -259,7 +260,7 @@ public class Fragment1 extends Fragment   {
                         }
                         if (adapter.diagnostics.size()>=4) {
                             switch (adapter.diagnostics.get(3).getParameter()) {
-                                case "HDMI port status":
+                                case "HDMI Port Status":
                                     //get value of HDMI_Port_Status in real time
                                     adapter.diagnostics.get(3).setValue(data.get(3).getValue());
                                     break;
@@ -281,7 +282,7 @@ public class Fragment1 extends Fragment   {
 
                     @Override
                     public void onFailure(Call<JSONResponse> call, Throwable t) {
-                        handler.removeCallbacksAndMessages(null);
+                       // handler.removeCallbacksAndMessages(null);
                         //  mPtrFrame.refreshComplete();
                         Log.d("Error", t.getMessage());
                     }

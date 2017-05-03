@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private void doWakeOnLan() throws IllegalArgumentException {
        // String ipAddress = editIpAddress.getText().toString();
-        String ipAddress = "10.206.208.123";
+        String ipAddress = "10.206.208.162";
 
         if (TextUtils.isEmpty(ipAddress)) {
             Log.d(WAKE_ON_LAN_LOG,"Invalid Ip Address");

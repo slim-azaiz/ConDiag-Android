@@ -22,19 +22,35 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import info.androidhive.gmail.control_diagnostic.control.OnSwipeTouchListener;
 import info.androidhive.gmail.control_diagnostic.control.basicmultitouch.Pools.SimplePool;
+
+import static info.androidhive.gmail.control_diagnostic.control.ControlActivity.postCommand;
 
 /**
  * View that shows touch events and their history. This view demonstrates the
  * use of {@link #onTouchEvent(android.view.MotionEvent)} and {@link android.view.MotionEvent}s to keep
  * track of touch pointers across events.
  */
-public class TouchDisplayView extends View {
+public class TouchDisplayView extends View  {
+    private float x1,x2;
+    private float y1,y2;
 
+    static final int MIN_DISTANCE = 150;
+
+
+    public TouchDisplayView(Context context) {
+
+        super(context);
+
+
+    }
     // Hold data for active touch pointer IDs
     private SparseArray<TouchHistory> mTouches;
 
@@ -121,7 +137,6 @@ public class TouchDisplayView extends View {
 
     public TouchDisplayView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         // SparseArray for touch events, indexed by touch id
         mTouches = new SparseArray<TouchHistory>(10);
 
@@ -141,8 +156,12 @@ public class TouchDisplayView extends View {
          */
         switch (action & MotionEvent.ACTION_MASK) {
 
-            case MotionEvent.ACTION_DOWN: {
+
+
+                case MotionEvent.ACTION_DOWN: {
                 // first pressed gesture has started
+                    x1 = event.getX();
+                    y1 = event.getY();
 
                 /*
                  * Only one touch event is stored in the MotionEvent. Extract
@@ -168,6 +187,7 @@ public class TouchDisplayView extends View {
             }
 
             case MotionEvent.ACTION_POINTER_DOWN: {
+
                 /*
                  * A non-primary pointer has gone down, after an event for the
                  * primary pointer (ACTION_DOWN) has already been received.
@@ -197,6 +217,49 @@ public class TouchDisplayView extends View {
             }
 
             case MotionEvent.ACTION_UP: {
+
+                x2 = event.getX();
+                float deltaX = x2 - x1;
+
+                if (Math.abs(deltaX) > MIN_DISTANCE)
+                {
+                    // Left to Right swipe action
+                    if (x2 > x1)
+                    {
+                        Log.d("TOUCH","Action was RIGHT");
+                        postCommand("0xe0153085");
+                    }
+
+                    // Right to left swipe action
+                    else
+                    {
+                        Log.d("TOUCH","Action was LEFT");
+                        postCommand("0xe0173085");
+
+                    }
+
+                }
+
+                y2 = event.getY();
+                float deltaY = y2 - y1;
+
+                if (Math.abs(deltaY) > MIN_DISTANCE)
+                {
+                    // Left to Right swipe action
+                    if (y2 > y1)
+                    {
+                        Log.d("TOUCH","Action was DOWN");
+                        postCommand("0xe0163085");
+                    }
+
+                    // Right to left swipe action
+                    else
+                    {
+                        Log.d("TOUCH","Action was UP");
+                        postCommand("0xe0143085");
+                    }
+
+                }
                 /*
                  * Final pointer has gone up and has ended the last pressed
                  * gesture.
@@ -239,6 +302,8 @@ public class TouchDisplayView extends View {
             }
 
             case MotionEvent.ACTION_MOVE: {
+
+
                 /*
                  * A change event happened during a pressed gesture. (Between
                  * ACTION_DOWN and ACTION_UP or ACTION_POINTER_DOWN and
@@ -269,6 +334,7 @@ public class TouchDisplayView extends View {
                             event.getPressure(index));
 
                 }
+
 
                 break;
             }
@@ -397,5 +463,7 @@ public class TouchDisplayView extends View {
         canvas.drawText(data.label, data.x + radius, data.y
                 - radius, mTextPaint);
     }
+
+
 
 }
