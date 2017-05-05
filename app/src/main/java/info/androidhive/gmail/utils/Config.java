@@ -17,5 +17,6 @@ public class Config {
     public static final String DISCOVERY_LOG = "DISCOVERY";
     public static final String CONTROL_LOG = "CONTROL";
     public static final String DIAGNOSTIC_LOG = "DIAGNOSTIC";
+    public static final String LOGIN_LOG = "LOGIN";
     public static final String HISTORY_LOG = "HISTORY";
 }

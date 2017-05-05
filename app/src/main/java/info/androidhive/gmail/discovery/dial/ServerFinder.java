@@ -49,6 +49,7 @@ import android.widget.TextView;
 
 import info.androidhive.gmail.R;
 
+import static info.androidhive.gmail.activity.MainActivity.getCurrentTime;
 
 
 public final class ServerFinder extends Activity {
@@ -460,7 +461,8 @@ public final class ServerFinder extends Activity {
 
 			//Log.i("IP_ADDRESS",parameter);
 			if((!tabIpFilter.contains(ipAddress))&&(MainActivity.mPtrFrame.isRefreshing()==true)) {
-				MainActivity.saveServerToLocalStorage(1, ipAddress, dialServer.getFriendlyName(), dialServer.getModelName(), "15:30pm", "mipmap://" + R.mipmap.google, 1, 1, 4);
+				MainActivity.saveServerToLocalStorage(1, ipAddress, dialServer.getFriendlyName(), dialServer.getModelName(), getCurrentTime(), "mipmap://" + R.mipmap.google, 1, 1, 4);
+
 				tabIpFilter.add(ipAddress);
 			}
 			// Notify data adapter and update title.

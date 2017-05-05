@@ -103,7 +103,7 @@ public class Fragment1 extends Fragment   {
        // Log.i("Fragment1",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-                .baseUrl("http://10.206.208.73"+":8000")
+                .baseUrl("http://10.206.208.98"+":8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

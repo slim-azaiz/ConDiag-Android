@@ -58,11 +58,11 @@ import static info.androidhive.gmail.utils.Config.HISTORY_LOG;
 import static info.androidhive.gmail.utils.Config.WAKE_ON_LAN_LOG;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, ServerAdapter.ServerAdapterListener {
-    private  List<Server> servers = new ArrayList<>();
+    private static   List<Server> servers = new ArrayList<>();
     private ArrayList<Integer> deleteClicked = new ArrayList<Integer>();
 
     public static RecyclerView recyclerView;
-    private ServerAdapter mAdapter;
+    private static ServerAdapter mAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
 
-    private String getCurrentTime() {
+    public static String getCurrentTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy  HH:mm a  ");
         return  sdf.format(new Date());
 
@@ -294,21 +294,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
 
-    private void saveServerToLocalStorage(int id,String ipAddress , String friendlyName, String model, String isImportant, String name, int test1, int test2, int color) {
+    public static void saveServerToLocalStorage(int id,String ipAddress , String friendlyName, String model, String isImportant, String name, int test1, int test2, int color) {
         db.addServer(id,ipAddress, friendlyName, model, isImportant,name,test1,test2, color) ;
         Server n = new Server(id,ipAddress, friendlyName, model, isImportant,name,toBool(test1),toBool(test2), color) ;
         servers.add(n);
         refreshList();
     }
 
-    private Boolean toBool(int test){
+    private static Boolean toBool(int test){
         if (test ==  1)
             return false;
         else
             return true;
     }
 
-    private void refreshList() {
+    private static void refreshList() {
         mAdapter.notifyDataSetChanged();
     }
 

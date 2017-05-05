@@ -2,6 +2,7 @@ package info.androidhive.gmail.control_diagnostic.control;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +35,7 @@ import info.androidhive.gmail.R;
 import info.androidhive.gmail.activity.MainActivity;
 import info.androidhive.gmail.control_diagnostic.control.basicmultitouch.TouchActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.Fragment1;
+import info.androidhive.gmail.login.Login;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
 import retrofit2.Call;
@@ -41,6 +43,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static info.androidhive.gmail.utils.Config.CONTROL_LOG;
 
 
 public class ControlActivity extends AppCompatActivity implements View.OnClickListener {
@@ -72,6 +76,11 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.wow);
+
+    SharedPreferences myPrefs2 = this.getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
+    String ipAddress2 = myPrefs2.getString("ipAddress","");
+    Toast.makeText(ControlActivity.this, "ipAddress " + ipAddress2, Toast.LENGTH_SHORT).show();
+
 
     bPower = (ImageButton) findViewById(R.id.bPower);
     bPower.setOnClickListener(this);
@@ -123,6 +132,12 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     } else {
       ipAddress= (String) savedInstanceState.getSerializable("IpAddress");
     }
+
+
+
+    SharedPreferences prefs = getSharedPreferences("MyPref",Context.MODE_PRIVATE);
+    ipAddress = prefs.getString("ipAddress", null);
+    Log.d(CONTROL_LOG,"ipAddress"+ipAddress);
   }
 
   @Override
@@ -165,7 +180,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         postCommand(view,"0xe0133085");
         break;
       case R.id.bMenu:
-        postCommand(view,"0xe0163085");
+        postCommand(view,"0xf00c3085");
         break;
       case R.id.bExit:
        // postCommand(view,"0xe0163085");
@@ -195,7 +210,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   public static void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()
             //.baseUrl("http://"+ipAddress+":8000")
-            .baseUrl("http://10.206.208.73:8000")
+            .baseUrl("http://10.206.208.98:8000")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

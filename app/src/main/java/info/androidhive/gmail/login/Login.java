@@ -1,6 +1,7 @@
 package info.androidhive.gmail.login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,12 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import info.androidhive.gmail.R;
+import info.androidhive.gmail.activity.MainActivity;
 import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.utils.Config;
@@ -27,6 +30,8 @@ import info.androidhive.gmail.utils.Config;
 import java.util.HashMap;
 
 import static info.androidhive.gmail.login.Validation.validateFields;
+import static info.androidhive.gmail.utils.Config.CONTROL_LOG;
+import static info.androidhive.gmail.utils.Config.LOGIN_LOG;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,7 +39,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private EditText editTextPassword;
 
     private Button buttonLogin;
-    private String userid="";
     private String ipAddress;
 
     private TextInputLayout mTiEmail;
@@ -60,12 +64,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             ipAddress= (String) savedInstanceState.getSerializable("IpAddress");
         }
 
-
+/*
         pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
 
+
+
         editor.putString("ipAddress", ipAddress);  // Saving string//        Snackbar.make(getCurrentFocus(), ipAddress, Snackbar.LENGTH_LONG)
   //              .setAction("Action", null).show();
+
+        String ipAddress2 = pref.getString("ipAddress", "");
+        Toast.makeText(Login.this, "ipAddress " + ipAddress2, Toast.LENGTH_SHORT).show();
+*/
+        SharedPreferences myPrefs = this.getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
+        SharedPreferences.Editor editor = myPrefs.edit();
+        editor.putString("ipAddress", ipAddress);
+        editor.commit();
+
+        Toast.makeText(Login.this, "ipAddress " + ipAddress, Toast.LENGTH_SHORT).show();
+
 
         editTextUserName = (EditText) findViewById(R.id.username);
         editTextPassword = (EditText) findViewById(R.id.password);
@@ -129,61 +146,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-
-
-    private String getInformation(){
-        final String url = Config.URL_GET_ID;
-        class UpdateUser extends AsyncTask<Void,Void,String>{
-            ProgressDialog loading;
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(Login.this,"Loading...","Please Wait...",false,false);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-
-                RequestHandler rh = new RequestHandler();
-
-                userid = rh.sendGetRequest("http://10.206.208.12:8000/diag");
-
-                // Toast.makeText(Login.this,url, Toast.LENGTH_LONG).show();
-                Log.i("RESPONSE",userid);
-                try {
-                    JSONObject jsonObject = new JSONObject(userid);
-
-                    JSONArray jsonArray = jsonObject.getJSONArray("diagnostics");
-
-
-                    JSONObject jo = jsonArray.getJSONObject(1);
-                    userid = jo.getString("value");
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-                //s = jo.getString("id");
-                return userid;
-            }
-        }
-
-        UpdateUser ue = new UpdateUser();
-        ue.execute();
-        return userid;
-    }
-
-
-
-
-
     private void postInformation(final String username, final String password){
         class Authentificate extends AsyncTask<String,Void,String>{
                 ProgressDialog loading;
@@ -223,8 +185,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     //data.put("","");
                     //data.put("PASSWORD", password);
                     RequestHandler ruc = new RequestHandler();
-                   //String result = ruc.sendPostRequest("http://"+ipAddress+":8000/authentificate/"+username+"/"+password,data);
-                    String result = ruc.sendPostRequest("http://10.206.208.162:8000/authentificate/"+username+"/"+password,data);
+                   String result = ruc.sendPostRequest("http://"+ipAddress+":8000/authentificate/"+username+"/"+password,data);
+                   // String result = ruc.sendPostRequest("http://10.206.208.162:8000/authentificate/"+username+"/"+password,data);
                     return result;
                 }
             }
