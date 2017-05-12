@@ -12,6 +12,10 @@ public class JSONResponse {
     private Diagnostic[] identification;
     private Diagnostic[] sysInfo;
     private Diagnostic[] realTime;
+    private Diagnostic[] nvmem;
+    private Diagnostic[] qamTunerStatus;
+    private Diagnostic[] qamVirtualTunerStatus;
+
 
 
 
@@ -24,5 +28,9 @@ public class JSONResponse {
     public Diagnostic[] getIdentification() {return identification;}
     public Diagnostic[] getSysInfo() {return sysInfo;}
     public Diagnostic[] getRealTime() {return realTime;}
+    public Diagnostic[] getNvmem() {return nvmem;}
+    public Diagnostic[] getQamTunerStatus() {return qamTunerStatus;}
+    public Diagnostic[] getVirtualQamTunerStatus() {return qamVirtualTunerStatus;}
+
 }
 

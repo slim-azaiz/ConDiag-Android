@@ -36,8 +36,14 @@ public interface RequestInterface {
     @GET("/sysInfo")
     Call<JSONResponse> getSysInfo();
 
-    @GET("/command")
-    Call<JSONResponse> getCommand();
+    @GET("/qamTunerStatus")
+    Call<JSONResponse> getQamTunerStatus();
+
+    @GET("/qamVirtualTunerStatus")
+    Call<JSONResponse> getQamVirtualTunerStatus();
+
+    @GET("/nvmem")
+    Call<JSONResponse> getNvmem();
 
     @POST("control/{code}")
     Call<JSONResponse> encoded(@Path("code") String code);

@@ -5,37 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.activity.MainActivity;
 import info.androidhive.gmail.control_diagnostic.control.basicmultitouch.TouchActivity;
-import info.androidhive.gmail.control_diagnostic.diagnostic.Fragment1;
-import info.androidhive.gmail.login.Login;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
 import retrofit2.Call;
@@ -147,65 +128,102 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
       case R.id.bPower:
         Log.i("bPower","Success");
         postCommand(view,"0x708b3085");
+        //0x30002603
         break;
       case R.id.bVolUp:
         postCommand(view,"0xe01c3085");
+        //0x30002610
         break;
       case R.id.bVolDown:
         postCommand(view,"0xe01d3085");
+        //0x30002611
         break;
       case R.id.bChannelUp:
         postCommand(view,"0xe01e3085");
+        //0x30002620
         break;
       case R.id.bChannelDown:
         postCommand(view,"0xe01f3085");
+        //0x30002621
         break;
       case R.id.bUp:
         Log.i("bUp","Success");
         postCommand(view,"0xe0143085");
+        //0x30002658
         break;
       case R.id.bDown:
         postCommand(view,"0xe0163085");
+        //0x30002659
         break;
       case R.id.bLeft:
         postCommand(view,"0xe0173085");
+        //0x3000265a
         break;
       case R.id.bRight:
         postCommand(view,"0xe0153085");
+        //0x3000265b
         break;
       case R.id.bSelect:
         postCommand(view,"0xe0193085");
+        //0x3000265c
         break;
       case R.id.bInfo:
         postCommand(view,"0xe0133085");
+        //0x3000263c
         break;
       case R.id.bMenu:
         postCommand(view,"0xf00c3085");
+        //0x30002654
         break;
       case R.id.bExit:
-       // postCommand(view,"0xe0163085");
+        //postCommand(view,"0xe0163085");
+        //
         break;
       case R.id.bMute:
         postCommand(view,"0xe01b3085");
+        //0x3000260d
         break;
       case R.id.bBack:
         postCommand(view,"0xd0263085");
+        //
         break;
       case R.id.bRed:
         postCommand(view,"0x90603085");
+        //0x3000266d
         break;
       case R.id.bBlue:
         postCommand(view,"0x90633085");
+        //0x30002670
         break;
       case R.id.bYellow:
         postCommand(view,"0x90623085");
+        //0x3000266f
         break;
       case R.id.bGreen:
         postCommand(view,"0x90613085");
+        //0x3000266e
         break;
       default:
         break;
     }
+    //1  0xd0283085 0x30002601
+    //2  0xd0293085 0x30002602
+    //3  0xd02a3085 0x30002603
+    //4  0xd02b3085 0x30002604
+    //5  0xd02c3085 0x30002605
+    //6  0xd02d3085 0x30002606
+    //7  0xd02e3085 0x30002607
+    //8  0xd02f3085 0x30002608
+    //9  0xc0303085 0x30002609
+    //0  0xc0313085 0x30002600
+    //0 left    0x3000264d
+    //0 right   0x3000264c
+
+    //pause  0xd0213085  0x30002633
+    //left   0xd0223085  0x3000262b
+    //right  0xd0243085  0x3000262a
+    //rec    0xd0203085  0x30002637
+
   }
   public static void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()

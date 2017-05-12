@@ -3,16 +3,15 @@ package info.androidhive.gmail.utils;
 
 public class Config {
     //urls
-    public static final String BASE_URL = "http://192.168.1.4:8000/";
+    public static final String BASE_URL = "http://10.206.208.81:8000/";
+    public static final String URL_CONTROL = BASE_URL+"authentificate/";
     public static final String URL_LOGIN = BASE_URL+"authentificate/";
-    public static final String URL_GET_ID = BASE_URL+"file.json";
+    public static final String URL_RESET_USERNAME = BASE_URL+"resetUsername/";
+    public static final String URL_RESET_PASSWORD = BASE_URL+"resetPassword/";
+    public static final String URL_WOL = BASE_URL+"wol/";
 
 
     //logs
-    public static final String KEY_USER_ID = "id";
-    public static final String KEY_USER_NAME = "name";
-    public static final String KEY_USER_EMAIL = "email";
-    public static final String KEY_USER_PASS = "password";
     public static final String WAKE_ON_LAN_LOG = "WOL";
     public static final String DISCOVERY_LOG = "DISCOVERY";
     public static final String CONTROL_LOG = "CONTROL";

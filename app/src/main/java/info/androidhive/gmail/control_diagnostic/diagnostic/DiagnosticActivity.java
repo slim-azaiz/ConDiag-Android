@@ -36,13 +36,16 @@ public class DiagnosticActivity extends AppCompatActivity {
 
 
     TabsAdapter adapter = new TabsAdapter(getSupportFragmentManager());
-    adapter.addFrag(new Fragment1(), "memory");
-    adapter.addFrag(new Fragment1(), "identification");
-    adapter.addFrag(new Fragment1(), "software");
-    adapter.addFrag(new Fragment1(), "network");
-    adapter.addFrag(new Fragment1(), "loader");
-    adapter.addFrag(new Fragment1(), "sysInfo");
-    adapter.addFrag(new Fragment1(), "conditionalAccess");
+    adapter.addFrag(new DiagnosticFragment(), "memory");
+    adapter.addFrag(new DiagnosticFragment(), "identification");
+    adapter.addFrag(new DiagnosticFragment(), "software");
+    adapter.addFrag(new DiagnosticFragment(), "network");
+    adapter.addFrag(new DiagnosticFragment(), "loader");
+    adapter.addFrag(new DiagnosticFragment(), "sysInfo");
+    adapter.addFrag(new DiagnosticFragment(), "conditionalAccess");
+    adapter.addFrag(new DiagnosticFragment(), "qamVirtualTunerStatus");
+    adapter.addFrag(new DiagnosticFragment(), "qamTunerStatus");
+    adapter.addFrag(new DiagnosticFragment(), "nvmem");
 
 
     viewPager.setAdapter(adapter);
@@ -85,8 +88,8 @@ public class DiagnosticActivity extends AppCompatActivity {
 
   @Override
   public void onDestroy() {
-//    Fragment1.handler.removeCallbacksAndMessages(null);
-   // Fragment1.handler=null;
+//    DiagnosticFragment.handler.removeCallbacksAndMessages(null);
+   // DiagnosticFragment.handler=null;
     super.onDestroy();
   }
   @Override

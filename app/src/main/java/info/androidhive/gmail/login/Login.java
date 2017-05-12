@@ -1,7 +1,6 @@
 package info.androidhive.gmail.login;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -9,41 +8,34 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.activity.MainActivity;
 import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
-import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.utils.Config;
 
 
 import java.util.HashMap;
 
 import static info.androidhive.gmail.login.Validation.validateFields;
-import static info.androidhive.gmail.utils.Config.CONTROL_LOG;
-import static info.androidhive.gmail.utils.Config.LOGIN_LOG;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextUserName;
     private EditText editTextPassword;
 
-    private Button buttonLogin;
+    private  Button buttonLogin;
     private String ipAddress;
 
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
     private TextView mTvForgotPassword;
+    private TextView mTvForgotUsename;
+
     public  static SharedPreferences pref;
 
     @Override
@@ -89,12 +81,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mTiEmail = (TextInputLayout) findViewById(R.id.ti_email);
         mTiPassword = (TextInputLayout) findViewById(R.id.ti_password);
         mTvForgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
+        mTvForgotUsename = (TextView) findViewById(R.id.tv_forgot_username);
 
 
         buttonLogin = (Button) findViewById(R.id.buttonUserLogin);
 
         buttonLogin.setOnClickListener(this);
         mTvForgotPassword.setOnClickListener(this);
+        mTvForgotUsename.setOnClickListener(this);
+
 
     }
 
@@ -165,9 +160,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     super.onPostExecute(s);
                     loading.dismiss();
                     if(s.equalsIgnoreCase("success")){
-                        Intent intent = new Intent(Login.this,ControlDiagnostic.class);
-                        intent.putExtra(Config.KEY_USER_NAME,username);
-                        startActivity(intent);
+
                     }
                     else{
                         if (s.isEmpty()){
@@ -193,20 +186,34 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             Authentificate ulc = new Authentificate();
             ulc.execute(username, password);
         }
-    private void showDialog(){
+    private void showPasswordDialog(){
 
         ChangePasswordDialog fragment = new ChangePasswordDialog();
 
         fragment.show(getFragmentManager(), ChangePasswordDialog.TAG);
     }
+    private void showUsernameDialog(){
+
+        ChangeUsernameDialog fragment = new ChangeUsernameDialog();
+
+        fragment.show(getFragmentManager(), ChangeUsernameDialog.TAG);
+    }
 
         @Override
     public void onClick(View v) {
-        if(v == buttonLogin){
-            login();
-        }
-            if (v==mTvForgotPassword){
-                showDialog();
+            switch (v.getId()){
+                case R.id.buttonUserLogin:
+                    login();
+                    break;
+                case R.id.tv_forgot_password:
+                    showPasswordDialog();
+                    break;
+                case R.id.tv_forgot_username:
+                    showUsernameDialog();
+                    break;
+                default:
+                    break;
+
             }
     }
 }

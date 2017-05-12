@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical"
-            android:text="username"
+            android:text="oldUsername"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <TextView
