@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -21,6 +22,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -29,6 +32,8 @@ import info.androidhive.gmail.activity.MainActivity;
 import info.androidhive.gmail.control_diagnostic.control.ControlActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.settings.SettingsActivity;
+
+import static info.androidhive.gmail.utils.Config.CONTROL_LOG;
 
 /**
  * Created by slim on 3/18/17.
@@ -43,13 +48,33 @@ public class ControlDiagnostic extends AppCompatActivity {
     private ActionBar actionBar;
     private TabLayout tabLayout;
 
+    private ImageView imageView;
+    private ImageButton imageButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_control_diagnostic);
+        setContentView(R.layout.control);
+        imageView = (ImageView) findViewById(R.id.remote);
 
+        imageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN){
+                    Log.i(CONTROL_LOG,"Touch coordinates : " +
+                            String.valueOf(event.getX()) + "x" + String.valueOf(event.getY()));
+                }
+                float[] values = new float[9];
+                Matrix matrix = new Matrix();
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout_choice);
+                matrix.getValues(values);
+                float relativeX = (event.getX() - values[2]) / values[0];
+                float relativeY = (event.getY() - values[5]) / values[4];
+                return true;
+            }
+        });
+
+        /*drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout_choice);
         toolbar = (Toolbar) findViewById(R.id.toolbar_choice);
         setSupportActionBar(toolbar);
         Log.i("TEST","1");
@@ -122,7 +147,7 @@ public class ControlDiagnostic extends AppCompatActivity {
                 }
                 return true;
             }
-        });
+        });*/
     }
 
     @Override

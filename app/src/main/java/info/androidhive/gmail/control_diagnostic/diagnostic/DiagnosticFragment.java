@@ -5,9 +5,13 @@ package info.androidhive.gmail.control_diagnostic.diagnostic;
  */
 
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -15,6 +19,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,7 +36,9 @@ import java.util.Arrays;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.DiagnosticAdapter;
+import info.androidhive.gmail.adapter.ServerAdapter;
 import info.androidhive.gmail.model.Diagnostic;
+import info.androidhive.gmail.model.Server;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
 import okhttp3.OkHttpClient;
@@ -41,9 +48,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 
-public class DiagnosticFragment extends Fragment   {
+public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.DiagnosticAdapterListener   {
     private PtrClassicFrameLayout mPtrFrame;
     private RecyclerView recyclerView;
     private ArrayList<Diagnostic> data;
@@ -98,20 +106,33 @@ public class DiagnosticFragment extends Fragment   {
             // fragment is no longer visible
         }
     }
+    @Override
+    public void onDiagnosticRowClicked(int position) {
+        // verify whether action mode is enabled or not
+        // if enabled, change the row state to activated
+
+            // read the modelName which removes bold parameter the row
+            Diagnostic diagnostic = data.get(position);
+            data.set(position, diagnostic);
+            adapter.notifyDataSetChanged();
+
+            // Toast.makeText(getApplicationContext(), "Read: " + modelName.getModel(), Toast.LENGTH_SHORT).show();
+    }
 
 
-    private void loadJSON(){
-       // Log.i("DiagnosticFragment",ipAddress);
+
+    private void loadJSON() {
+        // Log.i("DiagnosticFragment",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-                .baseUrl("http://10.206.208.77"+":8000")
+                .baseUrl("http://192.168.1.9" + ":8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         RequestInterface request = retrofit.create(RequestInterface.class);
-        Call<JSONResponse> call ;
+        Call<JSONResponse> call;
         diagnosticType = DiagnosticType.valueOf(method);
-        switch (diagnosticType){
+        switch (diagnosticType) {
             case identification:
                 call = request.getIdentification();
                 break;
@@ -151,7 +172,7 @@ public class DiagnosticFragment extends Fragment   {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                 JSONResponse jsonResponse = response.body();
-                switch (diagnosticType){
+                switch (diagnosticType) {
                     case identification:
                         data = new ArrayList<>(Arrays.asList(jsonResponse.getIdentification()));
                         break;
@@ -191,27 +212,29 @@ public class DiagnosticFragment extends Fragment   {
                 } catch (Exception e) {
                     Log.e("ERROR", "showProgressDialog", e);
                 }
-                adapter = new DiagnosticAdapter(data);
+                adapter = new DiagnosticAdapter(data, getActivity(), getActivity().getFragmentManager());
+
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
                 //  mPtrFrame.refreshComplete();
 
             }
+
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
-              //  mPtrFrame.refreshComplete();
+                //  mPtrFrame.refreshComplete();
                 try {
                     adapter.clearData();
                 } catch (Exception e) {
                     Log.e("ERROR", "showProgressDialog", e);
-            }
+                }
 
                 Snackbar.make(getView(), "Unable to fetch json", Snackbar.LENGTH_INDEFINITE)
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                handler=null;
+                                handler = null;
                                 setUserVisibleHint(true);
 
                             }
@@ -223,7 +246,26 @@ public class DiagnosticFragment extends Fragment   {
             }
         });
 
+    }
+    public void sendNotification(View view) {
 
+
+        int NOTIFICATION_ID =1;
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://developer.android.com/reference/android/app/Notification.html"));
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, 0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity());
+
+       // builder.setSmallIcon(R.drawable.ic_stat_notification);
+        builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
+        //builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
+        builder.setContentTitle("BasicNotifications Sample");
+        builder.setContentText("Time to learn about notifications!");
+        builder.setSubText("Tap to view documentation about notifications.");
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(
+                NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
 
     }
     private void notifyData(final String meth){

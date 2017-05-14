@@ -16,6 +16,8 @@ public class Diagnostic {
         this.value = value;
     }
 
+
+
     public String getParameter() {
         return parameter;
     }

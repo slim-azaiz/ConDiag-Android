@@ -81,15 +81,6 @@
         android:layout_marginStart="25dp" />
 
     <ImageButton
-        android:background="@drawable/fast_rewind_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/bFastBackward"
-        android:layout_alignTop="@+id/bPlay"
-        android:layout_alignLeft="@+id/b7"
-        android:layout_alignStart="@+id/b7" />
-
-    <ImageButton
         android:background="@drawable/play_selector"
         android:layout_width="75dp"
         android:layout_height="75dp"
@@ -109,25 +100,6 @@
         android:layout_below="@+id/b0"
         android:layout_toRightOf="@+id/bPlay"
         android:layout_toEndOf="@+id/bPlay" />
-
-    <ImageButton
-        android:background="@drawable/fast_backward_arrows_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/bFastBackwardArrows"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/bFastBackward"
-        android:layout_alignStart="@+id/bFastBackward"
-        android:layout_marginBottom="13dp" />
-
-    <ImageButton
-        android:background="@drawable/record_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/bRecord"
-        android:layout_alignTop="@+id/bFastBackwardArrows"
-        android:layout_alignLeft="@+id/bPlay"
-        android:layout_alignStart="@+id/bPlay" />
 
     <ImageButton
         android:background="@drawable/stop_selector"
@@ -157,12 +129,13 @@
         android:layout_marginLeft="11dp"
         android:layout_marginStart="11dp" />
 
+
     <ImageButton
         android:background="@drawable/fast_forward_selector"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:id="@+id/bFastForward"
-        android:layout_alignTop="@+id/bPause"
+        android:layout_below="@+id/b9"
         android:layout_alignLeft="@+id/b9"
         android:layout_alignStart="@+id/b9" />
 
@@ -171,9 +144,46 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:id="@+id/bFastForwardArrows"
-        android:layout_alignTop="@+id/bStop"
+        android:layout_below="@+id/bFastForward"
         android:layout_alignLeft="@+id/bFastForward"
         android:layout_alignStart="@+id/bFastForward" />
 
+    <ImageButton
+        android:background="@drawable/previous"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bPrevious"
+
+        android:layout_alignTop="@+id/bStop"
+        android:layout_alignLeft="@+id/bFastForwardArrows"
+        android:layout_alignStart="@+id/bFastForwardArrows" />
+
+    <ImageButton
+        android:background="@drawable/fast_rewind_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bFastBackward"
+        android:layout_below="@+id/b7"
+        android:layout_alignLeft="@+id/b7"
+        android:layout_alignStart="@+id/b7" />
+
+    <ImageButton
+        android:background="@drawable/fast_backward_arrows_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bFastBackwardArrows"
+        android:layout_below="@+id/bFastBackward"
+        android:layout_toLeftOf="@+id/bPlay"
+        android:layout_toStartOf="@+id/bPlay" />
+
+    <ImageButton
+        android:background="@drawable/record_selector"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bRecord"
+        android:layout_below="@+id/bPlay"
+        android:layout_alignLeft="@+id/bPlay"
+        android:layout_alignStart="@+id/bPlay"
+        android:layout_marginTop="12dp" />
 
 </RelativeLayout>

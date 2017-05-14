@@ -13,10 +13,11 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_viewDiag"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout_editor_absoluteY="-150dp"
-                android:scrollbars="vertical" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                tools:layout_editor_absoluteY="8dp"
+                android:scrollbars="vertical"
+                tools:layout_editor_absoluteX="8dp" />
 
 
 </android.support.constraint.ConstraintLayout>

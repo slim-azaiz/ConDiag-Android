@@ -103,24 +103,6 @@
         android:layout_alignParentEnd="true" />
 
     <ImageButton
-        android:background="@drawable/green_selector"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/bGreen"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/bBack"
-        android:layout_alignStart="@+id/bBack" />
-
-    <ImageButton
-        android:background="@drawable/yellow_selector"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/bYellow"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/bExit"
-        android:layout_alignStart="@+id/bExit" />
-
-    <ImageButton
         android:background="@drawable/empty_selector"
         android:layout_width="75dp"
         android:layout_height="75dp"
@@ -142,26 +124,6 @@
         android:textSize="20dp"
         android:text="MENU"
         android:textColor="@color/md_white_1000" />
-
-    <ImageButton
-        android:background="@drawable/blue_selector"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/bBlue"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/bExit"
-        android:layout_toEndOf="@+id/bExit" />
-
-    <ImageButton
-        android:background="@drawable/red_selector"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/bRed"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/bGreen"
-        android:layout_toStartOf="@+id/bGreen"
-        android:layout_marginRight="13dp"
-        android:layout_marginEnd="13dp" />
 
     <ImageButton
         android:background="@drawable/back_selector"
@@ -228,6 +190,52 @@
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/bDown"
         android:layout_alignStart="@+id/bDown" />
+
+
+    <ImageButton
+        android:background="@drawable/red_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/bRed"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/bLeft"
+        android:layout_toStartOf="@+id/bLeft" />
+
+    <ImageButton
+        android:background="@drawable/green_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/bGreen"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/bSelect"
+        android:layout_toStartOf="@+id/bSelect" />
+
+    <ImageButton
+        android:background="@drawable/blue_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/bBlue"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/bRight"
+        android:layout_alignEnd="@+id/bRight" />
+
+    <ImageButton
+        android:background="@drawable/yellow_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/bYellow"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/okText"
+        android:layout_alignEnd="@+id/okText" />
+
+    <ImageButton
+        android:background="@drawable/next"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/bNext"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/bBlue"
+        android:layout_toEndOf="@+id/bBlue" />
 
 
 </RelativeLayout>

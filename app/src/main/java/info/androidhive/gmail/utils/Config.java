@@ -18,4 +18,5 @@ public class Config {
     public static final String DIAGNOSTIC_LOG = "DIAGNOSTIC";
     public static final String LOGIN_LOG = "LOGIN";
     public static final String HISTORY_LOG = "HISTORY";
+
 }
