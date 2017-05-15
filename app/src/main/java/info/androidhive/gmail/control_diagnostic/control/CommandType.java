@@ -6,5 +6,7 @@ package info.androidhive.gmail.control_diagnostic.control;
  * type of specific command
  */
 public enum CommandType {
-    power, volumeUp, volumeDown, channelUp, channelDown, digits, other
+    power, volumeUp, volumeDown, channelUp, channelDown, green, red, yellow, blue, back, mute, exit,
+    menu, info, select, right, left,up, down
+
 }

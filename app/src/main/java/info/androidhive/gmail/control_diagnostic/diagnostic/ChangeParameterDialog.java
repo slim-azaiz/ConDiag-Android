@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,15 @@ import java.util.HashMap;
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.login.RequestHandler;
 import info.androidhive.gmail.login.User;
+import info.androidhive.gmail.network.JSONResponse;
+import info.androidhive.gmail.network.RequestInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.subscriptions.CompositeSubscription;
 
-import static info.androidhive.gmail.adapter.DiagnosticAdapter.diagnostics;
 import static info.androidhive.gmail.login.Validation.validateFields;
 
 
@@ -202,6 +209,42 @@ public class ChangeParameterDialog extends DialogFragment {
        // handleError();
     }
 
+    public static void postCommand(final View view,String parameter, String value){
+        Retrofit retrofit = new Retrofit.Builder()
+                //.baseUrl("http://"+ipAddress+":8000")
+                .baseUrl("http://10.206.208.98:8000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RequestInterface request = retrofit.create(RequestInterface.class);
+        Call<JSONResponse> call ;
+        call = request.setData(parameter,value);
+
+        call.enqueue(new Callback<JSONResponse>() {
+            @Override
+            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+
+            }
+            @Override
+            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                //  mPtrFrame.refreshComplete();
+                Log.i("MESSAGE",t.
+                        getMessage());
+                if(!t.getMessage().contains("JsonReader")) {
+
+
+                    Snackbar.make(view, "Unable to fetch json", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
+    }
 
     private void handleError() {
             showMessage("Network Error !");

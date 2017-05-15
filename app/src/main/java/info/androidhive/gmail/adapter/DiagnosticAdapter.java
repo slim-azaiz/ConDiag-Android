@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.HapticFeedbackConstants;
@@ -20,6 +21,9 @@ import java.util.List;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.control_diagnostic.diagnostic.ChangeParameterDialog;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType;
+import info.androidhive.gmail.control_diagnostic.diagnostic.SettableParametres;
 import info.androidhive.gmail.login.ChangePasswordDialog;
 import info.androidhive.gmail.login.Login;
 import info.androidhive.gmail.model.Diagnostic;
@@ -80,13 +84,26 @@ public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.Vi
         holder.diagnosticContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onDiagnosticRowClicked(position);
-                ChangeParameterDialog fragment = new ChangeParameterDialog(diagnostics.get(position).getParameter(),diagnostics.get(position).getValue());
-//                mTvOldParameter = (TextView) v.findViewById(R.id.et_old_parameter);
+                    for (SettableParametres c : SettableParametres.values()) {
+                        if (c.name().equals(diagnostics.get(position).getParameter())) {
+                            listener.onDiagnosticRowClicked(position);
+                            ChangeParameterDialog fragment = new ChangeParameterDialog(diagnostics.get(position).getParameter(),diagnostics.get(position).getValue());
+                            fragment.show(fm, ChangeParameterDialog.TAG);
+                        }else{
+                            /*Snackbar.make(getCl, "Unable to fetch json", Snackbar.LENGTH_INDEFINITE)
+                                      .setAction("Retry", new View.OnClickListener() {
+                                         @Override
+                                        public void onClick(View v) {
 
 
-                fragment.show(fm, ChangeParameterDialog.TAG);
+                                          }
+                                         })
+                                      .show();
 
+                            */
+                        }
+
+                    }
             }
         });
 

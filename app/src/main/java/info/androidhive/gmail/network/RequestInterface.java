@@ -45,6 +45,9 @@ public interface RequestInterface {
     @GET("/nvmem")
     Call<JSONResponse> getNvmem();
 
+    @POST("set/{parameter}/{value}")
+    Call<JSONResponse> setData(@Path("parameter") String parameter, @Path("value") String value);
+
     @POST("control/{code}")
     Call<JSONResponse> encoded(@Path("code") String code);
 

@@ -17,6 +17,7 @@ import java.util.Map;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.control_diagnostic.control.basicmultitouch.TouchActivity;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
 import retrofit2.Call;
@@ -30,7 +31,6 @@ import static info.androidhive.gmail.utils.Config.CONTROL_LOG;
 
 public class ControlActivity extends AppCompatActivity implements View.OnClickListener {
 
-  private Map<CommandType, Command> commandMap;
   private ImageButton bPower;
   private ImageButton bVolUp;
   private ImageButton bVolDown;
@@ -53,6 +53,8 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
   private Context context;
   private String ipAddress;
+  private CommandType commandType;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -123,85 +125,63 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
   @Override
   public void onClick(View view) {
-    Command command = null;
     switch (view.getId()) {
       case R.id.bPower:
-        Log.i("bPower","Success");
-        postCommand(view,"0x708b3085");
-        //0x30002603
+        postCommand(view,CommandType.power.toString());
         break;
       case R.id.bVolUp:
-        postCommand(view,"0xe01c3085");
-        //0x30002610
+        postCommand(view,CommandType.volumeUp.toString());
         break;
       case R.id.bVolDown:
-        postCommand(view,"0xe01d3085");
-        //0x30002611
+        postCommand(view,CommandType.volumeDown.toString());
         break;
       case R.id.bChannelUp:
-        postCommand(view,"0xe01e3085");
-        //0x30002620
+        postCommand(view,CommandType.channelUp.toString());
         break;
       case R.id.bChannelDown:
-        postCommand(view,"0xe01f3085");
-        //0x30002621
+        postCommand(view,CommandType.channelDown.toString());
         break;
       case R.id.bUp:
-        Log.i("bUp","Success");
-        postCommand(view,"0xe0143085");
-        //0x30002658
+        postCommand(view,CommandType.up.toString());
         break;
       case R.id.bDown:
-        postCommand(view,"0xe0163085");
-        //0x30002659
+        postCommand(view,CommandType.down.toString());
         break;
       case R.id.bLeft:
-        postCommand(view,"0xe0173085");
-        //0x3000265a
+        postCommand(view,CommandType.left.toString());
         break;
       case R.id.bRight:
-        postCommand(view,"0xe0153085");
-        //0x3000265b
+        postCommand(view,CommandType.right.toString());
         break;
       case R.id.bSelect:
-        postCommand(view,"0xe0193085");
-        //0x3000265c
+        postCommand(view,CommandType.select.toString());
         break;
       case R.id.bInfo:
-        postCommand(view,"0xe0133085");
-        //0x3000263c
+        postCommand(view,CommandType.info.toString());
         break;
       case R.id.bMenu:
-        postCommand(view,"0xf00c3085");
-        //0x30002654
+        postCommand(view,CommandType.menu.toString());
         break;
       case R.id.bExit:
-        //postCommand(view,"0xe0163085");
-        //
+        postCommand(view,CommandType.exit.toString());
         break;
       case R.id.bMute:
-        postCommand(view,"0xe01b3085");
-        //0x3000260d
+        postCommand(view,CommandType.mute.toString());
         break;
       case R.id.bBack:
-        postCommand(view,"0xd0263085");
-        //
+        postCommand(view,CommandType.back.toString());
         break;
       case R.id.bRed:
-        postCommand(view,"0x90603085");
-        //0x3000266d
+        postCommand(view,CommandType.red.toString());
         break;
       case R.id.bBlue:
-        postCommand(view,"0x90633085");
-        //0x30002670
+        postCommand(view,CommandType.blue.toString());
         break;
       case R.id.bYellow:
-        postCommand(view,"0x90623085");
-        //0x3000266f
+        postCommand(view,CommandType.yellow.toString());
         break;
       case R.id.bGreen:
-        postCommand(view,"0x90613085");
-        //0x3000266e
+        postCommand(view,CommandType.green.toString());
         break;
       default:
         break;
@@ -252,11 +232,9 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
                   .setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                     }
                   })
                   .show();
-
         }
       }
     });

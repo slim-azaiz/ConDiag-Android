@@ -49,6 +49,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static info.androidhive.gmail.utils.Config.DIAGNOSTIC_LOG;
 
 
 public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.DiagnosticAdapterListener   {
@@ -98,7 +99,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                 Log.i("HANDLER", "STOPPED");
             }else {
                 Log.i("HANDLER", "NULL");
-              //  notifyData(method);
+                notifyData();
             }
 
         }else{
@@ -125,7 +126,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
         // Log.i("DiagnosticFragment",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-                .baseUrl("http://192.168.1.9" + ":8000")
+                .baseUrl("http://10.206.208.63" + ":8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -268,15 +269,15 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
     }
-    private void notifyData(final String meth){
+    private void notifyData(){
         handler =new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 1000);
+                handler.postDelayed(this, 2000);
                 Retrofit retrofit = new Retrofit.Builder()
                         //.baseUrl("http://"+ipAddress+":8000")
-                        .baseUrl("http://10.206.208.162:8000")
+                        .baseUrl("http://10.206.208.63:8000")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 final RequestInterface request = retrofit.create(RequestInterface.class);
@@ -286,65 +287,27 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                     public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                         JSONResponse jsonResponse = response.body();
                         data = new ArrayList<>(Arrays.asList(jsonResponse.getRealTime()));
-                        Log.i("METHOD_THREAD",meth);
-                        switch (adapter.diagnostics.get(2).getParameter()){
-                            case "Used memory":
-                                //get value of used_memory in real time
-                                adapter.diagnostics.get(2).setValue(data.get(0).getValue());
-                                break;
-                            case "Internal Temperature":
-                                //get value of Internal_Temperature in real time
-                                adapter.diagnostics.get(1).setValue(data.get(1).getValue());
-                                break;
-                        };
-                        if (adapter.diagnostics.size()>=3) {
+                        int dataPosition =0;
 
-                            switch (adapter.diagnostics.get(2).getParameter()) {
-                                case "STB ip address":
-                                    //get value of stb_ip_address in real time
-                                    adapter.diagnostics.get(2).setValue(data.get(5).getValue());
-                                    break;
-                                case "Total software updates":
-                                    //get value of total_software_updates in real time
-                                    adapter.diagnostics.get(2).setValue(data.get(6).getValue());
-                                    break;
-                                case "CPU Utilisation":
-                                    //get value of CPU_Utilisation in real time
-                                    adapter.diagnostics.get(2).setValue(data.get(2).getValue());
-                                    break;
+                        for (DynamicParametres c : DynamicParametres.values()) {
+                            for (int position = 0; position<adapter.diagnostics.size();position++ ) {
+                                if (c.name().equals(adapter.diagnostics.get(position).getParameter())) {
+                                    adapter.diagnostics.get(position).setValue(data.get(dataPosition).getValue());
+                                }
                             }
-                            ;
-                        }
-                        if (adapter.diagnostics.size()>=4) {
-                            switch (adapter.diagnostics.get(3).getParameter()) {
-                                case "HDMI Port Status":
-                                    //get value of HDMI_Port_Status in real time
-                                    adapter.diagnostics.get(3).setValue(data.get(3).getValue());
-                                    break;
-                            }
-                            ;
-                        }
-                        if (adapter.diagnostics.size()>=5) {
+                            dataPosition++;
 
-                            switch (adapter.diagnostics.get(4).getParameter()) {
-                                case "STB ethernet port status":
-                                    //get value of stb_ethernet_port_status in real time
-                                    adapter.diagnostics.get(4).setValue(data.get(4).getValue());
-                                    break;
-                            }
-                            ;
                         }
+
                         adapter.notifyDataSetChanged();
                     }
-
                     @Override
                     public void onFailure(Call<JSONResponse> call, Throwable t) {
-                       // handler.removeCallbacksAndMessages(null);
+                        handler.removeCallbacksAndMessages(null);
                         //  mPtrFrame.refreshComplete();
                         Log.d("Error", t.getMessage());
                     }
                 });
-
             }
         }, 1000);
 

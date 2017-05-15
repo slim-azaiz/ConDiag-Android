@@ -54,8 +54,8 @@ public class ControlDiagnostic extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.control);
-        imageView = (ImageView) findViewById(R.id.remote);
+        setContentView(R.layout.activity_control_diagnostic);
+      /*  imageView = (ImageView) findViewById(R.id.remote);
 
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -73,8 +73,8 @@ public class ControlDiagnostic extends AppCompatActivity {
                 return true;
             }
         });
-
-        /*drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout_choice);
+*/
+        drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout_choice);
         toolbar = (Toolbar) findViewById(R.id.toolbar_choice);
         setSupportActionBar(toolbar);
         Log.i("TEST","1");
@@ -147,7 +147,7 @@ public class ControlDiagnostic extends AppCompatActivity {
                 }
                 return true;
             }
-        });*/
+        });
     }
 
     @Override
