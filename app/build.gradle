@@ -67,7 +67,8 @@ dependencies {
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
 
 
-
+    //animation
+    compile 'com.eftimoff:android-pathview:1.0.8@aar'
 
 
 }

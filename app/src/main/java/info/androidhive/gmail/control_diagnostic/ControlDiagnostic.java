@@ -21,11 +21,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.eftimoff.androipathview.PathView;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.activity.MainActivity;
@@ -50,30 +53,35 @@ public class ControlDiagnostic extends AppCompatActivity {
 
     private ImageView imageView;
     private ImageButton imageButton;
+    private PathView pathView_diagnostic;
+    private PathView pathView_control;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_diagnostic);
-      /*  imageView = (ImageView) findViewById(R.id.remote);
+        pathView_diagnostic = (PathView) findViewById(R.id.pathView_diagnostic);
+        pathView_control = (PathView) findViewById(R.id.pathView_control);
 
-        imageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN){
-                    Log.i(CONTROL_LOG,"Touch coordinates : " +
-                            String.valueOf(event.getX()) + "x" + String.valueOf(event.getY()));
-                }
-                float[] values = new float[9];
-                Matrix matrix = new Matrix();
 
-                matrix.getValues(values);
-                float relativeX = (event.getX() - values[2]) / values[0];
-                float relativeY = (event.getY() - values[5]) / values[4];
-                return true;
-            }
-        });
-*/
+                pathView_diagnostic.getPathAnimator().
+                        //pathView.getSequentialPathAnimator().
+                                delay(100).
+                        duration(1500).
+                        interpolator(new AccelerateDecelerateInterpolator()).
+                        start();
+
+
+                pathView_control.getPathAnimator().
+                        //pathView.getSequentialPathAnimator().
+                                delay(100).
+                        duration(1500).
+                        interpolator(new AccelerateDecelerateInterpolator()).
+                        start();
+
+
         drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout_choice);
         toolbar = (Toolbar) findViewById(R.id.toolbar_choice);
         setSupportActionBar(toolbar);

@@ -59,13 +59,17 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="30dp" />
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                app:srcCompat="@drawable/diagnostic"
-                android:id="@+id/imageView"
+
+            <com.eftimoff.androipathview.PathView
+                android:id="@+id/pathView_diagnostic"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                app:svg="@raw/settings2"
+                app:pathColor="@android:color/holo_red_light"
+                app:pathWidth="2dp"
                 android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                />
 
         </RelativeLayout>
 
@@ -78,14 +82,18 @@
             android:id="@+id/buttonControl"
 
             >
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                app:srcCompat="@drawable/control"
-                android:id="@+id/imageView2"
+            <com.eftimoff.androipathview.PathView
+                android:id="@+id/pathView_control"
+                android:layout_width="154dp"
+                android:layout_height="140dp"
+                app:svg="@raw/remote_control3"
+                app:pathColor="@android:color/holo_red_light"
+                app:pathWidth="2dp"
                 android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                />
+
+
 
             <TextView
                 android:text="CONTROL"
