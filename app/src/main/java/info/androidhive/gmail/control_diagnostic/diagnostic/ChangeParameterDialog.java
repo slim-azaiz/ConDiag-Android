@@ -16,11 +16,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.login.RequestHandler;
 import info.androidhive.gmail.login.User;
+import info.androidhive.gmail.model.Diagnostic;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
 import retrofit2.Call;
@@ -30,6 +33,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.subscriptions.CompositeSubscription;
 
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.adapter;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.handler;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.runnable;
 import static info.androidhive.gmail.login.Validation.validateFields;
 
 
@@ -41,23 +47,29 @@ public class ChangeParameterDialog extends DialogFragment {
     }
     private String param;
     private String value;
+    private int position;
 
-    public ChangeParameterDialog(String param, String value){
+    private ArrayList<Diagnostic> dataToSet;
+
+
+    public ChangeParameterDialog(int position, String param, String value){
         this.param = param;
         this.value = value;
+        this.position = position;
 
     }
 
     public static final String TAG = ChangeParameterDialog.class.getSimpleName();
 
     public  TextView mTvOldParameter;
+
     private EditText mEtNewParameter;
     private Button mBtChangeParameter;
     private Button mBtCancel;
     private TextView mTvMessage;
     private TextInputLayout mTiOldParameter;
     private TextInputLayout mTiNewParameter;
-    private ProgressBar mProgressBar;
+    private static ProgressBar mProgressBar;
 
     private CompositeSubscription mSubscriptions;
 
@@ -101,8 +113,8 @@ public class ChangeParameterDialog extends DialogFragment {
         });
         mBtCancel.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-
                 dismiss();
+                runnable.run();
             }
         });
     }
@@ -111,18 +123,18 @@ public class ChangeParameterDialog extends DialogFragment {
 
         setError();
 
-        String oldParameter = mTvOldParameter.getText().toString();
-        String newParameter = mEtNewParameter.getText().toString();
+        String parameterToSet = mTvOldParameter.getText().toString();
+        String valueToSet = mEtNewParameter.getText().toString();
 
         int err = 0;
 
-        if (!validateFields(oldParameter)) {
+        if (!validateFields(parameterToSet)) {
 
             err++;
             mTiOldParameter.setError("'New Value' field should not be empty !");
         }
 
-        if (!validateFields(newParameter)) {
+        if (!validateFields(valueToSet)) {
 
             err++;
             mTiNewParameter.setError("'New Value' field should not be empty !");
@@ -131,10 +143,11 @@ public class ChangeParameterDialog extends DialogFragment {
         if (err == 0) {
 
            /* Diagnostic diagnostic = new Diagnostic();
-            diagnostic.setOldParameter(oldParameter);
-            user.setNewParameter(newParameter);
-            changeParameterProgress(user);
-            */mProgressBar.setVisibility(View.VISIBLE);
+            diagnostic.setOldParameter(parameterToSet);
+            user.setNewParameter(valueToSet);*/
+           // changeParameterProgress(parameterToSet, valueToSet);
+            postCommand( param, valueToSet);
+            mProgressBar.setVisibility(View.VISIBLE);
 
         }
     }
@@ -145,74 +158,10 @@ public class ChangeParameterDialog extends DialogFragment {
         mTiNewParameter.setError(null);
     }
 
-    private void changeParameterProgress(final User user) {
-
-        class ResetParameter extends AsyncTask<String,Void,String> {
-            ProgressDialog loading;
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                //loading = ProgressDialog.show(Login.this, "Please Wait", null, true, true);
-                loading = new ProgressDialog(getActivity());
-                loading.setTitle("Attendez s'il vous plaît ..");
-                loading.setMessage("La liste est en train de charger");
-                loading.setIndeterminate(true);
-                loading.setCancelable(false);
-                loading.show();
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                if(s.equalsIgnoreCase("success")){
-
-                   // showMessage("Parameter changed successfully !");
-                    mProgressBar.setVisibility(View.GONE);
-                    dismiss();
-
-
-
-                    Snackbar.make(getActivity().getCurrentFocus(), "Parameter changed successfully !", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-
-
-                   // handleError();
-
-                }
-                else{
-                   // showMessage("Wrong old parameter !");
-                    mProgressBar.setVisibility(View.GONE);
-                    dismiss();
-
-                    Snackbar.make(getActivity().getCurrentFocus(), "Wrong old parameter !", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-
-                }
-            }
-            @Override
-            protected String doInBackground(String... params) {
-                HashMap<String,String> data = new HashMap<>();
-                //data.put("","");
-             //   data.put("PASSWORD", user.getNewParameter());
-                RequestHandler ruc = new RequestHandler();
-                //String result = ruc.sendPostRequest("http://"+parameter+":8000/authentificate"+username+"/"+parameter,data);
-             //   String result = ruc.sendPostRequest("http://10.206.208.123:8000/resetParameter/"+user.getOldParameter()+"/"+user.getNewParameter(),data);
-              //  return result;
-                return "result";
-            }
-        }
-        ResetParameter ulc = new ResetParameter();
-        //ulc.execute(user.getOldParameter(), user.getNewParameter());
-
-
-       // handleError();
-    }
-
-    public static void postCommand(final View view,String parameter, String value){
+    public  void postCommand(String parameter, String value){
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-                .baseUrl("http://10.206.208.98:8000")
+                .baseUrl("http://10.206.208.73:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -223,23 +172,35 @@ public class ChangeParameterDialog extends DialogFragment {
         call.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                mProgressBar.setVisibility(View.GONE);
+                dismiss();
+                try {
+                    JSONResponse jsonResponse = response.body();
+                    dataToSet = new ArrayList<>(Arrays.asList(jsonResponse.getDataToSet()));
+                    adapter.diagnostics.get(position).setValue(dataToSet.get(0).getValue());
+                    adapter.notifyDataSetChanged();
+                    runnable.run();
+                    Snackbar.make(getActivity().getCurrentFocus(), "Parameter changed successfully", Snackbar.LENGTH_LONG)
+                            .show();
+
+                } catch (Exception e) {
+                    Snackbar.make(getActivity().getCurrentFocus(), "Unable to fetch json", Snackbar.LENGTH_LONG)
+                            .show();
+                    Log.e("ERROR", "showProgressDialog", e);
+                }
 
             }
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 //  mPtrFrame.refreshComplete();
+                mProgressBar.setVisibility(View.GONE);
+                dismiss();
+                runnable.run();
+
                 Log.i("MESSAGE",t.
                         getMessage());
                 if(!t.getMessage().contains("JsonReader")) {
-
-
-                    Snackbar.make(view, "Unable to fetch json", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Retry", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            })
+                    Snackbar.make(getActivity().getCurrentFocus(), "Unable to fetch json", Snackbar.LENGTH_LONG)
                             .show();
                 }
             }

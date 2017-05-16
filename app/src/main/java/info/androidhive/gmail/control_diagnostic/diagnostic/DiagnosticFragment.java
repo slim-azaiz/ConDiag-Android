@@ -62,7 +62,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
     public static String constVar;
     private String method;
     private DiagnosticType diagnosticType;
-    private Runnable runnable;
+    public static Runnable runnable;
 
 
 
@@ -95,10 +95,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
             Log.i("METHOD",method);
             loadJSON();
             if(handler!=null) {
-              //  handler.removeCallbacks(null);
-                Log.i("HANDLER", "STOPPED");
             }else {
-                Log.i("HANDLER", "NULL");
                 notifyData();
             }
 
@@ -126,7 +123,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
         // Log.i("DiagnosticFragment",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-                .baseUrl("http://10.206.208.63" + ":8000")
+                .baseUrl("http://10.206.208.73" + ":8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -235,7 +232,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                handler = null;
+                                handler.removeCallbacks(runnable);
                                 setUserVisibleHint(true);
 
                             }
@@ -271,47 +268,52 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
     }
     private void notifyData(){
         handler =new Handler();
-        handler.postDelayed(new Runnable() {
+        handler.postDelayed(runnable= new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 2000);
-                Retrofit retrofit = new Retrofit.Builder()
-                        //.baseUrl("http://"+ipAddress+":8000")
-                        .baseUrl("http://10.206.208.63:8000")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                final RequestInterface request = retrofit.create(RequestInterface.class);
-                Call<JSONResponse> call = request.getRealTime();
-                call.enqueue(new Callback<JSONResponse>() {
-                    @Override
-                    public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-                        JSONResponse jsonResponse = response.body();
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getRealTime()));
-                        int dataPosition =0;
+                if (handler != null) {
 
-                        for (DynamicParametres c : DynamicParametres.values()) {
-                            for (int position = 0; position<adapter.diagnostics.size();position++ ) {
-                                if (c.name().equals(adapter.diagnostics.get(position).getParameter())) {
-                                    adapter.diagnostics.get(position).setValue(data.get(dataPosition).getValue());
+                    handler.postDelayed(this, 2000);
+                    Retrofit retrofit = new Retrofit.Builder()
+                            //.baseUrl("http://"+ipAddress+":8000")
+                            .baseUrl("http://10.206.208.73:8000")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    final RequestInterface request = retrofit.create(RequestInterface.class);
+                    Call<JSONResponse> call = request.getRealTime();
+                    call.enqueue(new Callback<JSONResponse>() {
+                        @Override
+                        public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                            JSONResponse jsonResponse = response.body();
+                            data = new ArrayList<>(Arrays.asList(jsonResponse.getRealTime()));
+                            int dataPosition = 0;
+
+                            for (DynamicParametres c : DynamicParametres.values()) {
+                                for (int position = 0; position < adapter.diagnostics.size(); position++) {
+                                    if (c.name().equals(adapter.diagnostics.get(position).getParameter())) {
+                                        adapter.diagnostics.get(position).setValue(data.get(dataPosition).getValue());
+                                    }
                                 }
-                            }
-                            dataPosition++;
+                                dataPosition++;
 
+                            }
+
+                            adapter.notifyDataSetChanged();
                         }
 
-                        adapter.notifyDataSetChanged();
-                    }
-                    @Override
-                    public void onFailure(Call<JSONResponse> call, Throwable t) {
-                        handler.removeCallbacksAndMessages(null);
-                        //  mPtrFrame.refreshComplete();
-                        Log.d("Error", t.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            handler.removeCallbacksAndMessages(runnable);
+                            //  mPtrFrame.refreshComplete();
+                            //Log.d("Error", t.getMessage());
+                        }
+                    });
+                }
             }
-        }, 1000);
 
+        }, 2000);
     }
+
 
     public class WrapContentLinearLayoutManager extends LinearLayoutManager {
 

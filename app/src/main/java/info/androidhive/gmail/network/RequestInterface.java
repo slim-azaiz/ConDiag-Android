@@ -49,7 +49,7 @@ public interface RequestInterface {
     Call<JSONResponse> setData(@Path("parameter") String parameter, @Path("value") String value);
 
     @POST("control/{code}")
-    Call<JSONResponse> encoded(@Path("code") String code);
+    Call<JSONResponse> control(@Path("code") String code);
 
 
 }

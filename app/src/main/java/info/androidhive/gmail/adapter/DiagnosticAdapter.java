@@ -29,7 +29,8 @@ import info.androidhive.gmail.login.Login;
 import info.androidhive.gmail.model.Diagnostic;
 import info.androidhive.gmail.model.Server;
 
-
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.handler;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.runnable;
 
 
 public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.ViewHolder> implements Filterable {
@@ -85,9 +86,11 @@ public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.Vi
             @Override
             public void onClick(View view) {
                     for (SettableParametres c : SettableParametres.values()) {
+
                         if (c.name().equals(diagnostics.get(position).getParameter())) {
                             listener.onDiagnosticRowClicked(position);
-                            ChangeParameterDialog fragment = new ChangeParameterDialog(diagnostics.get(position).getParameter(),diagnostics.get(position).getValue());
+                            ChangeParameterDialog fragment = new ChangeParameterDialog(position,diagnostics.get(position).getParameter(),diagnostics.get(position).getValue());
+                            handler.removeCallbacks(runnable);
                             fragment.show(fm, ChangeParameterDialog.TAG);
                         }else{
                             /*Snackbar.make(getCl, "Unable to fetch json", Snackbar.LENGTH_INDEFINITE)

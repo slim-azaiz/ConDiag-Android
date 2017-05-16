@@ -15,6 +15,8 @@ public class JSONResponse {
     private Diagnostic[] nvmem;
     private Diagnostic[] qamTunerStatus;
     private Diagnostic[] qamVirtualTunerStatus;
+    private Diagnostic[] dataToSet;
+    ;
 
 
 
@@ -31,6 +33,7 @@ public class JSONResponse {
     public Diagnostic[] getNvmem() {return nvmem;}
     public Diagnostic[] getQamTunerStatus() {return qamTunerStatus;}
     public Diagnostic[] getVirtualQamTunerStatus() {return qamVirtualTunerStatus;}
+    public Diagnostic[] getDataToSet() {return dataToSet;}
 
 }
 

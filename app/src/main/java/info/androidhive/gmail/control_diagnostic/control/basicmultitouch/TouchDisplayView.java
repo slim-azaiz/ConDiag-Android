@@ -28,6 +28,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import info.androidhive.gmail.control_diagnostic.control.CommandType;
 import info.androidhive.gmail.control_diagnostic.control.OnSwipeTouchListener;
 import info.androidhive.gmail.control_diagnostic.control.basicmultitouch.Pools.SimplePool;
 
@@ -227,14 +228,14 @@ public class TouchDisplayView extends View  {
                     if (x2 > x1)
                     {
                         Log.d("TOUCH","Action was RIGHT");
-                        postCommand("0xe0153085");
+                        postCommand(CommandType.right.toString());
                     }
 
                     // Right to left swipe action
                     else
                     {
                         Log.d("TOUCH","Action was LEFT");
-                        postCommand("0xe0173085");
+                        postCommand(CommandType.left.toString());
 
                     }
 
@@ -249,14 +250,14 @@ public class TouchDisplayView extends View  {
                     if (y2 > y1)
                     {
                         Log.d("TOUCH","Action was DOWN");
-                        postCommand("0xe0163085");
+                        postCommand(CommandType.down.toString());
                     }
 
                     // Right to left swipe action
                     else
                     {
                         Log.d("TOUCH","Action was UP");
-                        postCommand("0xe0143085");
+                        postCommand(CommandType.up.toString());
                     }
 
                 }

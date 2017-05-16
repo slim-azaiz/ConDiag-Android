@@ -1,6 +1,7 @@
 package info.androidhive.gmail.control_diagnostic.diagnostic;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.androidhive.gmail.R;
+
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.handler;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.runnable;
 
 
 public class DiagnosticActivity extends AppCompatActivity {
@@ -88,12 +92,14 @@ public class DiagnosticActivity extends AppCompatActivity {
 
   @Override
   public void onDestroy() {
-//    DiagnosticFragment.handler.removeCallbacksAndMessages(null);
-   // DiagnosticFragment.handler=null;
+    handler.removeCallbacks(runnable);
     super.onDestroy();
   }
   @Override
   public void onResume() {
     super.onResume();
+    if(runnable!= null){
+      runnable.run();
+    }
   }
 }

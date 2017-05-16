@@ -13,11 +13,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.util.Map;
-
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.control_diagnostic.control.basicmultitouch.TouchActivity;
-import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
 import retrofit2.Call;
@@ -142,6 +139,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         postCommand(view,CommandType.channelDown.toString());
         break;
       case R.id.bUp:
+        Log.d("TOUCH","Action was UP");
         postCommand(view,CommandType.up.toString());
         break;
       case R.id.bDown:
@@ -208,13 +206,13 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   public static void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()
             //.baseUrl("http://"+ipAddress+":8000")
-            .baseUrl("http://10.206.208.98:8000")
+            .baseUrl("http://10.206.208.73:8000")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
     RequestInterface request = retrofit.create(RequestInterface.class);
     Call<JSONResponse> call ;
-    call = request.encoded(key);
+    call = request.control(key);
     call.enqueue(new Callback<JSONResponse>() {
       @Override
       public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
@@ -250,7 +248,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
     RequestInterface request = retrofit.create(RequestInterface.class);
     Call<JSONResponse> call ;
-    call = request.encoded(key);
+    call = request.control(key);
     call.enqueue(new Callback<JSONResponse>() {
       @Override
       public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {

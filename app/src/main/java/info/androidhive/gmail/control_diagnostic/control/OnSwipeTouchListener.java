@@ -68,19 +68,20 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
     public void onSwipeDown() {
         Log.d("TOUCH","Action was DOWN");
-        postCommand("0xe0163085");
+        postCommand(CommandType.down.toString());
 
     }
 
     public void onSwipeLeft() {
         Log.d("TOUCH","Action was LEFT");
-        postCommand("0xe0173085");
+        postCommand(CommandType.left.toString());
 
     }
 
     public void onSwipeUp() {
         Log.d("TOUCH","Action was UP");
-        postCommand("0xe0143085");
+        postCommand(CommandType.up.toString());
+
 
     }
 
@@ -88,7 +89,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
     public void onSwipeRight() {
         Log.d("TOUCH","Action was RIGHT");
-        postCommand("0xe0153085");
+        postCommand(CommandType.right.toString());
 
     }
 }
