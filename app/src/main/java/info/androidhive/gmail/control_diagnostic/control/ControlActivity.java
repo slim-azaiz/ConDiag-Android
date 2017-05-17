@@ -23,6 +23,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static info.androidhive.gmail.utils.Config.BASE_URL;
 import static info.androidhive.gmail.utils.Config.CONTROL_LOG;
 
 
@@ -206,7 +207,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   public static void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()
             //.baseUrl("http://"+ipAddress+":8000")
-            .baseUrl("http://10.206.208.73:8000")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -242,7 +243,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   public static void postCommand(String key){
     Retrofit retrofit = new Retrofit.Builder()
             //.baseUrl("http://"+ipAddress+":8000")
-            .baseUrl("http://10.206.208.73:8000")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

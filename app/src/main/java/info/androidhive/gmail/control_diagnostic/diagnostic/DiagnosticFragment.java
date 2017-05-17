@@ -49,7 +49,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static info.androidhive.gmail.utils.Config.BASE_URL;
 import static info.androidhive.gmail.utils.Config.DIAGNOSTIC_LOG;
+import static info.androidhive.gmail.utils.Config.getNetworkName;
+import static info.androidhive.gmail.utils.Config.isWifiAvailable;
 
 
 public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.DiagnosticAdapterListener   {
@@ -123,7 +126,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
         // Log.i("DiagnosticFragment",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("http://"+ipAddress+":8000")
-                .baseUrl("http://10.206.208.73" + ":8000")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -227,20 +230,31 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                 } catch (Exception e) {
                     Log.e("ERROR", "showProgressDialog", e);
                 }
+                if (!isWifiAvailable(getContext())) {
 
-                Snackbar.make(getView(), "Unable to fetch json", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Retry", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                handler.removeCallbacks(runnable);
-                                setUserVisibleHint(true);
+                    Snackbar.make(getView(), "Wifi is not available", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    handler.removeCallbacks(runnable);
+                                    setUserVisibleHint(true);
 
-                            }
-                        })
-                        .show();
+                                }
+                            })
+                            .show();
+                }
+                else {
+                    Snackbar.make(getView(), "STB and Smartphone are not available on the same network", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    handler.removeCallbacks(runnable);
+                                    setUserVisibleHint(true);
 
-//                Log.d("Error",t.getMessage());
-
+                                }
+                            })
+                            .show();
+                }
             }
         });
 
@@ -276,7 +290,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                     handler.postDelayed(this, 2000);
                     Retrofit retrofit = new Retrofit.Builder()
                             //.baseUrl("http://"+ipAddress+":8000")
-                            .baseUrl("http://10.206.208.73:8000")
+                            .baseUrl(BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     final RequestInterface request = retrofit.create(RequestInterface.class);
@@ -295,12 +309,13 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                                     }
                                 }
                                 dataPosition++;
-
                             }
-
-                            adapter.notifyDataSetChanged();
+                            try {
+                                adapter.notifyDataSetChanged();
+                            } catch (Exception e) {
+                                Log.e("ERROR", "Adapter is not Unitialized", e);
+                            }
                         }
-
                         @Override
                         public void onFailure(Call<JSONResponse> call, Throwable t) {
                             handler.removeCallbacksAndMessages(runnable);
@@ -310,7 +325,6 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                     });
                 }
             }
-
         }, 2000);
     }
 

@@ -188,7 +188,6 @@ public class ChangeParameterDialog extends DialogFragment {
                             .show();
                     Log.e("ERROR", "showProgressDialog", e);
                 }
-
             }
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
