@@ -7,16 +7,11 @@ package info.androidhive.gmail.control_diagnostic.diagnostic;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
@@ -24,21 +19,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.DiagnosticAdapter;
-import info.androidhive.gmail.adapter.ServerAdapter;
 import info.androidhive.gmail.model.Diagnostic;
-import info.androidhive.gmail.model.Server;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
 import okhttp3.OkHttpClient;
@@ -47,11 +35,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static info.androidhive.gmail.utils.Config.BASE_URL;
 import static info.androidhive.gmail.utils.Config.DIAGNOSTIC_LOG;
-import static info.androidhive.gmail.utils.Config.getNetworkName;
 import static info.androidhive.gmail.utils.Config.isWifiAvailable;
 
 
@@ -73,7 +59,6 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
     public DiagnosticFragment() {
 
     }
-    private String ipAddress;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -81,8 +66,13 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(final View view,  Bundle savedInstanceState) {
+
+
+
+
         super.onViewCreated(view, savedInstanceState);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_viewDiag);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -95,13 +85,32 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             method = getArguments().getString("method");
-            Log.i("METHOD",method);
             loadJSON();
-            if(handler!=null) {
-            }else {
-                notifyData();
-            }
 
+            diagnosticType = DiagnosticType.valueOf(method);
+            switch (diagnosticType) {
+                case memory:
+                    if (handler!= null)
+                        handler.removeCallbacks(runnable);
+                    notifyData();
+                    break;
+                case sysInfo:
+                    handler.removeCallbacks(runnable);
+                    notifyData();
+                    break;
+                case network:
+                    handler.removeCallbacks(runnable);
+                    notifyData();
+                    break;
+                case software:
+                    handler.removeCallbacks(runnable);
+                    notifyData();
+                    break;
+                default:
+                    handler.removeCallbacks(runnable);
+                    Log.i(DIAGNOSTIC_LOG,"STOP HADLER");
+                    break;
+            }
         }else{
 
             // fragment is no longer visible
@@ -125,7 +134,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
     private void loadJSON() {
         // Log.i("DiagnosticFragment",ipAddress);
         Retrofit retrofit = new Retrofit.Builder()
-                //.baseUrl("http://"+ipAddress+":8000")
+                //.baseUrl(url)
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -280,6 +289,8 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
     }
+
+
     private void notifyData(){
         handler =new Handler();
         handler.postDelayed(runnable= new Runnable() {
@@ -289,12 +300,12 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
 
                     handler.postDelayed(this, 2000);
                     Retrofit retrofit = new Retrofit.Builder()
-                            //.baseUrl("http://"+ipAddress+":8000")
+                            //.baseUrl(url)
                             .baseUrl(BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     final RequestInterface request = retrofit.create(RequestInterface.class);
-                    Call<JSONResponse> call = request.getRealTime();
+                    Call<JSONResponse> call = request.getRealTime(method);
                     call.enqueue(new Callback<JSONResponse>() {
                         @Override
                         public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
@@ -304,11 +315,13 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
 
                             for (DynamicParametres c : DynamicParametres.values()) {
                                 for (int position = 0; position < adapter.diagnostics.size(); position++) {
-                                    if (c.name().equals(adapter.diagnostics.get(position).getParameter())) {
-                                        adapter.diagnostics.get(position).setValue(data.get(dataPosition).getValue());
+                                   if (c.name().equals(adapter.diagnostics.get(position).getParameter())) {
+                                       // adapter.diagnostics.get(position).setValue("dddd");                                         adapter.diagnostics.get(position).setValue(data.get(dataPosition).getValue());
+                                       adapter.diagnostics.get(position).setValue(data.get(dataPosition).getValue());
+                                       Log.i(DIAGNOSTIC_LOG,String.valueOf(dataPosition));
+                                       dataPosition++;
                                     }
                                 }
-                                dataPosition++;
                             }
                             try {
                                 adapter.notifyDataSetChanged();
@@ -348,74 +361,4 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
             }
         }
     }
-
-   /* public class RealTime extends Service {
-
-        @Override
-        public IBinder onBind(Intent intent) {
-            return null;
-        }
-
-        @Override
-        public void onCreate() {
-            Toast.makeText(this, "Service created!", Toast.LENGTH_LONG).show();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.206.208.98:8000")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            final RequestInterface request = retrofit.create(RequestInterface.class);
-            Call<JSONResponse> call = request.getRealTime();
-            call.enqueue(new Callback<JSONResponse>() {
-                @Override
-                public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-                    JSONResponse jsonResponse = response.body();
-                    data = new ArrayList<>(Arrays.asList(jsonResponse.getRealTime()));
-                    String meth="";
-                    switch (meth){
-                        case "memory":
-                            //get value of used_memory in real time
-                            adapter.diagnostics.get(1).setValue(data.get(0).getValue());
-                            break;
-                        case "sysInfo":
-                            //get value of Internal_Temperature in real time
-                            adapter.diagnostics.get(1).setValue(data.get(1).getValue());
-                            //get value of CPU_Utilisation in real time
-                            adapter.diagnostics.get(2).setValue(data.get(2).getValue());
-                            //get value of HDMI_Port_Status in real time
-                            adapter.diagnostics.get(3).setValue(data.get(3).getValue());
-                            break;
-                        case "network":
-                            //get value of stb_ip_address in real time
-                            adapter.diagnostics.get(2).setValue(data.get(5).getValue());
-                            //get value of stb_ethernet_port_status in real time
-                            adapter.diagnostics.get(4).setValue(data.get(4).getValue());
-                            break;
-                        case "software":
-                            //get value of total_software_updates in real time
-                            adapter.diagnostics.get(2).setValue(data.get(6).getValue());
-                            break;
-                        default:
-                            break;
-                    };
-                    adapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onFailure(Call<JSONResponse> call, Throwable t) {
-                    //  mPtrFrame.refreshComplete();
-                    Log.d("Error", t.getMessage());
-                }
-            });
-        }
-
-        @Override
-        public void onDestroy() {
-            Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show();
-        }
-        @Override
-        public void onStart(Intent intent, int startid) {
-            Toast.makeText(this, "Service started by user.", Toast.LENGTH_LONG).show();
-        }
-    }*/
 }

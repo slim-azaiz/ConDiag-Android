@@ -13,6 +13,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import android.util.Log;
 
+import java.security.Timestamp;
+
+import info.androidhive.gmail.model.Server;
+
+import static info.androidhive.gmail.utils.Config.HISTORY_LOG;
+
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -68,22 +74,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public boolean addServer(int id,String ipAddress, String friendlyName, String model,String isImportant,String name,int test1,int test2,int color) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase writableDatabase = this.getWritableDatabase();
+
+        Cursor cursor = getServers();
+
+        if (cursor.moveToFirst()) {
+            do {
+                if(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_IP_ADDRESS)).equals(ipAddress)){
+                    Log.d(HISTORY_LOG,"TRUE");
+                    updateTimestamp(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)),isImportant);
+                    return  true;
+                }
+            } while (cursor.moveToNext());
+        }
+        Log.d(HISTORY_LOG,"FALSE");
+
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_ID, id);
         contentValues.put(COLUMN_IP_ADDRESS, ipAddress);
-        contentValues.put(COLUMN_FRIENDLY_NAME,friendlyName);
+        contentValues.put(COLUMN_FRIENDLY_NAME, friendlyName);
         contentValues.put(COLUMN_MODEL, model);
-        contentValues.put(COLUMN_TEST,isImportant);
-        contentValues.put(COLUMN_NAME,name);
-        contentValues.put(COLUMN_IS_IMPORTANT,test1);
-        contentValues.put(COLUMN_TEST2,test2);
-        contentValues.put(COLUMN_COLOR,color);
+        contentValues.put(COLUMN_TEST, isImportant);
+        contentValues.put(COLUMN_NAME, name);
+        contentValues.put(COLUMN_IS_IMPORTANT, test1);
+        contentValues.put(COLUMN_TEST2, test2);
+        contentValues.put(COLUMN_COLOR, color);
 
-        db.insert(TABLE_NAME, null, contentValues);
-        db.close();
+        writableDatabase.insert(TABLE_NAME, null, contentValues);
+        writableDatabase.close();
         return true;
+
     }
 
     public  void  deleteServer(int id){
@@ -103,6 +124,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_IS_IMPORTANT, isImportant);
+        db.update(TABLE_NAME, contentValues, COLUMN_ID + "=" + id, null);
+        return true;
+    }
+
+    public boolean updateTimestamp(int id, String timestamp) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_TEST, timestamp);
         db.update(TABLE_NAME, contentValues, COLUMN_ID + "=" + id, null);
         return true;
     }
@@ -131,7 +160,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     * */
     public Cursor getServers() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_ID + " ASC;";
+        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_ID + " DESC;";
         Cursor c = db.rawQuery(sql, null);
         return c;
     }

@@ -2,12 +2,10 @@ package info.androidhive.gmail.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -31,17 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.control_diagnostic.control.ControlActivity;
-import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
-import info.androidhive.gmail.discovery.dial.MainActivity;
+import info.androidhive.gmail.history.HistoryActivity;
 import info.androidhive.gmail.helper.CircleTransform;
 import info.androidhive.gmail.helper.FlipAnimator;
 import info.androidhive.gmail.login.Login;
 import info.androidhive.gmail.model.Server;
 
-import static android.content.Context.MODE_PRIVATE;
-import static info.androidhive.gmail.activity.MainActivity.db;
-import static info.androidhive.gmail.activity.MainActivity.getCurrentTime;
+import static info.androidhive.gmail.history.HistoryActivity.db;
+import static info.androidhive.gmail.history.HistoryActivity.getCurrentTime;
 
 public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyViewHolder> implements Filterable {
     private Context mContext;
@@ -203,29 +198,9 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.MyVi
             public void onClick(View view) {
                 listener.onServerRowClicked(position);
 
-
-
-                // Access the default SharedPreferences
-                /*SharedPreferences preferences =
-                        PreferenceManager.getDefaultSharedPreferences(mContext);
-                // The SharedPreferences editor - must use commit() to submit changes
-                SharedPreferences.Editor editor = preferences.edit();
-
-                // Edit the saved preferences
-                editor.putString("IpAddress",holder.ipAddress.getText().toString());
-                editor.commit();
-*/
-
-
-               // info.androidhive.gmail.activity.MainActivity.saveServerToLocalStorage(db.maxID()+1,String.valueOf(db.maxID()+1),holder.freindlyName.toString() ,holder.modelName.toString(),getCurrentTime() , "mipmap://" + R.mipmap.google, 1, 1, 4);;;
+                HistoryActivity.saveServerToLocalStorage(db.maxID()+1,holder.ipAddress.getText().toString(),holder.freindlyName.getText().toString() ,holder.modelName.getText().toString(),getCurrentTime() , "mipmap://" + R.mipmap.google, 1, 1, 4);
                 Intent intent1 = new Intent(mContext, Login.class);
-                Intent intent2 = new Intent(mContext, DiagnosticActivity.class);
-                Intent intent3 = new Intent(mContext, ControlActivity.class);
-
-
                 intent1.putExtra("IpAddress",holder.ipAddress.getText());
-                intent2.putExtra("IpAddress",holder.ipAddress.getText());
-                intent3.putExtra("IpAddress",holder.ipAddress.getText());
 
                 mContext.startActivity(intent1);
             }

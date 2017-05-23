@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.activity.MainActivity;
+import info.androidhive.gmail.history.HistoryActivity;
 import info.androidhive.gmail.helper.CircleTransform;
 import info.androidhive.gmail.helper.FlipAnimator;
 import info.androidhive.gmail.login.Login;
@@ -172,7 +172,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHold
         applyClickEvents(holder, position);
     }
 
-    private void applyClickEvents(MyViewHolder holder, final int position) {
+    private void applyClickEvents(final MyViewHolder holder, final int position) {
         holder.iconContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,8 +191,12 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHold
             @Override
             public void onClick(View view) {
                 listener.onServerRowClicked(position);
+
                 Intent intent = new Intent(mContext, Login.class);
+                intent.putExtra("IpAddress",holder.ipAddress.getText());
+
                 mContext.startActivity(intent);
+
             }
         });
 
@@ -289,12 +293,12 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHold
         if (server.isImportant()) {
             holder.iconImp.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star_black_24dp));
             holder.iconImp.setColorFilter(ContextCompat.getColor(mContext, R.color.icon_tint_selected));
-            MainActivity.db.updateIsImportant(server.getId(), 0);
+            HistoryActivity.db.updateIsImportant(server.getId(), 0);
 
         } else {
             holder.iconImp.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star_border_black_24dp));
             holder.iconImp.setColorFilter(ContextCompat.getColor(mContext, R.color.icon_tint_normal));
-            MainActivity.db.updateIsImportant(server.getId(), 1);
+            HistoryActivity.db.updateIsImportant(server.getId(), 1);
         }
     }
 

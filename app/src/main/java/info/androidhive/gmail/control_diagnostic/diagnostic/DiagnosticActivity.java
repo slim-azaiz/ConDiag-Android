@@ -1,5 +1,6 @@
 package info.androidhive.gmail.control_diagnostic.diagnostic;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ViewGroup;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
@@ -17,10 +19,14 @@ import info.androidhive.gmail.R;
 
 import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.handler;
 import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.runnable;
+import static info.androidhive.gmail.utils.Config.DIAGNOSTIC_LOG;
+import static info.androidhive.gmail.utils.Config.DISCOVERY_LOG;
 
 
 public class DiagnosticActivity extends AppCompatActivity {
 
+
+  public static String url;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,10 @@ public class DiagnosticActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    SharedPreferences myPrefs2 = this.getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
+    url = myPrefs2.getString("ipAddress","");
+    Log.e(DIAGNOSTIC_LOG,myPrefs2.toString());
 
     ViewGroup tab = (ViewGroup) findViewById(R.id.tab);
 //    tab.addView(LayoutInflater.from(this).inflate(demo.layoutResId, tab, false));

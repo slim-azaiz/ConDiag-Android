@@ -22,7 +22,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.activity.MainActivity;
+import info.androidhive.gmail.history.HistoryActivity;
 
 import java.util.List;
 
@@ -193,7 +193,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (id == android.R.id.home) {
                 Toast.makeText(getActivity().getApplicationContext(), "Read", Toast.LENGTH_SHORT).show();
 
-                startActivity(new Intent(getActivity(), MainActivity.class));
+                startActivity(new Intent(getActivity(), HistoryActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);

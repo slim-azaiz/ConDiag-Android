@@ -3,8 +3,6 @@ package info.androidhive.gmail.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -12,13 +10,7 @@ import android.util.Log;
 
 public class Config extends Activity {
     //urls
-    public static final String BASE_URL = "http://10.206.208.72:8000/";
-    public static final String URL_CONTROL = BASE_URL+"authentificate/";
-    public static final String URL_LOGIN = BASE_URL+"authentificate/";
-    public static final String URL_RESET_USERNAME = BASE_URL+"resetUsername/";
-    public static final String URL_RESET_PASSWORD = BASE_URL+"resetPassword/";
-    public static final String URL_WOL = BASE_URL+"wol/";
-
+    public static final String BASE_URL = "http://10.206.208.109:8000/";
 
     //logs
     public static final String WAKE_ON_LAN_LOG = "WOL";
@@ -28,6 +20,8 @@ public class Config extends Activity {
     public static final String LOGIN_LOG = "LOGIN";
     public static final String HISTORY_LOG = "HISTORY";
     public static final String UTILS_LOG = "UTILS";
+    public static final String DEFAULT_PORT = "8000";
+
 
 
     public static WifiManager wifiManager;

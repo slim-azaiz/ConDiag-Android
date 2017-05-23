@@ -13,8 +13,7 @@ public interface RequestInterface {
     @GET("/diagnostic")
     Call<JSONResponse> getJSON();
 
-    @GET("/realTime")
-    Call<JSONResponse> getRealTime();
+
     @GET("/memory")
     Call<JSONResponse> getMemory();
 
@@ -51,5 +50,6 @@ public interface RequestInterface {
     @POST("control/{code}")
     Call<JSONResponse> control(@Path("code") String code);
 
-
+    @GET("realTime/{method}")
+    Call<JSONResponse> getRealTime(@Path("method") String method);
 }

@@ -50,7 +50,9 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   private ImageButton bMute;
 
   private Context context;
-  private String ipAddress;
+  private static String ipAddress;
+  private static String url;
+
   private CommandType commandType;
 
   @Override
@@ -59,8 +61,8 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     setContentView(R.layout.wow);
 
     SharedPreferences myPrefs2 = this.getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
-    String ipAddress2 = myPrefs2.getString("ipAddress","");
-    Toast.makeText(ControlActivity.this, "ipAddress " + ipAddress2, Toast.LENGTH_SHORT).show();
+    url = myPrefs2.getString("ipAddress","");
+    Toast.makeText(ControlActivity.this, "ipAddress " + url, Toast.LENGTH_SHORT).show();
 
 
     bPower = (ImageButton) findViewById(R.id.bPower);
@@ -206,7 +208,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   }
   public static void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()
-            //.baseUrl("http://"+ipAddress+":8000")
+            .baseUrl(url)
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
@@ -242,8 +244,8 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
   public static void postCommand(String key){
     Retrofit retrofit = new Retrofit.Builder()
-            //.baseUrl("http://"+ipAddress+":8000")
-            .baseUrl(BASE_URL)
+            .baseUrl(url)
+            //.baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

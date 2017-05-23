@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -22,7 +20,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -31,12 +28,10 @@ import android.widget.Toast;
 import com.eftimoff.androipathview.PathView;
 
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.activity.MainActivity;
+import info.androidhive.gmail.history.HistoryActivity;
 import info.androidhive.gmail.control_diagnostic.control.ControlActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
 import info.androidhive.gmail.settings.SettingsActivity;
-
-import static info.androidhive.gmail.utils.Config.CONTROL_LOG;
 
 /**
  * Created by slim on 3/18/17.
@@ -192,7 +187,7 @@ public class ControlDiagnostic extends AppCompatActivity {
                                 menuItem.setChecked(true);
                                 Toast.makeText(ControlDiagnostic.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                Intent intent1 = new Intent(ControlDiagnostic.this, MainActivity.class);
+                                Intent intent1 = new Intent(ControlDiagnostic.this, HistoryActivity.class);
                                 startActivity(intent1);
                                 return true;
                             case R.id.item_navigation_drawer_settings:

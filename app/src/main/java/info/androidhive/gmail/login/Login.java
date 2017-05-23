@@ -16,12 +16,12 @@ import android.widget.Toast;
 
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
-import info.androidhive.gmail.utils.Config;
 
 
 import java.util.HashMap;
 
 import static info.androidhive.gmail.login.Validation.validateFields;
+import static info.androidhive.gmail.utils.Config.DEFAULT_PORT;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -70,7 +70,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 */
         SharedPreferences myPrefs = this.getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
         SharedPreferences.Editor editor = myPrefs.edit();
-        editor.putString("ipAddress", ipAddress);
+        editor.putString("ipAddress", "http://"+ipAddress+":"+DEFAULT_PORT);
         editor.commit();
 
         Toast.makeText(Login.this, "ipAddress " + ipAddress, Toast.LENGTH_SHORT).show();
@@ -160,7 +160,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     super.onPostExecute(s);
                     loading.dismiss();
                     if(s.equalsIgnoreCase("success")){
-
+                        Intent intent = new Intent(Login.this, ControlDiagnostic.class);
+                        startActivity(intent);
                     }
                     else{
                         if (s.isEmpty()){

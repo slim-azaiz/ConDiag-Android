@@ -8,5 +8,5 @@ import info.androidhive.gmail.network.JSONResponse;
  * type of specific interface
  */
 public   enum DynamicParametres {
-    Used_Memory, STB_ethernet_Port_Status, HDMI_port_Status, TotalSoftwareUpdates, Internal_Temperature, CPU_Utilisation
+    Used_Memory, STB_ethernet_Port_Status, TotalSoftwareUpdates, Internal_Temperature, CPU_Utilisation, HDMI_port_Status
 }

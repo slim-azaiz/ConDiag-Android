@@ -44,6 +44,8 @@ import info.androidhive.gmail.helper.DividerItemDecoration;
 import info.androidhive.gmail.model.Server;
 import info.androidhive.gmail.settings.SettingsActivity;
 
+import static info.androidhive.gmail.utils.Config.isWifiAvailable;
+
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, DiscoveryAdapter.ServerAdapterListener {
     private static List<Server>  servers = new ArrayList<>();
     private ArrayList<Integer> deleteClicked = new ArrayList<Integer>();
@@ -244,29 +246,39 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      * Fetches servers
      */
     private void getInbox() {
-        //swipeRefreshLayout.setRefreshing(true);
-        Handler handler = new Handler();
-        ServerFinder serverFinder =new ServerFinder();
-        //Log.i("",serverFinder.trackedServers.toString());
 
-        loadServers();
-        mAdapter.notifyDataSetChanged();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                mPtrFrame.refreshComplete();
-               // swipeRefreshLayout.setRefreshing(false);
-                if(ServerFinder.tabIpFilter.isEmpty()){
-                    mSnackbar.make(getCurrentFocus(), "No STB found", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Please refresh again", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    mPtrFrame.autoRefresh();
-                                }
-                            })
-                            .show();
+            //swipeRefreshLayout.setRefreshing(true);
+            Handler handler = new Handler();
+            ServerFinder serverFinder =new ServerFinder();
+            //Log.i("",serverFinder.trackedServers.toString());
+            loadServers();
+            mAdapter.notifyDataSetChanged();
+        if (!isWifiAvailable(getContext())) {
+             mPtrFrame.refreshComplete();
+
+            Snackbar.make(getCurrentFocus(), "Wifi is not available", Snackbar.LENGTH_LONG)
+                    .show();
+        }
+        else {
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    mPtrFrame.refreshComplete();
+                    // swipeRefreshLayout.setRefreshing(false);
+                    if (ServerFinder.tabIpFilter.isEmpty()) {
+                        mSnackbar.make(getCurrentFocus(), "No STB found", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Please refresh again", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mPtrFrame.autoRefresh();
+                                    }
+                                })
+                                .show();
+                    }
                 }
-            }
-        }, 10000);
+            }, 10000);
+        }
+
+
 
         // ServerFinder.tabIpFilter.clear();
 
