@@ -42,6 +42,7 @@ import java.util.List;
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.adapter.ServerAdapter;
 import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
+import info.androidhive.gmail.discovery.dial.DiscoveryActivity;
 import info.androidhive.gmail.helper.DividerItemDecoration;
 import info.androidhive.gmail.model.Server;
 import info.androidhive.gmail.settings.SettingsActivity;
@@ -96,7 +97,7 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HistoryActivity.this, info.androidhive.gmail.discovery.dial.MainActivity.class);
+                Intent intent = new Intent(HistoryActivity.this, DiscoveryActivity.class);
                 startActivity(intent);
             }
         });

@@ -46,7 +46,7 @@ import info.androidhive.gmail.settings.SettingsActivity;
 
 import static info.androidhive.gmail.utils.Config.isWifiAvailable;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, DiscoveryAdapter.ServerAdapterListener {
+public class DiscoveryActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, DiscoveryAdapter.ServerAdapterListener {
     private static List<Server>  servers = new ArrayList<>();
     private ArrayList<Integer> deleteClicked = new ArrayList<Integer>();
 
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 return true;
                             case R.id.item_navigation_drawer_history:
                                 menuItem.setChecked(true);
-                                Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DiscoveryActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 //Intent intent1 = new Intent(NavigationActivity.this, AddActivity.class);
                                 //intent1.putExtra(Config.KEY_USER_NAME, username);
@@ -185,9 +185,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 return true;
                             case R.id.item_navigation_drawer_settings:
                                 menuItem.setChecked(true);
-                                Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DiscoveryActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                Intent intent = new Intent(DiscoveryActivity.this, SettingsActivity.class);
 
 
 
@@ -195,20 +195,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                                 // Use TaskStackBuilder to build the back stack and get the PendingIntent
                                 PendingIntent pendingIntent =
-                                        TaskStackBuilder.create(MainActivity.this)
+                                        TaskStackBuilder.create(DiscoveryActivity.this)
                                                 // add all of DetailsActivity's parents to the stack,
                                                 // followed by DetailsActivity itself
                                                 .addNextIntentWithParentStack(intent)
                                                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                                NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(DiscoveryActivity.this);
                                 builder.setContentIntent(pendingIntent);
                                 startActivity(intent);
 
                                 return true;
                             case R.id.item_navigation_drawer_help:
                                 menuItem.setChecked(true);
-                                Toast.makeText(MainActivity.this, menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DiscoveryActivity.this, menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                         }
                         return true;

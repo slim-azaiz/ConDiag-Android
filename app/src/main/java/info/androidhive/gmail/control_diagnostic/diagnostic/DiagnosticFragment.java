@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,9 +35,18 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import static android.content.Context.NOTIFICATION_SERVICE;
-import static info.androidhive.gmail.utils.Config.BASE_URL;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity.url;
+import static info.androidhive.gmail.login.Login.dataConditionalAccess;
+import static info.androidhive.gmail.login.Login.dataIdentification;
+import static info.androidhive.gmail.login.Login.dataLoader;
+import static info.androidhive.gmail.login.Login.dataMemory;
+import static info.androidhive.gmail.login.Login.dataNetwork;
+import static info.androidhive.gmail.login.Login.dataNvmem;
+import static info.androidhive.gmail.login.Login.dataSoftware;
+import static info.androidhive.gmail.login.Login.dataSysInfo;
+import static info.androidhive.gmail.login.Login.dataTuner;
+import static info.androidhive.gmail.login.Login.dataVirtualTuner;
 import static info.androidhive.gmail.utils.Config.DIAGNOSTIC_LOG;
-import static info.androidhive.gmail.utils.Config.isWifiAvailable;
 
 
 public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.DiagnosticAdapterListener   {
@@ -48,7 +56,6 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
     public static DiagnosticAdapter adapter;
     private  OkHttpClient client;
     public static   Handler handler;
-    public static String constVar;
     private String method;
     private DiagnosticType diagnosticType;
     public static Runnable runnable;
@@ -85,7 +92,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             method = getArguments().getString("method");
-            loadJSON();
+            loadCacheJSON();
 
             diagnosticType = DiagnosticType.valueOf(method);
             switch (diagnosticType) {
@@ -125,148 +132,54 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
             Diagnostic diagnostic = data.get(position);
             data.set(position, diagnostic);
             adapter.notifyDataSetChanged();
-
-            // Toast.makeText(getApplicationContext(), "Read: " + modelName.getModel(), Toast.LENGTH_SHORT).show();
     }
 
-
-
-    private void loadJSON() {
-        // Log.i("DiagnosticFragment",ipAddress);
-        Retrofit retrofit = new Retrofit.Builder()
-                //.baseUrl(url)
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RequestInterface request = retrofit.create(RequestInterface.class);
-        Call<JSONResponse> call;
+    private void loadCacheJSON() {
         diagnosticType = DiagnosticType.valueOf(method);
-        switch (diagnosticType) {
-            case identification:
-                call = request.getIdentification();
-                break;
-            case memory:
-                call = request.getMemory();
-                break;
-            case sysInfo:
-                call = request.getSysInfo();
-                break;
-            case conditionalAccess:
-                call = request.getConditionalAccess();
-                break;
-            case network:
-                call = request.getNetwork();
-                break;
-            case software:
-                call = request.getSoftware();
-                break;
-            case loader:
-                call = request.getLoader();
-                break;
-            case nvmem:
-                call = request.getNvmem();
-                break;
-            case qamTunerStatus:
-                call = request.getQamTunerStatus();
-                break;
-            case qamVirtualTunerStatus:
-                call = request.getQamVirtualTunerStatus();
-                break;
-            default:
-                call = request.getJSON();
-                break;
-        }
-
-        call.enqueue(new Callback<JSONResponse>() {
-            @Override
-            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-                JSONResponse jsonResponse = response.body();
                 switch (diagnosticType) {
                     case identification:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getIdentification()));
+                        data = dataIdentification;
                         break;
                     case memory:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getMemory()));
+                        data = dataMemory;
                         break;
                     case sysInfo:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getSysInfo()));
+                        data = dataSysInfo;
                         break;
                     case conditionalAccess:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getConditionalAccess()));
+                        data = dataConditionalAccess;
                         break;
                     case network:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getNetwork()));
+                        data = dataNetwork;
                         break;
                     case software:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getSoftware()));
+                        data = dataSoftware;
                         break;
                     case loader:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getLoader()));
+                        data = dataLoader;
                         break;
                     case nvmem:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getNvmem()));
+                        data = dataNvmem;
                         break;
                     case qamTunerStatus:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getQamTunerStatus()));
+                        data = dataTuner;
                         break;
                     case qamVirtualTunerStatus:
-                        data = new ArrayList<>(Arrays.asList(jsonResponse.getVirtualQamTunerStatus()));
+                        data = dataVirtualTuner;
                         break;
                     default:
                         break;
-
                 }
-                try {
+
+                /*try {
                     adapter.clearData();
                 } catch (Exception e) {
                     Log.e("ERROR", "showProgressDialog", e);
-                }
-                adapter = new DiagnosticAdapter(data, getActivity(), getActivity().getFragmentManager());
-
+                }*/
+                adapter = new DiagnosticAdapter(data, getActivity(), getActivity().getSupportFragmentManager());
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-
                 //  mPtrFrame.refreshComplete();
-
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse> call, Throwable t) {
-                //  mPtrFrame.refreshComplete();
-                try {
-                    adapter.clearData();
-                } catch (Exception e) {
-                    Log.e("ERROR", "showProgressDialog", e);
-                }
-                if (!isWifiAvailable(getContext())) {
-
-                    Snackbar.make(getView(), "Wifi is not available", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Retry", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    handler.removeCallbacks(runnable);
-                                    setUserVisibleHint(true);
-
-                                }
-                            })
-                            .show();
-                }
-                else {
-                    Snackbar.make(getView(), "STB and Smartphone are not available on the same network", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Retry", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    handler.removeCallbacks(runnable);
-                                    setUserVisibleHint(true);
-
-                                }
-                            })
-                            .show();
-                }
-            }
-        });
-
     }
     public void sendNotification(View view) {
 
@@ -300,8 +213,8 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
 
                     handler.postDelayed(this, 2000);
                     Retrofit retrofit = new Retrofit.Builder()
-                            //.baseUrl(url)
-                            .baseUrl(BASE_URL)
+                            .baseUrl(url)
+                            //.baseUrl(BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     final RequestInterface request = retrofit.create(RequestInterface.class);
@@ -318,6 +231,9 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                                    if (c.name().equals(adapter.diagnostics.get(position).getParameter())) {
                                        // adapter.diagnostics.get(position).setValue("dddd");                                         adapter.diagnostics.get(position).setValue(data.get(dataPosition).getValue());
                                        adapter.diagnostics.get(position).setValue(data.get(dataPosition).getValue());
+                                      // switch
+
+
                                        Log.i(DIAGNOSTIC_LOG,String.valueOf(dataPosition));
                                        dataPosition++;
                                     }

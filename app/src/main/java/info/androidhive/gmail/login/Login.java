@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,13 +16,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import info.androidhive.gmail.R;
+import info.androidhive.gmail.adapter.DiagnosticAdapter;
 import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DynamicParametres;
+import info.androidhive.gmail.model.Diagnostic;
+import info.androidhive.gmail.network.JSONResponse;
+import info.androidhive.gmail.network.RequestInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity.url;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType.identification;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType.memory;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType.qamVirtualTunerStatus;
 import static info.androidhive.gmail.login.Validation.validateFields;
 import static info.androidhive.gmail.utils.Config.DEFAULT_PORT;
+import static info.androidhive.gmail.utils.Config.DIAGNOSTIC_LOG;
+import static info.androidhive.gmail.utils.Config.isWifiAvailable;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,11 +50,23 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private  Button buttonLogin;
     private String ipAddress;
+    private String url;
 
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
     private TextView mTvForgotPassword;
     private TextView mTvForgotUsename;
+    private DiagnosticType diagnosticType;
+    public static ArrayList<Diagnostic> dataIdentification;
+    public static ArrayList<Diagnostic> dataSoftware;
+    public static ArrayList<Diagnostic> dataSysInfo;
+    public static ArrayList<Diagnostic> dataMemory;
+    public static ArrayList<Diagnostic> dataTuner;
+    public static ArrayList<Diagnostic> dataVirtualTuner;
+    public static ArrayList<Diagnostic> dataNetwork;
+    public static  ArrayList<Diagnostic> dataNvmem;
+    public static ArrayList<Diagnostic> dataLoader;
+    public static ArrayList<Diagnostic> dataConditionalAccess;
 
     public  static SharedPreferences pref;
 
@@ -70,7 +102,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 */
         SharedPreferences myPrefs = this.getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
         SharedPreferences.Editor editor = myPrefs.edit();
-        editor.putString("ipAddress", "http://"+ipAddress+":"+DEFAULT_PORT);
+        url = "http://"+ipAddress+":"+DEFAULT_PORT;
+        editor.putString("ipAddress", url);
         editor.commit();
 
         Toast.makeText(Login.this, "ipAddress " + ipAddress, Toast.LENGTH_SHORT).show();
@@ -91,6 +124,153 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mTvForgotUsename.setOnClickListener(this);
 
 
+    }
+
+
+
+    private void loadJSON() {
+        for (DiagnosticType c : DiagnosticType.values()) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    //.baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            RequestInterface request = retrofit.create(RequestInterface.class);
+            Call<JSONResponse> call;
+
+            if(c.name() == DiagnosticType.identification.name()) {
+                        call = request.getIdentification();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataIdentification = new ArrayList<>(Arrays.asList(jsonResponse.getIdentification()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+                    else if (c.name() == DiagnosticType.conditionalAccess.name()) {
+                        call = request.getConditionalAccess();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataConditionalAccess = new ArrayList<>(Arrays.asList(jsonResponse.getConditionalAccess()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+                    else if (c.name() == DiagnosticType.loader.name()) {
+                        call = request.getLoader();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataLoader = new ArrayList<>(Arrays.asList(jsonResponse.getLoader()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+                    else if (c.name() == DiagnosticType.memory.name()) {
+                        call = request.getMemory();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataMemory = new ArrayList<>(Arrays.asList(jsonResponse.getMemory()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+                    else if (c.name() == DiagnosticType.network.name()) {
+                        call = request.getNetwork();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataNetwork = new ArrayList<>(Arrays.asList(jsonResponse.getNetwork()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+
+                    else if (c.name() == DiagnosticType.nvmem.name()) {
+                        call = request.getNvmem();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataNvmem = new ArrayList<>(Arrays.asList(jsonResponse.getNvmem()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+                    else if (c.name() == DiagnosticType.qamTunerStatus.name()) {
+                        call = request.getQamTunerStatus();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataTuner = new ArrayList<>(Arrays.asList(jsonResponse.getQamTunerStatus()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+                    else if (c.name() == DiagnosticType.qamVirtualTunerStatus.name()) {
+                        call = request.getQamVirtualTunerStatus();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataVirtualTuner = new ArrayList<>(Arrays.asList(jsonResponse.getVirtualQamTunerStatus()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+                    else if (c.name() == DiagnosticType.software.name()) {
+                        call = request.getSoftware();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataSoftware = new ArrayList<>(Arrays.asList(jsonResponse.getSoftware()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+                    else if (c.name() == DiagnosticType.sysInfo.name()) {
+                        call = request.getSysInfo();
+                        call.enqueue(new Callback<JSONResponse>() {
+                            @Override
+                            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                                JSONResponse jsonResponse = response.body();
+                                dataSysInfo = new ArrayList<>(Arrays.asList(jsonResponse.getSysInfo()));
+                            }
+                            @Override
+                            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                            }
+                        });
+                    }
+        }
     }
 
 
@@ -136,6 +316,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
        // if ((editTextUserName.getText().toString().isEmpty()) || (editTextPassword.getText().toString().isEmpty())) {
          //   Toast.makeText(Login.this, "Please fill in the blanks", Toast.LENGTH_LONG).show();
        // } else {
+
              postInformation(username, password);
         }
     }
@@ -161,6 +342,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     loading.dismiss();
                     if(s.equalsIgnoreCase("success")){
                         Intent intent = new Intent(Login.this, ControlDiagnostic.class);
+                        loadJSON();
                         startActivity(intent);
                     }
                     else{

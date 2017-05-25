@@ -6,5 +6,5 @@ package info.androidhive.gmail.control_diagnostic.diagnostic;
  * type of specific interface
  */
 public   enum  DiagnosticType {
-    identification, memory, sysInfo, conditionalAccess, network, software, loader, nvmem, qamTunerStatus, qamVirtualTunerStatus
+    identification, sysInfo, memory, conditionalAccess, network, software, loader, nvmem, qamTunerStatus, qamVirtualTunerStatus
 }

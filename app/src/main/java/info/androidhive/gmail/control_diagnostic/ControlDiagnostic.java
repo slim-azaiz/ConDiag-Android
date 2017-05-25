@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.eftimoff.androipathview.PathView;
 
 import info.androidhive.gmail.R;
+import info.androidhive.gmail.discovery.dial.DiscoveryActivity;
 import info.androidhive.gmail.history.HistoryActivity;
 import info.androidhive.gmail.control_diagnostic.control.ControlActivity;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
@@ -231,7 +232,7 @@ public class ControlDiagnostic extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Intent intent1 = new Intent(ControlDiagnostic.this, info.androidhive.gmail.discovery.dial.MainActivity.class);
+                        Intent intent1 = new Intent(ControlDiagnostic.this, DiscoveryActivity.class);
                         startActivity(intent1);
                         //Getting out sharedpreferences
                         //SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);

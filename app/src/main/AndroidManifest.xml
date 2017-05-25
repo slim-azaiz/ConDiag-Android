@@ -27,7 +27,7 @@
         </activity>
 
         <activity
-            android:name=".discovery.dial.MainActivity"
+            android:name=".discovery.dial.DiscoveryActivity"
             android:label="Discovery"
             android:theme="@style/AppTheme.NoActionBar"
             />
@@ -35,7 +35,7 @@
         <activity
             android:name=".login.Login"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".discovery.dial.MainActivity" />
+            android:parentActivityName=".discovery.dial.DiscoveryActivity" />
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"

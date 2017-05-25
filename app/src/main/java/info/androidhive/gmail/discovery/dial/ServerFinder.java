@@ -450,8 +450,8 @@ public final class ServerFinder extends Activity {
 			String ipAddress =dialServer.getIpAddress().toString().substring(1 );
 
 			//Log.i("IP_ADDRESS",parameter);
-			if((!tabIpFilter.contains(ipAddress))&&(MainActivity.mPtrFrame.isRefreshing()==true)) {
-				MainActivity.saveServerToLocalStorage(1, ipAddress, dialServer.getFriendlyName(), dialServer.getModelName(), getCurrentTime(), "mipmap://" + R.mipmap.google, 1, 1, 4);
+			if((!tabIpFilter.contains(ipAddress))&&(DiscoveryActivity.mPtrFrame.isRefreshing()==true)) {
+				DiscoveryActivity.saveServerToLocalStorage(1, ipAddress, dialServer.getFriendlyName(), dialServer.getModelName(), getCurrentTime(), "mipmap://" + R.mipmap.google, 1, 1, 4);
 
 				tabIpFilter.add(ipAddress);
 			}
