@@ -40,6 +40,7 @@ import android.widget.TextView;
 import info.androidhive.gmail.R;
 
 import static info.androidhive.gmail.history.HistoryActivity.getCurrentTime;
+import static info.androidhive.gmail.utils.Config.DISCOVERY_LOG;
 
 
 public final class ServerFinder extends Activity {
@@ -448,8 +449,9 @@ public final class ServerFinder extends Activity {
 			//Log.v(LOG_TAG, "Adding new device: " + dialServer);
 
 			String ipAddress =dialServer.getIpAddress().toString().substring(1 );
+			Log.i(DISCOVERY_LOG,"ModelName = "+dialServer.getModelName());
 
-			//Log.i("IP_ADDRESS",parameter);
+			Log.i(DISCOVERY_LOG,"freindlyName = "+dialServer.getFriendlyName());
 			if((!tabIpFilter.contains(ipAddress))&&(DiscoveryActivity.mPtrFrame.isRefreshing()==true)) {
 				DiscoveryActivity.saveServerToLocalStorage(1, ipAddress, dialServer.getFriendlyName(), dialServer.getModelName(), getCurrentTime(), "mipmap://" + R.mipmap.google, 1, 1, 4);
 

@@ -232,7 +232,7 @@ public class ControlDiagnostic extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Intent intent1 = new Intent(ControlDiagnostic.this, DiscoveryActivity.class);
+                        Intent intent1 = new Intent(ControlDiagnostic.this, HistoryActivity.class);
                         startActivity(intent1);
                         //Getting out sharedpreferences
                         //SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);

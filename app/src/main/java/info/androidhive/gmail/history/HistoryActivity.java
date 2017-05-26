@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -52,6 +53,7 @@ import info.androidhive.gmail.wol.WakeOnLan;
 
 import static info.androidhive.gmail.utils.Config.HISTORY_LOG;
 import static info.androidhive.gmail.utils.Config.WAKE_ON_LAN_LOG;
+import static info.androidhive.gmail.utils.Config.isWifiAvailable;
 
 public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, ServerAdapter.ServerAdapterListener {
     private static   List<Server> servers = new ArrayList<>();
@@ -63,8 +65,6 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
     public static DatabaseHelper db;
-    private Button buttonSave;
-    private Button buttonWOL;
     private Button buttonControl;
 
 
@@ -83,8 +83,6 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         db = new DatabaseHelper(this);
-        buttonSave = (Button) findViewById(R.id.buttonSave);
-        buttonWOL = (Button) findViewById(R.id.buttonWOL);
         buttonControl = (Button) findViewById(R.id.buttonTest2);
 
         Log.i("TEST","-1");
@@ -141,32 +139,13 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
             setupNavigationDrawerContent(navigationView);
         }
         setupNavigationDrawerContent(navigationView);
-
-
-        buttonSave.setOnClickListener(new View.OnClickListener(){
+       /* buttonSave.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Log.i(HISTORY_LOG,"MAX_ID = "+String.valueOf(db.maxID()));;
                 saveServerToLocalStorage(db.maxID()+1,String.valueOf(db.maxID()+1), "Friendly name", "Model 1",getCurrentTime() , "mipmap://" + R.mipmap.google, 1, 1, 4);;
             }
         });
-
-
-
-        buttonWOL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            doWakeOnLan();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-            }
-        });
+        */
         buttonControl.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent intent = new Intent(HistoryActivity.this, ControlDiagnostic.class);
@@ -194,9 +173,8 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
 
     }
 
-    private void doWakeOnLan() throws IllegalArgumentException {
+    private void doWakeOnLan(String ipAddress) throws IllegalArgumentException {
        // String ipAddress = editIpAddress.getText().toString();
-        String ipAddress = "10.206.208.162";
 
         if (TextUtils.isEmpty(ipAddress)) {
             Log.d(WAKE_ON_LAN_LOG,"Invalid Ip Address");
@@ -209,7 +187,8 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
         String macAddress = ARPInfo.getMACFromIPAddress(ipAddress);
 
         if (macAddress == null) {
-            Log.d(WAKE_ON_LAN_LOG,"Could not find MAC address, cannot send WOL packet without it.");
+            Snackbar.make(getCurrentFocus(), "Could not find MAC address, cannot send WOL packet without it.", Snackbar.LENGTH_LONG)
+                    .show();
             return;
         }
 
@@ -219,7 +198,8 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
         // Send Wake on lan packed to ip/mac
         try {
             WakeOnLan.sendWakeOnLan(ipAddress, macAddress);
-            Log.d(WAKE_ON_LAN_LOG,"WOL Packet sent");
+            Snackbar.make(getCurrentFocus(), "WOL Packet sent", Snackbar.LENGTH_LONG)
+                    .show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -410,6 +390,20 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
         deleteClicked.add(server.getId());
 
         toggleSelection(position);
+    }
+
+    @Override
+    public void onWakeOnLanClicked(final int position) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    doWakeOnLan(servers.get(position).getIpAddress());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Override

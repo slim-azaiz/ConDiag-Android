@@ -11,7 +11,7 @@ import retrofit2.http.Streaming;
 public interface RequestInterface {
 
     @GET("/diagnostic")
-    Call<JSONResponse> getJSON();
+    Call<JSONResponse> getDiagnostics();
 
 
     @GET("/memory")

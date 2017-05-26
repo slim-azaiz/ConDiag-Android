@@ -226,17 +226,6 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         //  mPtrFrame.refreshComplete();
         Log.i("MESSAGE",t.
                 getMessage());
-        if(!t.getMessage().contains("JsonReader")) {
-
-
-          Snackbar.make(view, "Unable to fetch json", Snackbar.LENGTH_INDEFINITE)
-                  .setAction("Retry", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                  })
-                  .show();
-        }
       }
     });
 
@@ -262,7 +251,6 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         //  mPtrFrame.refreshComplete();
         Log.i("MESSAGE",t.
                 getMessage());
-
       }
     });
 
@@ -288,9 +276,6 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(intent);
         return true;
     }
-
     return super.onOptionsItemSelected(item);
   }
-
-
 }

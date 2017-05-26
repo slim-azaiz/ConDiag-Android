@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,7 +47,9 @@ import static info.androidhive.gmail.login.Login.dataSoftware;
 import static info.androidhive.gmail.login.Login.dataSysInfo;
 import static info.androidhive.gmail.login.Login.dataTuner;
 import static info.androidhive.gmail.login.Login.dataVirtualTuner;
+import static info.androidhive.gmail.utils.Config.BASE_URL;
 import static info.androidhive.gmail.utils.Config.DIAGNOSTIC_LOG;
+import static info.androidhive.gmail.utils.Config.isWifiAvailable;
 
 
 public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.DiagnosticAdapterListener   {
@@ -92,8 +95,8 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             method = getArguments().getString("method");
-            loadCacheJSON();
-
+            loadJSON();
+            //loadCacheJSON();
             diagnosticType = DiagnosticType.valueOf(method);
             switch (diagnosticType) {
                 case memory:
@@ -133,9 +136,18 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
             data.set(position, diagnostic);
             adapter.notifyDataSetChanged();
     }
-
-    private void loadCacheJSON() {
+    private void loadJSON() {
+        Retrofit retrofit = new Retrofit.Builder()
+                //.baseUrl(url)
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RequestInterface request = retrofit.create(RequestInterface.class);
         diagnosticType = DiagnosticType.valueOf(method);
+        Call<JSONResponse> call = request.getDiagnostics();
+        call.enqueue(new Callback<JSONResponse>() {
+            @Override
+            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                 switch (diagnosticType) {
                     case identification:
                         data = dataIdentification;
@@ -170,16 +182,97 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                     default:
                         break;
                 }
-
-                /*try {
+                try {
                     adapter.clearData();
                 } catch (Exception e) {
                     Log.e("ERROR", "showProgressDialog", e);
-                }*/
-                adapter = new DiagnosticAdapter(data, getActivity(), getActivity().getSupportFragmentManager());
+                }
+                adapter = new DiagnosticAdapter(data, getActivity(),getActivity().getFragmentManager());
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onFailure(Call<JSONResponse> call, Throwable t) {
                 //  mPtrFrame.refreshComplete();
+                try {
+                    adapter.clearData();
+                } catch (Exception e) {
+                    Log.e("ERROR", "showProgressDialog", e);
+                }
+                if (!isWifiAvailable(getContext())) {
+
+                    Snackbar.make(getView(), "Wifi is not available", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    handler.removeCallbacks(runnable);
+                                    setUserVisibleHint(true);
+
+                                }
+                            })
+                            .show();
+                }
+                else {
+                    Snackbar.make(getView(), "STB and Smartphone are not available on the same network", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    handler.removeCallbacks(runnable);
+                                    setUserVisibleHint(true);
+
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
+
+    }
+    private void loadCacheJSON() {
+        diagnosticType = DiagnosticType.valueOf(method);
+        switch (diagnosticType) {
+            case identification:
+                data = dataIdentification;
+                break;
+            case memory:
+                data = dataMemory;
+                break;
+            case sysInfo:
+                data = dataSysInfo;
+                break;
+            case conditionalAccess:
+                data = dataConditionalAccess;
+                break;
+            case network:
+                data = dataNetwork;
+                break;
+            case software:
+                data = dataSoftware;
+                break;
+            case loader:
+                data = dataLoader;
+                break;
+            case nvmem:
+                data = dataNvmem;
+                break;
+            case qamTunerStatus:
+                data = dataTuner;
+                break;
+            case qamVirtualTunerStatus:
+                data = dataVirtualTuner;
+                break;
+            default:
+                break;
+        }
+        try {
+            adapter.clearData();
+            adapter = new DiagnosticAdapter(data, getActivity(),getActivity().getFragmentManager());
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+
+        } catch (Exception e) {
+            Log.e("ERROR", "showProgressDialog", e);
+        }
     }
     public void sendNotification(View view) {
 

@@ -109,8 +109,18 @@
         android:id="@+id/icon_star"
         android:layout_width="@dimen/icon_star"
         android:layout_height="@dimen/icon_star"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/timestamp"
+        android:layout_marginTop="5dp"
         android:layout_alignParentRight="true"
         android:tint="@color/icon_tint_normal" />
+
+    <ImageView
+        android:id="@+id/wake_on_lan_icon"
+        android:layout_width="@dimen/icon_star"
+        android:layout_height="@dimen/icon_star"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/icon_star"
+        android:tint="@color/colorPrimary" />
 
 </RelativeLayout>

@@ -35,6 +35,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity.url;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.handler;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.runnable;
 import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType.identification;
 import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType.memory;
 import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType.qamVirtualTunerStatus;
@@ -307,17 +309,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
 
         if (err == 0) {
-
-
-
-
-
-
-       // if ((editTextUserName.getText().toString().isEmpty()) || (editTextPassword.getText().toString().isEmpty())) {
-         //   Toast.makeText(Login.this, "Please fill in the blanks", Toast.LENGTH_LONG).show();
-       // } else {
-
-             postInformation(username, password);
+            if (!isWifiAvailable(getBaseContext())) {
+                Snackbar.make(getCurrentFocus(), "Wifi is not available", Snackbar.LENGTH_LONG)
+                        .show();
+            }else{
+                postInformation(username, password);
+            }
         }
     }
 

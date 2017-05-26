@@ -46,8 +46,6 @@ public class DiagnosticAdapter extends RecyclerView.Adapter<DiagnosticAdapter.Vi
     private  Context mContext;
     private FragmentManager fm;
 
-
-
     public DiagnosticAdapter(ArrayList<Diagnostic> diagnostics, Context mContext, FragmentManager fm) {
         this.diagnostics.addAll(diagnostics);
         this.mContext = mContext;

@@ -53,7 +53,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         public TextView ipAddress, friendlyName, modelName, iconText, timestamp;
-        public ImageView iconImp, imgServer;
+        public ImageView iconImp, imgServer, wakeOnLan;
         public LinearLayout ServerContainer;
         public RelativeLayout iconContainer, iconBack, iconFront;
         public MyViewHolder(View view) {
@@ -66,6 +66,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHold
             iconBack = (RelativeLayout) view.findViewById(R.id.icon_back);
             iconFront = (RelativeLayout) view.findViewById(R.id.icon_front);
             iconImp = (ImageView) view.findViewById(R.id.icon_star);
+            wakeOnLan = (ImageView) view.findViewById(R.id.wake_on_lan_icon);
             imgServer = (ImageView) view.findViewById(R.id.icon_profile);
             ServerContainer = (LinearLayout) view.findViewById(R.id.server_container);
             iconContainer = (RelativeLayout) view.findViewById(R.id.icon_container);
@@ -186,6 +187,12 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHold
                 listener.onIconImportantClicked(position);
             }
         });
+        holder.wakeOnLan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onWakeOnLanClicked(position);
+            }
+        });
 
         holder.ServerContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,6 +297,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHold
     }
 
     private void applyImportant(MyViewHolder holder, Server server) {
+        holder.wakeOnLan.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.wake_on_lan));
         if (server.isImportant()) {
             holder.iconImp.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star_black_24dp));
             holder.iconImp.setColorFilter(ContextCompat.getColor(mContext, R.color.icon_tint_selected));
@@ -363,6 +371,8 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.MyViewHold
 
     public interface ServerAdapterListener {
         void onIconClicked(int position);
+
+        void onWakeOnLanClicked(int positoin);
 
         void onIconImportantClicked(int position);
 
