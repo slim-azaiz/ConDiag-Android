@@ -1,15 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    android:paddingBottom="16dp" >
+    android:paddingBottom="16dp"
+    android:background="@color/bbn_fixed_item_ripple_color">
 
 
     <ImageButton
         android:background="@drawable/three_d_selector"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:id="@+id/bSelect"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/bUp" />
@@ -31,8 +35,8 @@
 
     <ImageButton
         android:background="@drawable/power_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bPower"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -42,28 +46,9 @@
 
 
     <ImageButton
-        android:background="@drawable/p_plus_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/bChannelUp"
-        android:layout_below="@+id/bRight"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="44dp" />
-
-    <ImageButton
-        android:background="@drawable/v_plus_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/bVolUp"
-        android:layout_alignTop="@+id/bChannelUp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageButton
         android:background="@drawable/v_minus_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bVolDown"
         android:layout_below="@+id/bVolUp"
         android:layout_alignParentLeft="true"
@@ -71,8 +56,8 @@
 
     <ImageButton
         android:background="@drawable/empty_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bExit"
         android:layout_alignTop="@+id/bBack"
         android:layout_toLeftOf="@+id/bMute"
@@ -95,8 +80,8 @@
 
     <ImageButton
         android:background="@drawable/p_minus_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bChannelDown"
         android:layout_below="@+id/bChannelUp"
         android:layout_alignParentRight="true"
@@ -104,8 +89,8 @@
 
     <ImageButton
         android:background="@drawable/empty_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bMenu"
         android:layout_above="@+id/bExit"
         android:layout_alignLeft="@+id/okText"
@@ -122,23 +107,13 @@
         android:layout_margin="1dp"
         android:gravity="center"
         android:textSize="20dp"
-        android:text="MENU"
+        android:text="TiVo"
         android:textColor="@color/md_white_1000" />
 
     <ImageButton
-        android:background="@drawable/back_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/bBack"
-        android:layout_above="@+id/bGreen"
-        android:layout_toRightOf="@+id/bPower"
-        android:layout_toEndOf="@+id/bPower"
-        android:layout_marginBottom="16dp" />
-
-    <ImageButton
         android:background="@drawable/mute_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bMute"
         android:layout_marginRight="13dp"
         android:layout_marginEnd="13dp"
@@ -148,8 +123,8 @@
 
     <ImageButton
         android:background="@drawable/left_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bLeft"
         android:layout_alignTop="@+id/okText"
         android:layout_toLeftOf="@+id/bSelect"
@@ -157,85 +132,117 @@
 
     <ImageButton
         android:background="@drawable/right_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bRight"
         android:layout_alignTop="@+id/okText"
         android:layout_toRightOf="@+id/bSelect"
         android:layout_toEndOf="@+id/bSelect" />
 
     <ImageButton
-        android:background="@drawable/down_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/bDown"
-        android:layout_above="@+id/bMenu"
-        android:layout_centerHorizontal="true" />
-
-    <ImageButton
         android:background="@drawable/info_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bInfo"
         android:layout_alignTop="@+id/bSelect"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+
+    <ImageButton
+        android:background="@drawable/v_plus_selector"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:id="@+id/bVolUp"
+        android:layout_alignTop="@+id/bDown"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:background="@drawable/p_plus_selector"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:id="@+id/bChannelUp"
+        android:layout_below="@+id/bSelect"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
     <ImageButton
         android:background="@drawable/up_selector"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:id="@+id/bUp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="24dp"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/bDown"
-        android:layout_alignStart="@+id/bDown" />
-
-
-    <ImageButton
-        android:background="@drawable/red_selector"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/bRed"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/bLeft"
-        android:layout_toStartOf="@+id/bLeft" />
-
-    <ImageButton
-        android:background="@drawable/green_selector"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/bGreen"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/bSelect"
-        android:layout_toStartOf="@+id/bSelect" />
-
-    <ImageButton
-        android:background="@drawable/blue_selector"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/bBlue"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/bRight"
-        android:layout_alignEnd="@+id/bRight" />
-
-    <ImageButton
-        android:background="@drawable/yellow_selector"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/bYellow"
-        android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/okText"
         android:layout_alignEnd="@+id/okText" />
 
     <ImageButton
-        android:background="@drawable/next"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/bNext"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/bBlue"
-        android:layout_toEndOf="@+id/bBlue" />
+        android:background="@drawable/down_selector"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:id="@+id/bDown"
+        android:layout_below="@+id/bSelect"
+        android:layout_alignRight="@+id/okText"
+        android:layout_alignEnd="@+id/okText" />
+
+    <ImageButton
+        android:background="@drawable/back_selector"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:id="@+id/bBack"
+        android:layout_below="@+id/bVolDown"
+        android:layout_toLeftOf="@+id/bSelect"
+        android:layout_toStartOf="@+id/bSelect" />
+
+
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        android:id="@+id/viewpagertabControl"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:stl_indicatorAlwaysInCenter="false"
+        app:stl_indicatorWithoutPadding="false"
+        app:stl_indicatorInFront="false"
+        app:stl_indicatorInterpolation="smart"
+        app:stl_indicatorGravity="bottom"
+        app:stl_indicatorColor="#40C4FF"
+        app:stl_indicatorThickness="4dp"
+        app:stl_indicatorWidth="auto"
+        app:stl_indicatorCornerRadius="2dp"
+        app:stl_overlineColor="#4D000000"
+        app:stl_overlineThickness="0dp"
+        app:stl_underlineColor="#4D000000"
+        app:stl_underlineThickness="1dp"
+        app:stl_dividerColor="#4D000000"
+        app:stl_dividerThickness="1dp"
+        app:stl_defaultTabBackground="?attr/selectableItemBackground"
+        app:stl_defaultTabTextAllCaps="true"
+        app:stl_defaultTabTextColor="#FC000000"
+        app:stl_defaultTabTextSize="12sp"
+        app:stl_defaultTabTextHorizontalPadding="16dp"
+        app:stl_defaultTabTextMinWidth="0dp"
+        app:stl_distributeEvenly="false"
+        app:stl_clickable="true"
+        app:stl_titleOffset="24dp"
+        app:stl_drawDecorationAfterTab="true"
+        android:layout_below="@id/bBack"
+        android:layout_alignParentLeft="true"
+
+
+        />
+    <FrameLayout
+        android:id="@+id/tabControl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/viewpagertabControl" />
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpagerControl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/viewpagertabControl" />
 
 
 </RelativeLayout>

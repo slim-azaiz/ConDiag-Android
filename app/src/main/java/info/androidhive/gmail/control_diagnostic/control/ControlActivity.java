@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -13,8 +17,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import info.androidhive.gmail.R;
 import info.androidhive.gmail.control_diagnostic.control.basicmultitouch.TouchActivity;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity;
+import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
 import retrofit2.Call;
@@ -88,13 +99,15 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     bExit.setOnClickListener(this);
     bMenu = (ImageButton) findViewById(R.id.bMenu);
     bMenu.setOnClickListener(this);
-    bRed = (ImageButton) findViewById(R.id.bRed);
+    /*bRed = (ImageButton) findViewById(R.id.bRed);
     bRed.setOnClickListener(this);
     bGreen = (ImageButton) findViewById(R.id.bGreen);
     bGreen.setOnClickListener(this);
     bBlue = (ImageButton) findViewById(R.id.bBlue);
     bBlue.setOnClickListener(this);
-    bInfo = (ImageButton) findViewById(R.id.bInfo);
+        bYellow = (ImageButton) findViewById(R.id.bYellow);
+    bYellow.setOnClickListener(this);
+    */bInfo = (ImageButton) findViewById(R.id.bInfo);
     bInfo.setOnClickListener(this);
     bSelect = (ImageButton) findViewById(R.id.bSelect);
     bSelect.setOnClickListener(this);
@@ -102,8 +115,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     bBack.setOnClickListener(this);
     bMute = (ImageButton) findViewById(R.id.bMute);
     bMute.setOnClickListener(this);
-    bYellow = (ImageButton) findViewById(R.id.bYellow);
-    bYellow.setOnClickListener(this);
+
 
     if (savedInstanceState == null) {
       Bundle extras = getIntent().getExtras();
@@ -121,6 +133,22 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     SharedPreferences prefs = getSharedPreferences("MyPref",Context.MODE_PRIVATE);
     ipAddress = prefs.getString("ipAddress", null);
     Log.d(CONTROL_LOG,"ipAddress"+ipAddress);
+
+
+
+
+    final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpagerControl);
+    SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertabControl);
+
+
+    TabsAdapter adapter = new TabsAdapter(getSupportFragmentManager());
+    adapter.addFrag(new DigitsFragment(), "digits");
+    adapter.addFrag(new DigitsFragment(), "playback");
+    adapter.addFrag(new DigitsFragment(), "colors");
+
+
+    viewPager.setAdapter(adapter);
+    viewPagerTab.setViewPager(viewPager);
   }
 
   @Override
@@ -172,7 +200,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
       case R.id.bBack:
         postCommand(view,CommandType.back.toString());
         break;
-      case R.id.bRed:
+      /*case R.id.bRed:
         postCommand(view,CommandType.red.toString());
         break;
       case R.id.bBlue:
@@ -184,7 +212,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
       case R.id.bGreen:
         postCommand(view,CommandType.green.toString());
         break;
-      default:
+      */default:
         break;
     }
     //1  0xd0283085 0x30002601
@@ -278,4 +306,37 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     }
     return super.onOptionsItemSelected(item);
   }
+  public class TabsAdapter extends FragmentPagerAdapter {
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
+
+    public TabsAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    public void addFrag(android.support.v4.app.Fragment fragment, String title){
+      Bundle bundle = new Bundle();
+      bundle.putString("page", title);
+      fragment.setArguments(bundle);
+
+      mFragmentList.add(fragment);
+      mFragmentTitleList.add(title);
+    }
+
+    @Override
+    public android.support.v4.app.Fragment getItem(int position) {
+      return mFragmentList.get(position);
+    }
+
+    @Override
+    public int getCount() {
+      return mFragmentList.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+      return mFragmentTitleList.get(position);
+    }
+  }
+
 }

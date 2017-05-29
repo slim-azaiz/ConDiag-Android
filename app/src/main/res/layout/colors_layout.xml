@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    >
+
+
+    <ImageButton
+        android:background="@drawable/blue_selector"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/bBlue"
+        android:layout_alignTop="@+id/bYellow"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="44dp"
+        android:layout_marginEnd="44dp" />
+
+    <ImageButton
+        android:background="@drawable/green_selector"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/bGreen"
+        android:layout_marginRight="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_alignTop="@+id/bRed"
+        android:layout_toLeftOf="@+id/bYellow"
+        android:layout_toStartOf="@+id/bYellow" />
+
+    <ImageButton
+        android:background="@drawable/red_selector"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/bRed"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="31dp"
+        android:layout_marginEnd="31dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/bGreen"
+        android:layout_toStartOf="@+id/bGreen" />
+
+    <ImageButton
+        android:background="@drawable/yellow_selector"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/bYellow"
+        android:layout_marginRight="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_alignTop="@+id/bGreen"
+        android:layout_toLeftOf="@+id/bBlue"
+        android:layout_toStartOf="@+id/bBlue" />
+
+
+</RelativeLayout>

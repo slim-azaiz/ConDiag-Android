@@ -102,7 +102,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                 case memory:
                     if (handler!= null)
                         handler.removeCallbacks(runnable);
-                    notifyData();
+              //      notifyData();
                     break;
                 case sysInfo:
                     handler.removeCallbacks(runnable);

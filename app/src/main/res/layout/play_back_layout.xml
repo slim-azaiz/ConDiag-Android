@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp" >
+
+
+    <ImageButton
+        android:background="@drawable/stop_selector"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/bStop"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/bPlay"
+        android:layout_alignLeft="@+id/bPlay"
+        android:layout_alignStart="@+id/bPlay" />
+
+    <ImageButton
+        android:background="@drawable/record_selector"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/bRecord"
+        android:layout_alignTop="@+id/bStop"
+        android:layout_alignLeft="@+id/bPause"
+        android:layout_alignStart="@+id/bPause" />
+
+    <ImageButton
+        android:background="@drawable/fast_forward_selector"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/bFastForward"
+        android:layout_alignTop="@+id/bRecord"
+        android:layout_alignLeft="@+id/bFastForwardArrows"
+        android:layout_alignStart="@+id/bFastForwardArrows" />
+
+    <ImageButton
+        android:background="@drawable/fast_rewind_selector"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/bFastBackward"
+        android:layout_alignTop="@+id/bStop"
+        android:layout_alignLeft="@+id/bFastBackwardArrows"
+        android:layout_alignStart="@+id/bFastBackwardArrows" />
+
+    <ImageButton
+        android:background="@drawable/fast_backward_arrows_selector"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/bFastBackwardArrows"
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:background="@drawable/fast_forward_arrows_selector"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/bFastForwardArrows"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:background="@drawable/play_selector"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/bPlay"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/bFastBackwardArrows"
+        android:layout_toEndOf="@+id/bFastBackwardArrows"
+        android:layout_marginLeft="58dp"
+        android:layout_marginStart="58dp" />
+
+    <ImageButton
+        android:background="@drawable/pause_selector"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/bPause"
+        android:layout_marginRight="58dp"
+        android:layout_marginEnd="58dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/bFastForwardArrows"
+        android:layout_toStartOf="@+id/bFastForwardArrows" />
+
+</RelativeLayout>
