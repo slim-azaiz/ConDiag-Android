@@ -120,7 +120,7 @@ public class DiscoveryActivity extends AppCompatActivity implements SwipeRefresh
         }, 100);
 
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layoutD);
+        /*drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layoutD);
         toolbar = (Toolbar) findViewById(R.id.toolbarD);
         setSupportActionBar(toolbar);
         Log.i("TEST","1");
@@ -141,7 +141,7 @@ public class DiscoveryActivity extends AppCompatActivity implements SwipeRefresh
             setupNavigationDrawerContent(navigationView);
         }
         setupNavigationDrawerContent(navigationView);
-
+*/
         actionModeCallback = new ActionModeCallback();
 
         // show loader and fetch servers
@@ -367,10 +367,10 @@ public class DiscoveryActivity extends AppCompatActivity implements SwipeRefresh
         switch (item.getItemId()) {
 
             //noinspection SimplifiableIfStatement
-            case android.R.id.home:
+            /*case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
-            case R.id.search_discovery:
+            */case R.id.search_discovery:
                 return true;
         }
 
