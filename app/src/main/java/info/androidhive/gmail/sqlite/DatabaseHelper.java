@@ -80,7 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                if(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_IP_ADDRESS)).equals(ipAddress)){
+                if(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FRIENDLY_NAME)).equals(friendlyName)){
                     Log.d(HISTORY_LOG,"TRUE");
                     updateTimestamp(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)),isImportant);
                     return  true;

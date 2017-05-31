@@ -77,4 +77,15 @@
         android:text="Reset Password ?"
         android:textAlignment="center" />
 
+    <ProgressBar
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:id="@+id/progress"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/button_margin"
+        android:layout_marginBottom="@dimen/button_margin"
+        android:indeterminate="true"
+        android:layout_below="@+id/tv_forgot_password"/>
+
 </LinearLayout>

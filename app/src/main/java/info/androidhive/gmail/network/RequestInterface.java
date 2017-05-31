@@ -50,6 +50,15 @@ public interface RequestInterface {
     @POST("control/{code}")
     Call<JSONResponse> control(@Path("code") String code);
 
+    @POST("authentificate/{username}/{password}")
+    Call<String> authenticiate(@Path("username") String username, @Path("password") String password);
+
+
+    @POST("resetPassword/{oldPassword}/{newPassword}")
+    Call<String> resetPassword(@Path("oldPassword") String oldPassword, @Path("newPassword") String newPassword);
+
+    @POST("resetPassword/{oldUsername}/{newUsername}")
+    Call<String> resetUsername(@Path("oldUsername") String oldUsername, @Path("newUsername") String newUsername);
     @GET("realTime/{method}")
     Call<JSONResponse> getRealTime(@Path("method") String method);
 }

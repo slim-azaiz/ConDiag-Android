@@ -406,7 +406,7 @@ public final class ServerFinder extends Activity {
 											break;
 										case XmlPullParser.TEXT:
 											if (lastTagName != null) {
-												if ("value".equals(lastTagName)) {
+												if ("friendlyName".equals(lastTagName)) {
 													friendlyName = parser.getText();
 												} else if ("UDN".equals(lastTagName)) {
 													uuid = parser.getText();
@@ -428,7 +428,7 @@ public final class ServerFinder extends Activity {
 								} catch (Exception e) {
 									Log.e(LOG_TAG, "parse device description", e);
 								}
-								Log.d(LOG_TAG, "value="+friendlyName);
+								Log.d(LOG_TAG, "friendlyName="+friendlyName);
 								final DialServer dialServer = new DialServer(advert.getLocation(), advert.getIpAddress(), advert.getPort(), appsUrl, friendlyName, uuid, manufacturer, modelName);
 								handler.post(new Runnable() {
 									public void run() {
@@ -449,7 +449,6 @@ public final class ServerFinder extends Activity {
 			//Log.v(LOG_TAG, "Adding new device: " + dialServer);
 
 			String ipAddress =dialServer.getIpAddress().toString().substring(1 );
-			Log.i(DISCOVERY_LOG,"ModelName = "+dialServer.getModelName());
 
 			Log.i(DISCOVERY_LOG,"freindlyName = "+dialServer.getFriendlyName());
 			if((!tabIpFilter.contains(ipAddress))&&(DiscoveryActivity.mPtrFrame.isRefreshing()==true)) {
@@ -521,6 +520,8 @@ public final class ServerFinder extends Activity {
 
 	private static final String formatName(DialServer dialServer) {
 		StringBuffer buffer = new StringBuffer();
+		Log.i(DISCOVERY_LOG,"freindlyName = "+dialServer.getFriendlyName());
+
 		if (dialServer.getFriendlyName() != null) {
 			buffer.append(dialServer.getFriendlyName());
 			if (dialServer.getModelName() != null) {

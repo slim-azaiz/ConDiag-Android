@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
@@ -73,7 +72,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
     SharedPreferences myPrefs2 = this.getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
     url = myPrefs2.getString("ipAddress","");
-    Toast.makeText(ControlActivity.this, "ipAddress " + url, Toast.LENGTH_SHORT).show();
+    //Toast.makeText(ControlActivity.this, "ipAddress " + url, Toast.LENGTH_SHORT).show();
 
 
     bPower = (ImageButton) findViewById(R.id.bPower);
@@ -237,7 +236,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
   public static void postCommand(final View view,String key){
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(url)
-            .baseUrl(BASE_URL)
+            //.baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

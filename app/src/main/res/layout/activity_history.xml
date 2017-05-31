@@ -27,12 +27,6 @@
                 android:layout_height="0dp"
                 app:tabMode="fixed"
                 app:tabGravity="fill"/>
-            <Button
-                android:id="@+id/buttonTest2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Control" />
         </android.support.design.widget.AppBarLayout>
 
         <include layout="@layout/content_main" />

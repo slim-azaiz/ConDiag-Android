@@ -32,7 +32,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -65,7 +64,6 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
     public static DatabaseHelper db;
-    private Button buttonControl;
 
 
     private TabLayout tabLayout;
@@ -83,7 +81,6 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         db = new DatabaseHelper(this);
-        buttonControl = (Button) findViewById(R.id.buttonTest2);
 
         Log.i("TEST","-1");
 
@@ -146,12 +143,7 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
             }
         });
         */
-        buttonControl.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                Intent intent = new Intent(HistoryActivity.this, ControlDiagnostic.class);
-                startActivity(intent);
-            }
-        });
+
         actionModeCallback = new ActionModeCallback();
 
         // show loader and fetch servers
@@ -220,7 +212,6 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
                                 return true;
                             case R.id.item_navigation_drawer_history:
                                 menuItem.setChecked(true);
-                                Toast.makeText(HistoryActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 //Intent intent1 = new Intent(NavigationActivity.this, AddActivity.class);
                                 //intent1.putExtra(Config.KEY_USER_NAME, username);
@@ -230,7 +221,6 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
                                 return true;
                             case R.id.item_navigation_drawer_settings:
                                 menuItem.setChecked(true);
-                                Toast.makeText(HistoryActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 Intent intent = new Intent(HistoryActivity.this, SettingsActivity.class);
 
@@ -253,7 +243,6 @@ public class HistoryActivity extends AppCompatActivity implements SwipeRefreshLa
                                 return true;
                             case R.id.item_navigation_drawer_help:
                                 menuItem.setChecked(true);
-                                Toast.makeText(HistoryActivity.this, menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                         }
                         return true;

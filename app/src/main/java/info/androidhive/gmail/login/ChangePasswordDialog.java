@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,17 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 import info.androidhive.gmail.R;
+import info.androidhive.gmail.network.RequestInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.subscriptions.CompositeSubscription;
 
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity.url;
 import static info.androidhive.gmail.login.Validation.validateFields;
+import static info.androidhive.gmail.utils.Config.BASE_URL;
 
 
 public class ChangePasswordDialog extends DialogFragment {
@@ -29,6 +38,7 @@ public class ChangePasswordDialog extends DialogFragment {
 
         void onPasswordChanged();
     }
+
 
     public static final String TAG = ChangePasswordDialog.class.getSimpleName();
 
@@ -42,9 +52,11 @@ public class ChangePasswordDialog extends DialogFragment {
     private ProgressBar mProgressBar;
 
     private CompositeSubscription mSubscriptions;
+    private String url;
 
-
-
+    public ChangePasswordDialog(String url){
+        this.url = url;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,7 +121,7 @@ public class ChangePasswordDialog extends DialogFragment {
             User user = new User();
             user.setOldPassword(oldPassword);
             user.setNewPassword(newPassword);
-            changePasswordProgress(user);
+            resetPassword(user);
             mProgressBar.setVisibility(View.VISIBLE);
 
         }
@@ -121,69 +133,38 @@ public class ChangePasswordDialog extends DialogFragment {
         mTiNewPassword.setError(null);
     }
 
-    private void changePasswordProgress(final User user) {
 
-        class ResetPassword extends AsyncTask<String,Void,String> {
-            ProgressDialog loading;
+    private void resetPassword(final User user){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        RequestInterface request = retrofit.create(RequestInterface.class);
+        Call<String> call ;
+        call = request.resetPassword(user.getOldPassword(),user.getNewPassword());
+        call.enqueue(new Callback<String>() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                //loading = ProgressDialog.show(Login.this, "Please Wait", null, true, true);
-                loading = new ProgressDialog(getActivity());
-                loading.setTitle("Attendez s'il vous plaît ..");
-                loading.setMessage("La liste est en train de charger");
-                loading.setIndeterminate(true);
-                loading.setCancelable(false);
-                loading.show();
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                if(s.equalsIgnoreCase("success")){
-
-                   // showMessage("Password changed successfully !");
-                    mProgressBar.setVisibility(View.GONE);
-                    dismiss();
-
-
-
-                    Snackbar.make(getActivity().getCurrentFocus(), "Password changed successfully !", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-
-
-                   // handleError();
-
-                }
-                else{
-                   // showMessage("Wrong old password !");
-                    mProgressBar.setVisibility(View.GONE);
-                    dismiss();
-
-                    Snackbar.make(getActivity().getCurrentFocus(), "Wrong old password !", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-
-                }
+            public void onResponse(Call<String> call, Response<String> response) {
+                mProgressBar.setVisibility(View.GONE);
+                dismiss();
+                Snackbar.make(getActivity().getCurrentFocus(), response.body().toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
             @Override
-            protected String doInBackground(String... params) {
-                HashMap<String,String> data = new HashMap<>();
-                //data.put("","");
-                data.put("PASSWORD", user.getNewPassword());
-                RequestHandler ruc = new RequestHandler();
-                //String result = ruc.sendPostRequest("http://"+parameter+":8000/authentificate"+username+"/"+password,data);
-                String result = ruc.sendPostRequest("http://10.206.208.123:8000/resetPassword/"+user.getOldPassword()+"/"+user.getNewPassword(),data);
-                return result;
+            public void onFailure(Call<String> call, Throwable t) {
+                //  mPtrFrame.refreshComplete();
+                mProgressBar.setVisibility(View.GONE);
+                dismiss();
+
+                Snackbar.make(getActivity().getCurrentFocus(), t.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                Log.i("MESSAGE",t.getMessage());
             }
-        }
-        ResetPassword ulc = new ResetPassword();
-        ulc.execute(user.getOldPassword(), user.getNewPassword());
 
 
-       // handleError();
+        });
     }
-
 
     private void handleError() {
             showMessage("Network Error !");

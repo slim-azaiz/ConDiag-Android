@@ -2,11 +2,14 @@ package info.androidhive.gmail.login;
 
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +21,19 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 import info.androidhive.gmail.R;
+import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
+import info.androidhive.gmail.network.RequestInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.subscriptions.CompositeSubscription;
 
+import static android.content.Context.MODE_WORLD_READABLE;
+import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity.url;
 import static info.androidhive.gmail.login.Validation.validateFields;
+import static info.androidhive.gmail.utils.Config.BASE_URL;
 
 
 public class ChangeUsernameDialog extends DialogFragment {
@@ -29,6 +42,8 @@ public class ChangeUsernameDialog extends DialogFragment {
 
         void onUsernameChanged();
     }
+
+
 
     public static final String TAG = ChangeUsernameDialog.class.getSimpleName();
 
@@ -42,7 +57,11 @@ public class ChangeUsernameDialog extends DialogFragment {
     private ProgressBar mProgressBar;
 
     private CompositeSubscription mSubscriptions;
+    private String url;
 
+    public ChangeUsernameDialog(String url){
+        this.url = url;
+    }
 
 
     @Nullable
@@ -51,6 +70,7 @@ public class ChangeUsernameDialog extends DialogFragment {
 
         View view = inflater.inflate(R.layout.dialog_change_username,container,false);
         mSubscriptions = new CompositeSubscription();
+
         initViews(view);
         return view;
     }
@@ -109,7 +129,7 @@ public class ChangeUsernameDialog extends DialogFragment {
             User user = new User();
             user.setOldUsername(oldUsername);
             user.setNewUsername(newUsername);
-            changeUsernameProgress(user);
+            resetUsername(user);
             mProgressBar.setVisibility(View.VISIBLE);
 
         }
@@ -121,68 +141,41 @@ public class ChangeUsernameDialog extends DialogFragment {
         mTiNewUsername.setError(null);
     }
 
-    private void changeUsernameProgress(final User user) {
 
-        class ResetUsername extends AsyncTask<String,Void,String> {
-            ProgressDialog loading;
+    private void resetUsername(final User user){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        RequestInterface request = retrofit.create(RequestInterface.class);
+        Call<String> call ;
+        call = request.resetUsername(user.getOldUsername(),user.getNewUsername());
+        call.enqueue(new Callback<String>() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                //loading = ProgressDialog.show(Login.this, "Please Wait", null, true, true);
-                loading = new ProgressDialog(getActivity());
-                loading.setTitle("Attendez s'il vous plaît ..");
-                loading.setMessage("La liste est en train de charger");
-                loading.setIndeterminate(true);
-                loading.setCancelable(false);
-                loading.show();
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                if(s.equalsIgnoreCase("success")){
-
-                   // showMessage("Username changed successfully !");
-                    mProgressBar.setVisibility(View.GONE);
-                    dismiss();
+            public void onResponse(Call<String> call, Response<String> response) {
+                mProgressBar.setVisibility(View.GONE);
+                dismiss();
 
 
-
-                    Snackbar.make(getActivity().getCurrentFocus(), "Username changed successfully !", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-
-
-                   // handleError();
-
-                }
-                else{
-                   // showMessage("Wrong old username !");
-                    mProgressBar.setVisibility(View.GONE);
-                    dismiss();
-
-                    Snackbar.make(getActivity().getCurrentFocus(), "Wrong old username !", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-
-                }
+                Snackbar.make(getActivity().getCurrentFocus(), response.body().toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
             @Override
-            protected String doInBackground(String... params) {
-                HashMap<String,String> data = new HashMap<>();
-                //data.put("","");
-                data.put("PASSWORD", user.getNewUsername());
-                RequestHandler ruc = new RequestHandler();
-                //String result = ruc.sendPostRequest("http://"+parameter+":8000/authentificate"+username+"/"+username,data);
-                String result = ruc.sendPostRequest("http://10.206.208.123:8000/resetUsername/"+user.getOldUsername()+"/"+user.getNewUsername(),data);
-                return result;
+            public void onFailure(Call<String> call, Throwable t) {
+                //  mPtrFrame.refreshComplete();
+                mProgressBar.setVisibility(View.GONE);
+                dismiss();
+
+                Snackbar.make(getActivity().getCurrentFocus(), t.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                Log.i("MESSAGE",t.getMessage());
             }
-        }
-        ResetUsername ulc = new ResetUsername();
-        ulc.execute(user.getOldUsername(), user.getNewUsername());
 
 
-       // handleError();
+        });
     }
+
 
 
     private void handleError() {

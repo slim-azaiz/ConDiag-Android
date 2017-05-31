@@ -12,14 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import info.androidhive.gmail.R;
-import info.androidhive.gmail.adapter.DiagnosticAdapter;
 import info.androidhive.gmail.control_diagnostic.ControlDiagnostic;
 import info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType;
-import info.androidhive.gmail.control_diagnostic.diagnostic.DynamicParametres;
 import info.androidhive.gmail.model.Diagnostic;
 import info.androidhive.gmail.network.JSONResponse;
 import info.androidhive.gmail.network.RequestInterface;
@@ -28,21 +26,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
-import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticActivity.url;
-import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.handler;
-import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticFragment.runnable;
-import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType.identification;
-import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType.memory;
-import static info.androidhive.gmail.control_diagnostic.diagnostic.DiagnosticType.qamVirtualTunerStatus;
 import static info.androidhive.gmail.login.Validation.validateFields;
+import static info.androidhive.gmail.utils.Config.BASE_URL;
 import static info.androidhive.gmail.utils.Config.DEFAULT_PORT;
-import static info.androidhive.gmail.utils.Config.DIAGNOSTIC_LOG;
 import static info.androidhive.gmail.utils.Config.isWifiAvailable;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
@@ -53,6 +45,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private  Button buttonLogin;
     private String ipAddress;
     private String url;
+    private ProgressBar mProgressBar;
+
 
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
@@ -108,8 +102,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         editor.putString("ipAddress", url);
         editor.commit();
 
-        Toast.makeText(Login.this, "ipAddress " + ipAddress, Toast.LENGTH_SHORT).show();
-
+        mProgressBar = (ProgressBar) findViewById(R.id.progress);
 
         editTextUserName = (EditText) findViewById(R.id.username);
         editTextPassword = (EditText) findViewById(R.id.password);
@@ -128,6 +121,39 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     }
 
+    private void authenticiate(final String username, final String password){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                //.baseUrl(BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        RequestInterface request = retrofit.create(RequestInterface.class);
+        Call<String> call ;
+        call = request.authenticiate(username,password);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.body().toString().equalsIgnoreCase("success")){
+                    Intent intent = new Intent(Login.this, ControlDiagnostic.class);
+                    loadJSON();
+                    startActivity(intent);
+                }
+                else {
+                    mProgressBar.setVisibility(View.GONE);
+                    Snackbar.make(getCurrentFocus(), response.body().toString(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                //  mPtrFrame.refreshComplete();
+                Log.i("MESSAGE",t.getMessage());
+            }
+
+
+        });
+    }
 
 
     private void loadJSON() {
@@ -313,68 +339,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Snackbar.make(getCurrentFocus(), "Wifi is not available", Snackbar.LENGTH_LONG)
                         .show();
             }else{
-                postInformation(username, password);
+                authenticiate(username, password);
+                mProgressBar.setVisibility(View.VISIBLE);
             }
         }
     }
 
 
-    private void postInformation(final String username, final String password){
-        class Authentificate extends AsyncTask<String,Void,String>{
-                ProgressDialog loading;
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
-                    //loading = ProgressDialog.show(Login.this, "Please Wait", null, true, true);
-                    loading = new ProgressDialog(Login.this);
-                    loading.setTitle("Please wait ..");
-                    loading.setIndeterminate(true);
-                    loading.setCancelable(false);
-                    loading.show();
-                }
-
-                @Override
-                protected void onPostExecute(String s) {
-                    super.onPostExecute(s);
-                    loading.dismiss();
-                    if(s.equalsIgnoreCase("success")){
-                        Intent intent = new Intent(Login.this, ControlDiagnostic.class);
-                        loadJSON();
-                        startActivity(intent);
-                    }
-                    else{
-                        if (s.isEmpty()){
-                            Snackbar.make(getCurrentFocus(),"ERROR", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-                        }else {
-                        Snackbar.make(getCurrentFocus(), s, Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                        }
-                    }
-                }
-                @Override
-                protected String doInBackground(String... params) {
-                    HashMap<String,String> data = new HashMap<>();
-                    //data.put("","");
-                    //data.put("PASSWORD", password);
-                    RequestHandler ruc = new RequestHandler();
-                   String result = ruc.sendPostRequest("http://"+ipAddress+":8000/authentificate/"+username+"/"+password,data);
-                   // String result = ruc.sendPostRequest("http://10.206.208.162:8000/authentificate/"+username+"/"+password,data);
-                    return result;
-                }
-            }
-            Authentificate ulc = new Authentificate();
-            ulc.execute(username, password);
-        }
     private void showPasswordDialog(){
 
-        ChangePasswordDialog fragment = new ChangePasswordDialog();
+        ChangePasswordDialog fragment = new ChangePasswordDialog(url);
 
         fragment.show(getFragmentManager(), ChangePasswordDialog.TAG);
     }
     private void showUsernameDialog(){
 
-        ChangeUsernameDialog fragment = new ChangeUsernameDialog();
+        ChangeUsernameDialog fragment = new ChangeUsernameDialog(url);
 
         fragment.show(getFragmentManager(), ChangeUsernameDialog.TAG);
     }

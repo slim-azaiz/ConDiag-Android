@@ -23,8 +23,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import com.eftimoff.androipathview.PathView;
 
 import info.androidhive.gmail.R;
@@ -186,14 +184,12 @@ public class ControlDiagnostic extends AppCompatActivity {
                                 return true;
                             case R.id.item_navigation_drawer_history:
                                 menuItem.setChecked(true);
-                                Toast.makeText(ControlDiagnostic.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 Intent intent1 = new Intent(ControlDiagnostic.this, HistoryActivity.class);
                                 startActivity(intent1);
                                 return true;
                             case R.id.item_navigation_drawer_settings:
                                 menuItem.setChecked(true);
-                                Toast.makeText(ControlDiagnostic.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 Intent intent = new Intent(ControlDiagnostic.this, SettingsActivity.class);
 

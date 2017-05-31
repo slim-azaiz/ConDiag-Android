@@ -33,6 +33,7 @@ import info.androidhive.gmail.control_diagnostic.control.OnSwipeTouchListener;
 import info.androidhive.gmail.control_diagnostic.control.basicmultitouch.Pools.SimplePool;
 
 import static info.androidhive.gmail.control_diagnostic.control.ControlActivity.postCommand;
+import static info.androidhive.gmail.utils.Config.CONTROL_LOG;
 
 /**
  * View that shows touch events and their history. This view demonstrates the
@@ -44,7 +45,7 @@ public class TouchDisplayView extends View  {
     private float y1,y2;
 
     static final int MIN_DISTANCE = 150;
-
+    private int CLICK_ACTION_THRESHHOLD = 200;
 
     public TouchDisplayView(Context context) {
 
@@ -164,6 +165,9 @@ public class TouchDisplayView extends View  {
                     x1 = event.getX();
                     y1 = event.getY();
 
+
+
+
                 /*
                  * Only one touch event is stored in the MotionEvent. Extract
                  * the pointer identifier of this touch from the first index
@@ -219,47 +223,51 @@ public class TouchDisplayView extends View  {
 
             case MotionEvent.ACTION_UP: {
 
-                x2 = event.getX();
-                float deltaX = x2 - x1;
+                float endX = event.getX();
+                float endY = event.getY();
+                if (isAClick(x1, endX, y1, endY)) {
+                    postCommand(CommandType.select.toString());
+                    Log.d(CONTROL_LOG,"Action was Click");
 
-                if (Math.abs(deltaX) > MIN_DISTANCE)
-                {
-                    // Left to Right swipe action
-                    if (x2 > x1)
-                    {
-                        Log.d("TOUCH","Action was RIGHT");
-                        postCommand(CommandType.right.toString());
+                }else {
+
+                    x2 = event.getX();
+                    float deltaX = x2 - x1;
+
+                    if (Math.abs(deltaX) > MIN_DISTANCE) {
+                        // Left to Right swipe action
+                        if (x2 > x1) {
+                            Log.d("TOUCH", "Action was RIGHT");
+                            postCommand(CommandType.right.toString());
+                        }
+
+                        // Right to left swipe action
+                        else {
+                            Log.d("TOUCH", "Action was LEFT");
+                            postCommand(CommandType.left.toString());
+
+                        }
+
                     }
 
-                    // Right to left swipe action
-                    else
-                    {
-                        Log.d("TOUCH","Action was LEFT");
-                        postCommand(CommandType.left.toString());
+                    y2 = event.getY();
+                    float deltaY = y2 - y1;
+
+
+                    if (Math.abs(deltaY) > MIN_DISTANCE) {
+                        // Left to Right swipe action
+                        if (y2 > y1) {
+                            Log.d("TOUCH", "Action was DOWN");
+                            postCommand(CommandType.down.toString());
+                        }
+
+                        // Right to left swipe action
+                        else {
+                            Log.d("TOUCH", "Action was UP");
+                            postCommand(CommandType.up.toString());
+                        }
 
                     }
-
-                }
-
-                y2 = event.getY();
-                float deltaY = y2 - y1;
-
-                if (Math.abs(deltaY) > MIN_DISTANCE)
-                {
-                    // Left to Right swipe action
-                    if (y2 > y1)
-                    {
-                        Log.d("TOUCH","Action was DOWN");
-                        postCommand(CommandType.down.toString());
-                    }
-
-                    // Right to left swipe action
-                    else
-                    {
-                        Log.d("TOUCH","Action was UP");
-                        postCommand(CommandType.up.toString());
-                    }
-
                 }
                 /*
                  * Final pointer has gone up and has ended the last pressed
@@ -344,6 +352,15 @@ public class TouchDisplayView extends View  {
         // trigger redraw on UI thread
         this.postInvalidate();
 
+        return true;
+    }
+
+    private boolean isAClick(float startX, float endX, float startY, float endY) {
+        float differenceX = Math.abs(startX - endX);
+        float differenceY = Math.abs(startY - endY);
+        if (differenceX > CLICK_ACTION_THRESHHOLD/* =5 */ || differenceY > CLICK_ACTION_THRESHHOLD) {
+            return false;
+        }
         return true;
     }
 

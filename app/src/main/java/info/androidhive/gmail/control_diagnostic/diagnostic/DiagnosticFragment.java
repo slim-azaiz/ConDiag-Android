@@ -102,7 +102,7 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
                 case memory:
                     if (handler!= null)
                         handler.removeCallbacks(runnable);
-              //      notifyData();
+                    notifyData();
                     break;
                 case sysInfo:
                     handler.removeCallbacks(runnable);
@@ -138,8 +138,8 @@ public class DiagnosticFragment extends Fragment implements DiagnosticAdapter.Di
     }
     private void loadJSON() {
         Retrofit retrofit = new Retrofit.Builder()
-                //.baseUrl(url)
-                .baseUrl(BASE_URL)
+                .baseUrl(url)
+                //.baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestInterface request = retrofit.create(RequestInterface.class);

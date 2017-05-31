@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static info.androidhive.gmail.utils.Config.DISCOVERY_LOG;
+
 // Keep track of the found DIAL servers
 public class TrackedDialServers implements Iterable<DialServer> {
 	private static final String LOG_TAG = "TrackedDialServers";
@@ -20,6 +22,8 @@ public class TrackedDialServers implements Iterable<DialServer> {
 
 	private static Comparator<DialServer> COMPARATOR = new Comparator<DialServer>() {
 		public int compare(DialServer remote1, DialServer remote2) {
+			Log.i(DISCOVERY_LOG,"freindlyName = "+remote1.getFriendlyName());
+
 			int result = remote1.getFriendlyName().compareToIgnoreCase(remote2.getFriendlyName());
 			if (result != 0) {
 				return result;
@@ -72,6 +76,8 @@ public class TrackedDialServers implements Iterable<DialServer> {
 
 	public DialServer findDialServer(DialServer DialServer) {
 		DialServer byIp = serversByAddress.get(DialServer.getIpAddress());
+		Log.i(DISCOVERY_LOG,"freindlyName = "+DialServer.getFriendlyName());
+
 		if (byIp != null && byIp.getFriendlyName().equals(DialServer.getFriendlyName())) {
 			return byIp;
 		}

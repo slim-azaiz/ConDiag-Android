@@ -29,8 +29,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -175,7 +173,6 @@ public class DiscoveryActivity extends AppCompatActivity implements SwipeRefresh
                                 return true;
                             case R.id.item_navigation_drawer_history:
                                 menuItem.setChecked(true);
-                                Toast.makeText(DiscoveryActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 //Intent intent1 = new Intent(NavigationActivity.this, AddActivity.class);
                                 //intent1.putExtra(Config.KEY_USER_NAME, username);
@@ -185,7 +182,6 @@ public class DiscoveryActivity extends AppCompatActivity implements SwipeRefresh
                                 return true;
                             case R.id.item_navigation_drawer_settings:
                                 menuItem.setChecked(true);
-                                Toast.makeText(DiscoveryActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 Intent intent = new Intent(DiscoveryActivity.this, SettingsActivity.class);
 
@@ -208,7 +204,6 @@ public class DiscoveryActivity extends AppCompatActivity implements SwipeRefresh
                                 return true;
                             case R.id.item_navigation_drawer_help:
                                 menuItem.setChecked(true);
-                                Toast.makeText(DiscoveryActivity.this, menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                         }
                         return true;
@@ -423,7 +418,6 @@ public class DiscoveryActivity extends AppCompatActivity implements SwipeRefresh
             servers.set(position, server);
             mAdapter.notifyDataSetChanged();
 
-            Toast.makeText(getApplicationContext(), "Read: " + server.getModel(), Toast.LENGTH_SHORT).show();
         }
     }
 
