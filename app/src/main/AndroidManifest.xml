@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="info.androidhive.gmail"
+    package="info.sagemcom.conDiag"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".history.HistoryActivity"
+            android:name="info.sagemcom.conDiag.history.HistoryActivity"
             android:label="History"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -27,35 +27,35 @@
         </activity>
 
         <activity
-            android:name=".discovery.dial.DiscoveryActivity"
+            android:name="info.sagemcom.conDiag.discovery.dial.DiscoveryActivity"
             android:label="Discovery"
-            android:parentActivityName=".history.HistoryActivity"
+            android:parentActivityName="info.sagemcom.conDiag.history.HistoryActivity"
             />
 
         <activity
-            android:name=".login.Login"
+            android:name="info.sagemcom.conDiag.login.Login"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".discovery.dial.DiscoveryActivity" />
+            android:parentActivityName="info.sagemcom.conDiag.discovery.dial.DiscoveryActivity" />
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name="info.sagemcom.conDiag.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".history.HistoryActivity"
+            android:parentActivityName="info.sagemcom.conDiag.history.HistoryActivity"
             />
-        <activity android:name=".control_diagnostic.ControlDiagnostic"
+        <activity android:name="info.sagemcom.conDiag.control_diagnostic.ControlDiagnostic"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar"
             />
-        <activity android:name=".control_diagnostic.control.ControlActivity"
+        <activity android:name="info.sagemcom.conDiag.control_diagnostic.control.ControlActivity"
             android:label="Control"
-            android:parentActivityName=".control_diagnostic.ControlDiagnostic"
+            android:parentActivityName="info.sagemcom.conDiag.control_diagnostic.ControlDiagnostic"
             />
-        <activity android:name=".control_diagnostic.control.basicmultitouch.TouchActivity"
+        <activity android:name="info.sagemcom.conDiag.control_diagnostic.control.basicmultitouch.TouchActivity"
             android:label="Control"
-            android:parentActivityName=".control_diagnostic.control.ControlActivity"
+            android:parentActivityName="info.sagemcom.conDiag.control_diagnostic.control.ControlActivity"
             />
-        <activity android:name=".control_diagnostic.diagnostic.DiagnosticActivity"
+        <activity android:name="info.sagemcom.conDiag.control_diagnostic.diagnostic.DiagnosticActivity"
             android:label="Diagnostic"
-            android:parentActivityName=".control_diagnostic.ControlDiagnostic"
+            android:parentActivityName="info.sagemcom.conDiag.control_diagnostic.ControlDiagnostic"
             android:theme="@style/AppTheme.NoActionBar"
             />
     </application>

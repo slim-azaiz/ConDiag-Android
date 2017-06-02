@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <view xmlns:android="http://schemas.android.com/apk/res/android"
-    class="info.androidhive.gmail.discovery.dial.ServerFinder$ListEntryView"
+    class="info.sagemcom.conDiag.discovery.dial.ServerFinder$ListEntryView"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
